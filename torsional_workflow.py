@@ -21,7 +21,16 @@ def combine_fragments(fragments: List[str]) -> List[Chem.rdchem.Mol]:
     mols = [Chem.MolFromSmiles(smi) for smi in all_smiles]
     return mols
     
-
+def dimer_product(list1, list2):
+    """ combines any fragments from 2 lists into dimers 
+    return the corresponding rdkit molecule
+    """
+    dimer_smiles = (f'{smiles1}.{smiles2}'.replace('(*)', '9')
+                  for smiles1, smiles2 in itertools.product(list1,list2))
+    
+    dimers = [Chem.MolFromSmiles(smi) for smi in dimer_smiles]
+    return dimers    
+    
 def getBond(mol):
     """
     return rotatable bond using SMARTS pattern 
