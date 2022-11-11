@@ -10,23 +10,32 @@ from itertools import combinations
 from typing import List
 
 def combine_fragments(fragments: List[str]) -> List[Chem.rdchem.Mol]:
-    # Get all SMILES for all possible combinations (of 2 fragments) of the fragment list
+    """
+    Gets all SMILES for all possible combinations (of 2 fragments) of the fragment list
+    Creates a list of all the possible combinations as RDKit info
+    """
+    
     all_smiles = (f'{smiles1}.{smiles2}'.replace('(*)', '9')
                     for smiles1, smiles2 in combinations(fragments, r=2))
     # Convert all SMILES to mol objects
     mols = [Chem.MolFromSmiles(smi) for smi in all_smiles]
     return mols
-    #Creates a list of all the possible combinations as RDKit info
+    
 
 def getBond(mol):
-    #rotatable bonds
-    #
+    """
+    return rotatable bond using SMARTS pattern 
+    todo: fix for exceptions and reimplement
+    """
     pattern = Chem.MolFromSmarts('[R!$(*#*)&!D1]-!@[R!$(*#*)&!D1]')
     bonds = mol.GetSubstructMatches(pattern)
     return bonds
 
 #3 14 21 22 S 35 10.0
 def getTorsion(mol,bond):
+    """
+    given a bond, returns a dihedral to scan
+    """
     # get neighbors of first atom in bond
     for atom in mol.GetAtomWithIdx(bond[0]).GetNeighbors():
         idx = atom.GetIdx()
@@ -51,18 +60,27 @@ def getTorsion(mol,bond):
     return (first, bond[0], bond[1], last)
 
 def embed_molecule(mol):
+    """
+    takes a 2D rdkit molecule
+    returns a 3D embedded rdkit molecule
+    """
     addhs = Chem.AddHs(mol)
     AllChem.EmbedMolecule(addhs) # the embedded molecule
     return addhs
 
-def write_gaussian_scan_input(dimer, dimer_name, torsion):
-
+def write_gaussian_scan_input(dimer, dimer_name, dihedral_atoms, npoints=35, step=10):
+    """
+    writes gaussian input file for torsional scan 
+    default method is B3LYP/6-31G*
+    npoints = number of optimisation points along the PES
+    step = degrees between each scan point 
+    """
     # get atom names
     symbols = [a.GetSymbol() for a in dimer.GetAtoms()]
     # get x y z coords
     geometry=dimer.GetConformers()[0]
     # unpack torsion terms and add 1 for fortran 1-based numbering
-    a1, a2, a3, a4 = [t+1 for t in torsion]
+    a1, a2, a3, a4 = [t+1 for t in dihedral_atoms]
     file_name = f'{dimer_name}.com'
     chk_name = f'{dimer_name}.chk'
     title = f'scan dihedral {dimer_name}'
@@ -80,11 +98,13 @@ def write_gaussian_scan_input(dimer, dimer_name, torsion):
             line = f' {symbol} {p.x:.5f} {p.y:.5f} {p.z:.5f} \n'
             file.write(line)
         file.write(' \n')
-        file.write(f'{a1} {a2} {a3} {a4} S 35 10.0\n')
+        file.write(f'{a1} {a2} {a3} {a4} S {npoints} {nstep}.0\n')
         file.write(' \n')
 
 def write_slurm_input(dimer_name):
-
+""" 
+creates slurm submission script named dimer_name.sh
+"""
 
     file_name = f'{dimer_name}.sh'
     title = f'#!/bin/bash --login'
@@ -121,7 +141,6 @@ def write_slurm_input(dimer_name):
 def submit_slurm_job(dimer_name):
     """
     Submit a slurm job
-
     """
 
     string = f'sbatch {dimer_name}.sh'
@@ -137,7 +156,7 @@ def delete_sh(dimer_name):
 def delete_com(dimer_name):
     return os.remove(f'{dimer_name}.com')
 
-def TortionalScanAuto(smiles_list_with_attach):
+def TorsionalScanAuto(smiles_list_with_attach):
 
     dimers_list = combine_fragments(smiles_list_with_attach) #all the possible combinations of fragments
 
@@ -156,9 +175,9 @@ def TortionalScanAuto(smiles_list_with_attach):
 
     dimer_dic = { i : d for i, d in enumerate(dimers_3dlist)} #creates a list and numbers all the dimers
 
-    os.mkdir('tortional_inputs') #creates a directory named tortional_scan
+    os.mkdir('torsional_inputs') #creates a directory named torsional_scan
 
-    os.chdir('tortional_inputs') #goes into that directory
+    os.chdir('torsional_inputs') #goes into that directory
 
     for (k, v), t in zip(dimer_dic.items(), torsions_list):
         write_gaussian_scan_input(v, k, t) #writes the input file
