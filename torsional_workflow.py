@@ -115,9 +115,9 @@ def write_gaussian_scan_input(dimer, dimer_name, dihedral_atoms, npoints=35, ste
         file.write(' \n')
 
 def write_slurm_input(dimer_name):
-"""
-creates slurm submission script named dimer_name.sh
-"""
+    """
+    creates slurm submission script named dimer_name.sh
+    """
 
     file_name = f'{dimer_name}.sh'
     title = f'#!/bin/bash --login'
