@@ -42,7 +42,7 @@ def make_dimers_dic(fragment_dic):
     #relating the dimer names and dimer smiles back to one another
     dimer_dic = { k : v for k, v in zip(dimer_names, dimer_smiles) }
 
-    return combo_dic
+    return dimer_dic
 
 def combined_fragments_dic_mol(dic):
     # Get all SMILES for all possible combinations (of 2 fragments) of the fragment list
