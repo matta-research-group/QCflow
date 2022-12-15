@@ -14,6 +14,9 @@ from itertools import combinations
 from typing import List
 
 def getBond(mol):
+    '''
+    From a rdkit molecule finds the rotatable bond
+    '''
     #rotatable bonds
     pattern = Chem.MolFromSmarts('[R!$(*#*)&!D1]-!@[R!$(*#*)&!D1]')
     bonds = mol.GetSubstructMatches(pattern)
@@ -21,6 +24,9 @@ def getBond(mol):
 
 #3 14 21 22 S 35 10.0
 def getTorsion(mol,bond):
+    '''
+    Gets the torsion for the torsional scan
+    '''
     # get neighbors of first atom in bond
     for atom in mol.GetAtomWithIdx(bond[0]).GetNeighbors():
         idx = atom.GetIdx()
@@ -45,6 +51,9 @@ def getTorsion(mol,bond):
     return (first, bond[0], bond[1], last)
 
 def embed_molecule(mol):
+    '''
+    Generates the coordinates (xyz) of the rdkit molecule and adds the hydrogens
+    '''
     addhs = Chem.AddHs(mol)
     AllChem.EmbedMolecule(addhs) # the embedded molecule
     return addhs
