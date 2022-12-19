@@ -13,7 +13,7 @@ import requests
 from itertools import combinations
 from typing import List
 
-def write_guassian(job_type, dimer_name, dimer=None, torsion=None, conformer=None):
+def write_gaussian(job_type, mol_name, dimer=None, torsion=None, conformer=None):
     """
     Writes guassian files for specified job
 
@@ -21,10 +21,10 @@ def write_guassian(job_type, dimer_name, dimer=None, torsion=None, conformer=Non
                 'torsional scan', 'neutral population', 'opt anion', 'ver anion', 'opt cation'
                 and 'ver cation'
 
-    dimer_name : the name of the dimer from the dictionary e.g. if fragment 0 was attached to fragment 1
+    mol_name : the name of the molecule from the dictionary e.g. if fragment 0 was attached to fragment 1
                     then the dimer name is 0-1
 
-    dimer : The rdkit Molecule of the dimer
+    mol : The rdkit Molecule 
 
     torsion : The getTorsion information in regards to the rotatable bond
 
@@ -34,42 +34,41 @@ def write_guassian(job_type, dimer_name, dimer=None, torsion=None, conformer=Non
     if (job_type=='torsional scan'):
 
         # get atom names
-        symbols = [a.GetSymbol() for a in dimer.GetAtoms()]
+        symbols = [a.GetSymbol() for a in mol.GetAtoms()]
         # get x y z coords
         geometry=dimer.GetConformers()[0]
         # unpack torsion terms and add 1 for fortran 1-based numbering
         a1, a2, a3, a4 = [t+1 for t in torsion]
         torsion_data = f'{a1} {a2} {a3} {a4} S 35 10.0\n'
-        file_name = f'{dimer_name}_torsion.com'
-        chk_name = f'{dimer_name}_torsion.chk'
-        title = f'scan dihedral {dimer_name}'
-        calculation = 'opt=modredundant'
+        file_name = f'{mol_name}_torsion.com'
+        chk_name = f'{mol_name}_torsion.chk'
+        title = f'scan dihedral {mol_name}'
+        calculation = 'opt=modredundant' # the only time we need modredundant
         mult_chg = '0 1' # by default all dimers are neutral and singlets!
 
-    if (job_type=='neutral population'):
+    if (job_type=='neutral opt'):
 
         # get atom names
-        symbols = [a.GetSymbol() for a in dimer.GetAtoms()]
+        symbols = [a.GetSymbol() for a in mol.GetAtoms()]
         # get x y z coords
         geometry = conformer
         torsion_data = f' \n'
         file_name = f'{dimer_name}_neu_opt_pop.com'
         chk_name = f'{dimer_name}_neu_opt_pop.chk'
         title = f'Neutral optimised with HOMO/LUMO {dimer_name}'
-        calculation = 'opt=modredundant, Pop=Full'
+        calculation = 'opt, Pop=Full'
         mult_chg = '0 1' # by default all dimers are neutral and singlets!
 
     if (job_type=='opt anion'):
 
         # get atom names
-        symbols = [a.GetSymbol() for a in dimer.GetAtoms()]
+        symbols = [a.GetSymbol() for a in mol.GetAtoms()]
         geometry = conformer
         torsion_data = f' \n'
-        file_name = f'{dimer_name}_opt_anion.com'
-        chk_name = f'{dimer_name}_opt_anion.chk'
-        title = f'Optimisation of anion dimer {dimer_name}'
-        calculation = 'opt=modredundant'
-        mult_chg = '-1 2' # This is a negative dimer calc so multiplicty and charge change!
+        file_name = f'{mol_name}_opt_anion.com'
+        chk_name = f'{mol_name}_opt_anion.chk'
+        title = f'Optimisation of anion dimer {mol_name}'
+        mult_chg = '-1 2' # This is a negative dimer calc so multiplicity and charge change!
 
     if (job_type=='ver anion'):
 
@@ -77,34 +76,34 @@ def write_guassian(job_type, dimer_name, dimer=None, torsion=None, conformer=Non
         symbols = [a.GetSymbol() for a in dimer.GetAtoms()]
         geometry = comformer
         torsion_data = f' \n'
-        file_name = f'{dimer_name}_ver_anion.com'
-        chk_name = f'{dimer_name}_ver_anion.chk'
-        title = f'Veritcal of anion dimer {dimer_name}'
-        calculation = 'SP'
+        file_name = f'{mol_name}_ver_anion.com'
+        chk_name = f'{mol_name}_ver_anion.chk'
+        title = f'Veritcal of anion dimer {mol_name}'
+        calculation = 'sp'
         mult_chg = '-1 2' # This is a negative dimer calc so multiplicty and charge change!
 
     if (job_type=='opt cation'):
 
         # get atom names
-        symbols = [a.GetSymbol() for a in dimer.GetAtoms()]
+        symbols = [a.GetSymbol() for a in mol.GetAtoms()]
         geometry = comformer
         torsion_data = f' \n'
-        file_name = f'{dimer_name}_opt_cat.com'
-        chk_name = f'{dimer_name}_opt_cat.chk'
-        title = f'Optimisation of cation dimer {dimer_name}'
-        calculation = 'opt=modredundant'
+        file_name = f'{mol_name}_opt_cat.com'
+        chk_name = f'{mol_name}_opt_cat.chk'
+        title = f'Optimisation of cation dimer {mol_name}'
+        calculation = 'opt'
         mult_chg = '1 2' # This is a negative dimer calc so multiplicty and charge change!
 
     if (job_type=='ver cation'):
 
         # get atom names
-        symbols = [a.GetSymbol() for a in dimer.GetAtoms()]
+        symbols = [a.GetSymbol() for a in mol.GetAtoms()]
         geometry = conformer
         torsion_data = f' \n'
-        file_name = f'{dimer_name}_ver_cat.com'
-        chk_name = f'{dimer_name}_ver_cat.chk'
-        title = f'Vertical of cation dimer {dimer_name}'
-        calculation = 'SP'
+        file_name = f'{mol_name}_ver_cat.com'
+        chk_name = f'{mol_name}_ver_cat.chk'
+        title = f'Vertical of cation dimer {mol_name}'
+        calculation = 'sp'
         mult_chg = '1 2' # This is a negative dimer calc so multiplicty and charge change!
 
 
