@@ -30,23 +30,16 @@ def make_dimers_dic(fragment_dic):
     generates SMILES for all possible dimers
     returns dictionary of dimers as SMILES
     """
-    dimer_smiles = (f'{v1}.{v2}'.replace('(*)', '9')
+    mol_smiles = (f'{v1}.{v2}'.replace('(*)', '9')
                     for v1, v2 in itertools.combinations(fragment_dic.values(), r=2))
     #All the combinations of dimer names from fragment dictionary
-    dimer_names = [(f'{k1}_{k2}')
+    mol_names = [(f'{k1}_{k2}')
                     for k1, k2 in itertools.combinations(fragment_dic.keys(), r=2)]
 
     # Convert all SMILES to mol objects
     #mols = [Chem.MolFromSmiles(smi) for smi in dimer_smiles]
 
     #relating the dimer names and dimer smiles back to one another
-    dimer_dic = { k : v for k, v in zip(dimer_names, dimer_smiles) }
+    mol_dic = { k : v for k, v in zip(mol_names, mol_smiles) }
 
-    return dimer_dic
-
-def smiles_to_mols(SMILES):
-    '''
-    Provide a dimer SMILE string which is turned into a rdkit molecule
-    '''
-    mol = Chem.MolFromSmiles(SMILES)
-    return mol
+    return mol_dic

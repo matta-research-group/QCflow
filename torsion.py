@@ -1,59 +1,50 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import rdkit
-import cclib
-import itertools
-import os
-import os.path
-import shutil
-import subprocess
-from rdkit import Chem
-from rdkit.Chem import AllChem, Draw
-import requests
-from itertools import combinations
-from typing import List
+from fragments_io import *
+from torsion_io import *
+from write_input_io import *
+from file_io import *
 
-def getBond(mol):
-    '''
-    From a rdkit molecule finds the rotatable bond
-    '''
-    #rotatable bonds
-    pattern = Chem.MolFromSmarts('[R!$(*#*)&!D1]-!@[R!$(*#*)&!D1]')
-    bonds = mol.GetSubstructMatches(pattern)
-    return bonds
 
-#3 14 21 22 S 35 10.0
-def getTorsion(mol,bond):
-    '''
-    Gets the torsion for the torsional scan
-    '''
-    # get neighbors of first atom in bond
-    for atom in mol.GetAtomWithIdx(bond[0]).GetNeighbors():
-        idx = atom.GetIdx()
-        mass = atom.GetMass()
-        if idx!=bond[1]: #excludes the other atom in the bond
-            if mass > 13: # N, S, O get priority
-                first=idx
-                break
-            if mass > 12: # otherwise C
-                first=idx
-    # get neighbors of second atom in bond
-    for atom in mol.GetAtomWithIdx(bond[1]).GetNeighbors():
-        idx=atom.GetIdx()
-        mass = atom.GetMass()
-        if idx!=bond[0]: #excludes the other atom in the bond
-            if mass > 13: # N, S, O get priority
-                last=idx
-                break
-            if mass > 12: # otherwise C
-                last=idx
+def run_torsion(fragment_smi_file):
 
-    return (first, bond[0], bond[1], last)
+    '''
+    When provided with a .smi file with all the fragments, this function
+    combines all the fragemnts into dimers and then creates the SLURM and
+    guassian input file and then submits the jobs
 
-def embed_molecule(mol):
+    fragment_smi_file : name of the .smi file containing the fragments
     '''
-    Generates the coordinates (xyz) of the rdkit molecule and adds the hydrogens
-    '''
-    addhs = Chem.AddHs(mol)
-    AllChem.EmbedMolecule(addhs) # the embedded molecule
-    return addhs
+
+    #Loads the smi file and creates a dictionary of fragments
+    farg_dic = read_fragments('fragment_smi_file')
+    #Creates a dictionary of all the dimers from the fragment dictionary
+    mol_dic = make_dimers_dic(farg_dic)
+
+    #creates a directory named tortional_scan
+    os.mkdir('torsional_inputs')
+
+    #goes into that directory
+    os.chdir('torsional_inputs')
+
+    for mol_name, mol_smiles in mol_dic.items():
+    #makes directory called after the job name
+        os.mkdir(f'{mol_name}-job')
+        #goes into that directory
+        os.chdir(f'{mol_name}-job')
+
+        #turns smiles string into rdkit object
+        mol = Chem.MolFromSmiles(mol_smiles)
+        #finds the bond between the fragment
+        bond = getBond(mol)
+        #torsion of the bond between the fragment
+        torsion = getTorsion(mol, bond[0])
+        #gets rdkit estimated coordinates of dimer
+        mold3d = embed_molecule(mol)
+
+        #writes a guassian input file
+        write_gaussian('torsional scan', mol_name, mol3d, torsion)
+        #writes the slurm file
+        write_slurm('torsional_scan', mol_name)
+        #submits the slurm jon
+        submit_slurm_job('torsional_scan', mol_name)
+        #goes back to previous directory
+        os.chdir(os.path.dirname(os.getcwd()))
