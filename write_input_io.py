@@ -14,7 +14,7 @@ from itertools import combinations
 from typing import List
 
 
-def write_guassian(job_type, mol_name, mol=None, torsion=None, conformer=None):
+def write_gaussian(job_type, mol_name, mol=None, torsion=None, conformer=None):
     """
     job_type : This is determined by what calculations you want to happen. The options are
                 'torsional scan', 'neutral population', 'opt anion', 'ver anion', 'opt cation'
@@ -65,7 +65,8 @@ def write_guassian(job_type, mol_name, mol=None, torsion=None, conformer=None):
         file_name = f'{mol_name}_opt_anion.com'
         chk_name = f'{mol_name}_neu_opt_pop.chk'
         title = f'Optimisation of anion dimer {mol_name}'
-        calculation = 'opt=modredundant'
+        calculation = 'opt=modredundant, Geom=Checkpoint'
+        #reads the geomtry information from the checkpoint file
         mult_chg = '-1 2' # This is a negative dimer calc so multiplicty and charge change!
 
     if (job_type=='ver anion'):
@@ -74,7 +75,8 @@ def write_guassian(job_type, mol_name, mol=None, torsion=None, conformer=None):
         file_name = f'{mol_name}_ver_anion.com'
         chk_name = f'{mol_name}_neu_opt_pop.chk'
         title = f'Veritcal of anion dimer {mol_name}'
-        calculation = 'SP'
+        calculation = 'SP, Geom=Checkpoint'
+        #reads the geomtry information from the checkpoint file
         mult_chg = '-1 2' # This is a negative dimer calc so multiplicty and charge change!
 
     if (job_type=='opt cation'):
@@ -83,7 +85,8 @@ def write_guassian(job_type, mol_name, mol=None, torsion=None, conformer=None):
         file_name = f'{mol_name}_opt_cat.com'
         chk_name = f'{mol_name}_neu_opt_pop.chk'
         title = f'Optimisation of cation dimer {mol_name}'
-        calculation = 'opt=modredundant'
+        calculation = 'opt=modredundant, Geom=Checkpoint'
+        #reads the geomtry information from the checkpoint file
         mult_chg = '1 2' # This is a negative dimer calc so multiplicty and charge change!
 
     if (job_type=='ver cation'):
@@ -92,7 +95,8 @@ def write_guassian(job_type, mol_name, mol=None, torsion=None, conformer=None):
         file_name = f'{mol_name}_ver_cat.com'
         chk_name = f'{mol_name}_neu_opt_pop.chk'
         title = f'Vertical of cation dimer {mol_name}'
-        calculation = 'SP'
+        calculation = 'SP, Geom=Checkpoint'
+        #reads the geomtry information from the checkpoint file
         mult_chg = '1 2' # This is a negative dimer calc so multiplicty and charge change!
 
 
