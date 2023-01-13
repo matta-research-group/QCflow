@@ -168,7 +168,7 @@ def write_slurm(job_type, mol_name):
         file.write(f'{title}\n')#
         file.write(f'#SBATCH -o g09_%J.out \n')
         file.write(f'#SBATCH -e g09_%J.err \n')#
-        file.write(f'#SBATCH --job-name={job_name} \n')
+        file.write(f'#SBATCH --job-name={mol_name} \n')
         file.write(f'#SBATCH -p cpu \n')
         file.write(f'#SBATCH --ntasks=10 \n')
         file.write(f'#SBATCH --nodes=1 \n')

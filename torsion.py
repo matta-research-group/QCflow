@@ -15,9 +15,9 @@ def run_torsion(fragment_smi_file):
     '''
 
     #Loads the smi file and creates a dictionary of fragments
-    farg_dic = read_fragments('fragment_smi_file')
+    frag_dic = read_fragments('fragment_smi_file')
     #Creates a dictionary of all the dimers from the fragment dictionary
-    mol_dic = make_dimers_dic(farg_dic)
+    mol_dic = make_dimers_dic(frag_dic)
 
     #creates a directory named tortional_scan
     os.mkdir('torsional_inputs')
@@ -38,13 +38,13 @@ def run_torsion(fragment_smi_file):
         #torsion of the bond between the fragment
         torsion = getTorsion(mol, bond[0])
         #gets rdkit estimated coordinates of dimer
-        mold3d = embed_molecule(mol)
+        mol3d = embed_molecule(mol)
 
         #writes a guassian input file
         write_gaussian('torsional scan', mol_name, mol3d, torsion)
         #writes the slurm file
-        write_slurm('torsional_scan', mol_name)
+        write_slurm('torsional scan', mol_name)
         #submits the slurm jon
-        submit_slurm_job('torsional_scan', mol_name)
+        submit_slurm_job('torsional scan', mol_name)
         #goes back to previous directory
         os.chdir(os.path.dirname(os.getcwd()))
