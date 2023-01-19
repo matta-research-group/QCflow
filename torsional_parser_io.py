@@ -29,7 +29,7 @@ def save_torsion(data, mol_name, job_type):
 
 def find_min_energy(data):
     """
-    Finds the miniumum energy of the torsion
+    Finds the minimum energy of the torsion
     """
     #finds opt energy of each 10 deg scan
     data.scanenergies = data.scfenergies[data.optstatus == 4]
@@ -42,7 +42,7 @@ def find_min_energy(data):
 
 def find_min_angle(data):
     """
-    Finds the dihedral angle at miniumum energy
+    Finds the dihedral angle at minimum energy
     """
     min_ang_loc = np.where(data.scanenergies==np.min(data.scanenergies))
     #Location of the min angle
@@ -83,4 +83,4 @@ def torsional_parser(mol_name, mol_dic):
     for i in range(conf.GetNumAtoms()):
         correct_pos = conf.SetAtomPosition(i, data.converged_geometries[min_energy][i])
     #Uses this minium energy torsion to give the correct geometry
-    return conf, min_angle
+    return conf
