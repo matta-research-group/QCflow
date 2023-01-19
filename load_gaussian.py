@@ -5,7 +5,7 @@ from file_io import *
 import json
 import csv
 
-def load_torsional_data(mol_name, job_type):
+def load_data(mol_name, job_type):
     """
     Opens and reads the .log data file of a torsional scan
     """
