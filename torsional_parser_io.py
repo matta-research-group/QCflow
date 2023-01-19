@@ -2,6 +2,7 @@ from fragments_io import *
 from torsion_io import *
 from write_input_io import *
 from file_io import *
+from load_gaussian import *
 import json
 import csv
 
@@ -10,20 +11,11 @@ def open_dictionary(dictionary_file):
     Opens a saved dictionary file
     """
     with open((dictionary_file), 'r') as f:
-      dimer_dic = json.load(f)
+      mol_dic = json.load(f)
 
-    return dimer_dic
+    return mol_dic
 
-def load_torsional_data(mol_name):
-    """
-    Opens and reads the .log data file of a torsional scan
-    """
-
-    data = cclib.io.ccread(f'{mol_name}_tor.log')
-
-    return data
-
-def save_torsion(data, mol_name):
+def save_torsion(data, mol_name, job_type):
     """
     Saves the torsional profile of a dimer
     """
@@ -33,7 +25,7 @@ def save_torsion(data, mol_name):
 
     y = data.scanenergies-np.min(data.scanenergies)
 
-    np.savetxt(f'{mol_name}_tor_prof.csv', np.vstack((x,y)).T, delimiter=', ')
+    np.savetxt(f'{mol_name}_{job_type}.csv', np.vstack((x,y)).T, delimiter=', ')
 
 def find_min_energy(data):
     """
@@ -47,6 +39,16 @@ def find_min_energy(data):
     mini_value = int(mini[-1])
 
     return mini_value
+
+def find_min_angle(data):
+    """
+    Finds the dihedral angle at miniumum energy
+    """
+    min_ang_loc = np.where(data.scanenergies==np.min(data.scanenergies))
+    #Location of the min angle
+    min_ang = data.scanparm[0][min_ang_loc[0][0]]
+    #Dihedral angle of the min energy
+    return min_ang
 
 def torsional_parser(mol_name, mol_dic):
     """
