@@ -102,7 +102,7 @@ def write_gaussian(job_type, mol_name, mol=None, torsion=None, conformer=None):
 
     with open(file_name, 'w') as file:
         file.write(f'%chk={chk_name}\n') #
-        file.write(f'#p B3LYP/6-31G*{calculation}, nosymm\n') #
+        file.write(f'#p B3LYP/6-31G* {calculation}, nosymm\n') #
         file.write(' \n')#
         file.write(f'{title}\n')#
         file.write(' \n')#
