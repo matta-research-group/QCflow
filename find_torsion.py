@@ -1,12 +1,9 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import rdkit
-import cclib
 import itertools
 import os
 import os.path
 import shutil
-import subprocess
 from rdkit import Chem
 from rdkit.Chem import AllChem, Draw
 import requests
@@ -16,6 +13,8 @@ from typing import List
 def getBond(mol):
     '''
     From a rdkit molecule finds the rotatable bond
+
+    mol : rdkit readable string of oligomer
     '''
     #rotatable bonds
     pattern = Chem.MolFromSmarts('[R!$(*#*)&!D1]-!@[R!$(*#*)&!D1]')
@@ -26,6 +25,10 @@ def getBond(mol):
 def getTorsion(mol,bond):
     '''
     Gets the torsion for the torsional scan
+
+    mol : rdkit readable string of oligomer
+
+    bond : rRtatable bond
     '''
     # get neighbors of first atom in bond
     for atom in mol.GetAtomWithIdx(bond[0]).GetNeighbors():
@@ -53,6 +56,8 @@ def getTorsion(mol,bond):
 def embed_molecule(mol):
     '''
     Generates the coordinates (xyz) of the rdkit molecule and adds the hydrogens
+
+    mol : rdkit readable string of oligomer
     '''
     addhs = Chem.AddHs(mol)
     AllChem.EmbedMolecule(addhs) # the embedded molecule
