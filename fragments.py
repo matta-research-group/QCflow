@@ -18,7 +18,12 @@ def make_dimer_smiles(a, b):
 
     b : SMILE string of a fragment with attachment points
     """
+    #todo: should be also returning the dimer with 
+    # a.format('','8') + b.format('', '8')
+    # and potentially all combinations (?)
+    # to take into account asymmetric/functionalised rings
     return a.format('', '8') + '.' + b.format('8', '')
+    
 
 def make_trimer_smiles(a, b):
     """
