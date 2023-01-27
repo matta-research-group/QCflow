@@ -2,7 +2,7 @@ from fragments import *
 from find_torsion import *
 from write_gaussian import *
 from slurm import *
-from torsional_parser import *
+from torsion_parser import *
 
 
 def run_torsion(fragment_smi_file, functional='B3LYP', basis_set='6-31G*'):

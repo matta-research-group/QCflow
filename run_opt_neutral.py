@@ -2,7 +2,7 @@ from fragments import *
 from find_torsion import *
 from write_gaussian import *
 from slurm import *
-from torsional_parser import *
+from torsion_parser import *
 import os
 import json
 
