@@ -34,7 +34,7 @@ def find_min_energy(data):
     data.scanenergies = data.scfenergies[data.optstatus == 4]
     #finds min energy of all opt 36 scans
     mini = np.where(data.scanenergies==np.min(data.scanenergies))
-    #turns location of the miniumum energy into a number
+    #gets index corresponding to minimum energy
     mini_value = int(mini[-1])
 
     return mini_value
@@ -52,16 +52,18 @@ def min_angle(data):
     #Dihedral angle of the min energy
     return min_ang
 
-def torsional_parser(mol_name, mol_dic):
+def torsion_parser(mol_name, mol_dic):
     """
     When provided with the name of the molecule and the molecule dictionary
     that it came from this function saves the torsional profile as a .csv file.
-    In addition it also returns the updated geometry and the dihedral of the
-    miniumum
-
+    
     mol_name : number name of dimer or trimer
-
     mol_dic : dictionary in which the dimer or trimer is in
+    
+    Returns:
+    optimised geometry at lowest energy minimum
+    dihedral angle at lowest energy minimum
+
     """
     mol = Chem.MolFromSmiles(mol_dic[mol_name])
     #Converts the SMILE into rdkit readable string
@@ -80,5 +82,5 @@ def torsional_parser(mol_name, mol_dic):
 
     for i in range(conf.GetNumAtoms()):
         correct_pos = conf.SetAtomPosition(i, data.converged_geometries[min_energy][i])
-    #Uses this minium energy torsion to give the correct geometry
+    #Uses this min energy torsion to give the correct geometry
     return conf
