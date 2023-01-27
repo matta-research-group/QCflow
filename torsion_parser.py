@@ -95,7 +95,7 @@ def torsion_parser(mol_name, mol_dic):
     #Embeds the molecule
     conf = mol_3d.GetConformer()
     #Turns into a conformer
-    data = load_torsional_data(mol_name)
+    data = load_data(mol_name, 'tor')
     #Loads the .log file containing the torsional data
     save_torsion(data, mol_name)
     #Saves the torsional scan as .csv file with the name of the mol

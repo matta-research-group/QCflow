@@ -3,6 +3,7 @@ from torsion_run import *
 from write_gaussian import *
 import json
 import csv
+import cclib
 
 def load_data(mol_name, job_name):
     """
