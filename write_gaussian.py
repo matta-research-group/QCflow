@@ -50,7 +50,7 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         a1, a2, a3, a4 = [t+1 for t in torsion]
         torsion_data = f'{a1} {a2} {a3} {a4} S 35 10.0\n'
         calculation = 'opt=modredundant'
-        mult_chg = '0 1' # by default all dimers are neutral and singlets!
+        mult_chg = '0 1' # by default all molecules are neutral and singlets!
 
     if (job_name=='pop_opt_n'):
 
@@ -61,39 +61,39 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         old_chk = f' \n'
         torsion_data = f' \n'
         calculation = 'opt=modredundant, Pop=Full'
-        mult_chg = '0 1' # by default all dimers are neutral and singlets!
+        mult_chg = '0 1' # by default all molecules are neutral and singlets!
 
     if (job_name=='opt_a'):
 
         torsion_data = f' \n'
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
         calculation = 'opt=modredundant, Geom=Checkpoint'
-        #reads the geomtry information from the checkpoint file
-        mult_chg = '-1 2' # This is a negative dimer calc so multiplicty and charge change!
+        #reads the geometry information from the checkpoint file
+        mult_chg = '-1 2' # This is a negative ion calc so multiplicty and charge change!
 
     if (job_name=='ver_a'):
 
         torsion_data = f' \n'
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
         calculation = 'SP, Geom=Checkpoint'
-        #reads the geomtry information from the checkpoint file
-        mult_chg = '-1 2' # This is a negative dimer calc so multiplicty and charge change!
+        #reads the geometry information from the checkpoint file
+        mult_chg = '-1 2' # This is a negative ion calc so multiplicty and charge change!
 
     if (job_name=='opt_c'):
 
         torsion_data = f' \n'
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
         calculation = 'opt=modredundant, Geom=Checkpoint'
-        #reads the geomtry information from the checkpoint file
-        mult_chg = '1 2' # This is a negative dimer calc so multiplicty and charge change!
+        #reads the geometry information from the checkpoint file
+        mult_chg = '1 2' # This is a positive ion so multiplicty and charge change!
 
     if (job_name=='ver_c'):
 
         torsion_data = f' \n'
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
         calculation = 'SP, Geom=Checkpoint'
-        #reads the geomtry information from the checkpoint file
-        mult_chg = '1 2' # This is a negative dimer calc so multiplicty and charge change!
+        #reads the geometry information from the checkpoint file
+        mult_chg = '1 2' # This is a positive ion calc so multiplicty and charge change!
 
     file_name = f'{mol_name}_{job_name}.com'
     chk_name = f'{mol_name}_{job_name}.chk'
