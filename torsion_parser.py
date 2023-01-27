@@ -12,7 +12,7 @@ def save_torsion(data, mol_name):
     """
     Saves the torsional profile of a dimer
 
-    data : Loaded data from the .log file containing the torsional information
+    data : Loaded cclib data from the .log file containing the torsional information
 
     mol_name : number name of dimer or trimer
     """
@@ -28,7 +28,7 @@ def find_min_energy(data):
     """
     Finds the minimum energy of the torsion
 
-    data : Loaded data from the .log file containing the torsional information
+    data : Loaded cclib data from the .log file containing the torsional information
     """
     #finds opt energy of each 10 deg scan
     data.scanenergies = data.scfenergies[data.optstatus == 4]
@@ -43,7 +43,7 @@ def min_angle(data):
     """
     Finds the angle of the minimum energy torsion
 
-    data : Loaded data from the .log file containing the torsional information
+    data : Loaded cclib data from the .log file containing the torsional information
     """
     data.scanenergies = data.scfenergies[data.optstatus == 4]
     min_ang_loc = np.where(data.scanenergies==np.min(data.scanenergies))
@@ -52,17 +52,39 @@ def min_angle(data):
     #Dihedral angle of the min energy
     return min_ang
 
+def min_angle_dic(mol_name, min_ang):
+    """
+    Creates a dictionary of molecules with the angle of the minimum energy torsion
+
+    mol_name : number name of dimer or trimer
+
+    min_ang : angle of the minimum energy torsion in degrees
+    """
+    angle_dic = { k : v for k, v in zip(mol_name, min_ang) }
+
+    return angle_dic
+
+def save_angle(angle_dic, name_of_dic):
+    """
+    Saves the dictionary of all the minimum energy torsion
+
+    angle_dic : dictionary of molecules with the angle of the minimum energy torsion
+
+    name_of_dic : desried name of the json file i.e. name_of_dic.json
+    """
+
+    save_dictionary(angle_dic, name_of_dic)
+
 def torsion_parser(mol_name, mol_dic):
     """
     When provided with the name of the molecule and the molecule dictionary
     that it came from this function saves the torsional profile as a .csv file.
-    
+
     mol_name : number name of dimer or trimer
     mol_dic : dictionary in which the dimer or trimer is in
-    
+
     Returns:
     optimised geometry at lowest energy minimum
-    dihedral angle at lowest energy minimum
 
     """
     mol = Chem.MolFromSmiles(mol_dic[mol_name])

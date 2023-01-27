@@ -18,12 +18,12 @@ def make_dimer_smiles(a, b):
 
     b : SMILE string of a fragment with attachment points
     """
-    #todo: should be also returning the dimer with 
+    #todo: should be also returning the dimer with
     # a.format('','8') + b.format('', '8')
     # and potentially all combinations (?)
     # to take into account asymmetric/functionalised rings
     return a.format('', '8') + '.' + b.format('8', '')
-    
+
 
 def make_trimer_smiles(a, b):
     """
@@ -46,7 +46,7 @@ def read_fragments(name_of_smi_file):
     name_of_smi_file : name of the .smi file where the fragments are
     """
     smile_list = np.genfromtxt(name_of_smi_file, dtype='str')
-
+    #The format of the attachment points are changed as a space is required for combination
     smi_mol = [str(smi).replace("(*)", "{}") for smi in smile_list]
 
     #creates a dictionary of fragments

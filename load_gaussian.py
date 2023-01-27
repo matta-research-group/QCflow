@@ -29,6 +29,8 @@ def save_dictionary(mol_dic, name_of_dic):
 
     mol_dic : dictionary of oligomers. Where the key is the number of the
     oligomer and the value is the SMILE string
+
+    name_of_dic : desried name of the json file i.e. name_of_dic.json
     """
     with open((name_of_dic), "w") as fp:
         json.dump(mol_dic,fp)
