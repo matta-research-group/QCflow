@@ -87,7 +87,7 @@ def cal_gap(name):
 def cal_IP(name,kind):
     '''
     when provided the name of the oligamer, and the type of the IP, function returns
-    the ionisation energy.
+    the ionisation energy (eV).
 
     name: str, name of the oligomer in the oligomer dictionary (e.g.'0_2')
 
@@ -117,7 +117,7 @@ def cal_IP(name,kind):
 def cal_EA(name,kind):
     '''
     when provided the name of the oligamer, and the type of the EA, function returns the energy for Electron
-    Affinity.
+    Affinity (eV).
 
     name: str, name of the oligomer in the oligomer dictionary (e.g.'0_2')
 
@@ -148,7 +148,7 @@ def cal_EA(name,kind):
 def cal_CSI(name, ion):
     '''
     when provided the oligomer name and the type of ion, function returns the the charge seperation index between
-    the fragments within the oligomer.
+    the fragments within the oligomer in eV.
 
     name: str, name of the oligomer in the oligomer dictionary (e.g.'0_2')
 
