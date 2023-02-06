@@ -155,11 +155,12 @@ def cal_CSI(name, ion):
     ion: str, type of ion:
         anion = 'an'
         cation = 'cat'
+
     '''
     dimer =  open_dictionary('hd_short.json')[name]   #when this is operational, the dictionary file should be mel_frag.json
     dimer_mol = rdkit.Chem.MolFromSmiles(dimer.replace('{}',''))
 
-    a = open_dictionary('all_frag2p.json')[name.split('_')[0]]
+    a = open_dictionary('all_frag2p.json')[name.split('_')[0]]  #this only works for frag-frag dimer, ideally 'a' should be changed to mel_frag2p.json
     a_mol = rdkit.Chem.MolFromSmiles(a.replace('{}',''))
 
     b = open_dictionary('all_frag2p.json')[name.split('_')[1]]
