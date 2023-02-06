@@ -1,4 +1,5 @@
 import cclib
+from load_gaussian import *
 
 def get_data(file):
     '''
@@ -143,3 +144,40 @@ def cal_EA(name,kind):
 
         adiabatic_EA = EaA - EnN
         return adiabatic_EA
+
+def cal_CSI(name, ion):
+    '''
+    when provided the oligomer name and the type of ion, function returns the the charge seperation index between
+    the fragments within the oligomer.
+
+    name: str, name of the oligomer in the oligomer dictionary (e.g.'0_2')
+
+    ion: str, type of ion:
+        anion = 'an'
+        cation = 'cat'
+    '''
+    dimer =  open_dictionary('hd_short.json')[name]   #when this is operational, the dictionary file should be mel_frag.json
+    dimer_mol = rdkit.Chem.MolFromSmiles(dimer.replace('{}',''))
+
+    a = open_dictionary('all_frag2p.json')[name.split('_')[0]]
+    a_mol = rdkit.Chem.MolFromSmiles(a.replace('{}',''))
+
+    b = open_dictionary('all_frag2p.json')[name.split('_')[1]]
+    b_mol = rdkit.Chem.MolFromSmiles(b.replace('{}',''))
+
+    if ion == 'cat':
+        cation = get_data(f'{name}/{name}_opt_c.log')
+        mulliken = cation.atomcharges['mulliken']
+
+    if ion == 'an':
+        anion = get_data(f'{name}/{name}_opt_a.log')
+        mulliken = anion.atomcharges['mulliken']
+
+    charge_a = mulliken[list(dimer_mol.GetSubstructMatch(a_mol))].sum()
+
+    charge_b = mulliken[list(dimer_mol.GetSubstructMatch(b_mol))].sum()
+
+
+    CSI = ((charge_a - charge_b)**2)**0.5  #didn't want to import math for .sqrt()
+
+    return CSI
