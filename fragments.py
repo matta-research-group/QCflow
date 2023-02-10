@@ -78,31 +78,6 @@ def make_dimer_dic(fragment_dic):
 
     return mol_dic
 
-def make_dimer_dic_from_2_dic(fragment_dic_1,fragment_dic_2):
-
-    """
-    When provided 2 different fragment dictionaries, generates SMILES for all possible
-    dimers and returns dictionary of dimers.
-
-    Where the key is the name of the dimer, if fragment 0 is combined with
-    fragment 1 then the name is 0_1.
-
-    The value is the SMILE string of the dimer
-
-    mol_dic : The dictionary of all the fragments
-
-    """
-
-    mol_smiles = [make_dimer_smiles(v1, v2)
-                    for v1, v2 in itertools.product(list(fragment_dic_1.values()),list(fragment_dic_2.values()))]
-
-    mol_names = [(f'{k1}_{k2}')
-                    for k1, k2 in itertools.product(fragment_dic_1.keys(),fragment_dic_2.keys())]
-
-    mol_dic = { k : v for k, v in zip(mol_names, mol_smiles) }
-
-    return mol_dic
-
 def make_trimer_dic(fragment_dic):
 
     """
@@ -135,47 +110,6 @@ def make_trimer_dic(fragment_dic):
     #combinations of keys for aba
     bab = [(f'{k2}_{k1}_{k2}')
                     for k1, k2 in itertools.combinations(fragment_dic.keys(), r=2)]
-    #combinations of keys for bab
-    aba_dic = { k : v for k, v in zip(aba, k1k2k1) }
-    #Makes dictionary of all the aba keys with the aba trimers
-    bab_dic = { k : v for k, v in zip(bab, k2k1k2) }
-    #Makes dicitionary of all the bab keys with the bab trimers
-    trimer_dic = aba_dic | bab_dic
-    #Combines these two dictionaries together
-    return trimer_dic
-
-def make_trimer_dic_from_2_dic(frag_dic_1,frag_dic_2):
-
-    """
-    When provided 2 fragment dictionaries, generates SMILES for all possible
-    trimers (ABA & BAB) and returns dictionary of trimers.
-
-    Where the key is the name of the trimer, if fragment 0 is combined with
-    fragment 1 then the name is 0_1_0 & 1_0_1.
-
-    The value is the SMILE string of the trimer
-
-    fragment_dic : The dictionary of all the fragments
-    """
-
-    mol_smiles = [make_trimer_smiles(v1, v2)
-                    for v1, v2 in itertools.product(list(frag_dic_1.values()),list(frag_dic_2.values()))]
-    #Makes all the possible trimers aba and bab
-    k1k2k1 = []
-    k2k1k2 = []
-    for seperate in mol_smiles:
-        aba = seperate[0]
-        bab = seperate[1]
-
-        k1k2k1.append(aba)
-        k2k1k2.append(bab)
-    #Makes the two lists of aba and bab
-
-    aba = [(f'{k1}_{k2}_{k1}')
-                    for k1, k2 in itertools.product(frag_dic_1.keys(),frag_dic_2.keys())]
-    #combinations of keys for aba
-    bab = [(f'{k2}_{k1}_{k2}')
-                    for k1, k2 in itertools.product(frag_dic_1.keys(),frag_dic_2.keys())]
     #combinations of keys for bab
     aba_dic = { k : v for k, v in zip(aba, k1k2k1) }
     #Makes dictionary of all the aba keys with the aba trimers
