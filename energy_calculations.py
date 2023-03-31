@@ -32,37 +32,36 @@ def cal_reorg(pop_opt_n,ver,opt,neutral_ion_geo):
 
     return reorg_en
 
-def cal_HOMO(pop_opt_n):
+def get_HOMO(data):
     '''
-    when provided the cclb object for the optimised neutral population, function returns the HOMO energy(eV).
+    when provided a cclib object, returns the HOMO energy (eV)
 
-    pop_opt_n: cclib obj, cclib parsed .log file for neutral population optimisation analaysis.
+    data: cclib object  
     '''
     HOMO = pop_opt_n.moenergies[0][pop_opt_n.homos[0]]
     return HOMO
 
-def cal_LUMO(pop_opt_n):
+def get_LUMO(data):
     '''
-    when provided the cclb object for the optimised neutral population, function returns the LUMO energy(eV).
+    when provided a cclib object, returns the LUMO energy (eV)
 
-    pop_opt_n: cclib obj, cclib parsed .log file for neutral population optimisation analaysis.
+    data: cclib object 
     '''
     LUMO = pop_opt_n.moenergies[0][pop_opt_n.homos[0]+1]
     return LUMO
 
-def cal_gap(pop_opt_n):
+def calc_HL_gap(data):
     '''
-    when provided the cclb object for the optimised neutral population, function returns the energy
-    difference between HOMO and LUMO (i.e. HOMO-LUMO gap) in eV.
+    returns the energy difference between HOMO and LUMO (i.e. HOMO-LUMO gap) in eV.
 
-    pop_opt_n: cclib obj, cclib parsed .log file for neutral population optimisation analaysis.
+    data: cclib object
 
     '''
-    gap = cal_LUMO(pop_opt_n) - cal_HOMO(pop_opt_n)
+    HL_gap = get_LUMO(data) - get_HOMO(data)
 
-    return gap
+    return HL_gap
 
-def cal_IP(pop_opt_n,ver_c,opt_c,kind):
+def calc_IP(pop_opt_n,ver_c,opt_c, kind):
     '''
     when provided the cclb object for the optimised neutral population,vertical cation, optimised cation
     and the type of the IP, function returns the ionisation energy.
@@ -87,7 +86,7 @@ def cal_IP(pop_opt_n,ver_c,opt_c,kind):
 
     return IP
 
-def cal_EA(pop_opt_n,opt_a,an_geo_n,kind):
+def calc_EA(pop_opt_n, opt_a, an_geo_n, kind):
     '''
     when provided the optimised neutral population,optimised anion, neutral anion geometry and
     the type of the EA, function returns the energy for Electron Affinity.
@@ -112,29 +111,32 @@ def cal_EA(pop_opt_n,opt_a,an_geo_n,kind):
 
     return EA
 
-def cal_CSI(dimer_name,pop_opt_n,dimer_dic,mel_dic,all_frag_dic):
+def calc_CSI_dimer(data, dimer_mol, a_mol, b_mol):
     '''
     when provided the dimer name, the optimised neutral population energy calculation, dimer dictionary,
     dictionary containing all melanin fragments and the dictionary of all organic electronic fragements,
     function returns the the charge seperation index between the fragments within the oligomer in eV.
 
-    dimer_name: str, name of the dimer in the dimer dictionary (e.g.'a_2')
-    pop_opt_n: cclib obj, cclib parsed .log file for neutral population optimisation analaysis
-    dimer_dic: str, name of the .json file containing all dimers
-    mel_dic: str, name of the .json file containing all the melanin fragments
-    all_frag_dic: str, name of the .json file containing all the organic electronic fragements
+    
+    data: cclib obj, cclib parsed .log file for neutral population optimisation analaysis
+    
+    #dimer_name: str, name of the dimer in the dimer dictionary (e.g.'a_2')
+    #dimer_dic: str, name of the .json file containing all dimers
+    #mel_dic: str, name of the .json file containing all the melanin fragments
+    #all_frag_dic: str, name of the .json file containing all the organic electronic fragements
+    
 
     '''
-    dimer =  open_dictionary(dimer_dic)[dimer_name]   #when this is operational, the dictionary file should be mel_frag.json
-    dimer_mol = rdkit.Chem.MolFromSmiles(dimer.replace('{}',''))
+    #dimer =  open_dictionary(dimer_dic)[dimer_name]   #when this is operational, the dictionary file should be mel_frag.json
+    #dimer_mol = rdkit.Chem.MolFromSmiles(dimer.replace('{}',''))
 
-    a = open_dictionary(mel_dic)[dimer_name.split('_')[0]]  #this only works for frag-frag dimer, ideally 'a' should be changed to mel_frag2p.json
-    a_mol = rdkit.Chem.MolFromSmiles(a.replace('{}',''))
+    #a = open_dictionary(mel_dic)[dimer_name.split('_')[0]]  #this only works for frag-frag dimer, ideally 'a' should be changed to mel_frag2p.json
+    #a_mol = rdkit.Chem.MolFromSmiles(a.replace('{}',''))
 
-    b = open_dictionary(all_frag_dic)[dimer_name.split('_')[1]]
-    b_mol = rdkit.Chem.MolFromSmiles(b.replace('{}',''))
+    #b = open_dictionary(all_frag_dic)[dimer_name.split('_')[1]]
+    #b_mol = rdkit.Chem.MolFromSmiles(b.replace('{}',''))
 
-    mulliken = pop_opt_n.atomcharges['mulliken']
+    mulliken = data.atomcharges['mulliken']
 
     charge_a = mulliken[list(dimer_mol.GetSubstructMatch(a_mol))].sum()
 
