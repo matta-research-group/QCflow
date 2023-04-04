@@ -46,3 +46,40 @@ def open_dictionary(dictionary_file):
       mol_dic = json.load(f)
 
     return mol_dic
+
+def data_dic(mel_dic, job_type):
+    """
+    Takes a dictionary of oligomers and the calculation performed.
+    Returns a dictionary of parsed rdkit objects with the key being the name of the oligomer and the
+    value being the cclib object.
+
+    mel_dic : dictionary of oligomers and their SMILE strings
+
+    job_type : Type of calculation performed
+
+    """
+    parsed_dic = {} #empty dictionary
+    for k in mel_dic.keys():
+        data = log_data(k, job_type) #parses log file
+        parsed_dic[f'{k}'] = data
+    return parsed_dic
+
+def clean_dir(mel_dic, file_type, dir_loc):
+    """
+    Removes unwanted files
+
+    mel_dic : Dictionary of oligomers in which all the calculations in which
+                the user wants to clean up the directories
+
+    file_type : The type of file examples('.txt', '.err', '.out')
+
+    dir_loc : Location of the main directory in which all the oligomers directories
+                are located. Example('/scratch/prj/mime/tor_input')
+    """
+    for k, v in mel_dic.items():
+        dir_name = f'{dir_loc}/{k}'
+        #The directory of the calculations
+        location = os.listdir(dir_name)
+        for item in location:
+            if item.endswith(f'{file_type}'):
+                os.remove(os.path.join(dir_name, item))

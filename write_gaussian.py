@@ -12,7 +12,7 @@ from itertools import combinations
 from typing import List
 
 
-def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-31G*', mol=None, torsion=None, conformer=None):
+def write_gaussian(job_name, mol_name, smile, functional='wB97XD', basis_set='aug-cc-pVDZ', mol=None, torsion=None, conformer=None):
     """
     job_name : The type of job run. Possible runs:
                 Torsional scan neutral → tor
@@ -21,15 +21,17 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
                 Vertical cation → ver_c
                 Optimisation anion → opt_a
                 Optimisation cation → opt_c
+                neutral optimised anion geometry -> n_a_geo
+                neutral optimised cation geometry -> n_c_geo
 
     mol_name : the name of the dimer/trimer from the dictionary e.g. if fragment 0 was attached to fragment 1
                 then the dimer name is 0_1
 
     smile : The SMILE string of the molecule
 
-    functional : Preset is B3LYP
+    functional : Preset is wB97XD
 
-    basis_set : Preset is 6-31G*
+    basis_set : Preset is aug-cc-pVDZ
 
     mol : The rdkit string of the dimer
 
@@ -60,14 +62,14 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         geometry = conformer
         old_chk = f' \n'
         torsion_data = f' \n'
-        calculation = 'opt=modredundant, Pop=Full'
+        calculation = 'opt, Pop=Full'
         mult_chg = '0 1' # by default all molecules are neutral and singlets!
 
     if (job_name=='opt_a'):
 
         torsion_data = f' \n'
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
-        calculation = 'opt=modredundant, Geom=Checkpoint'
+        calculation = 'opt, Guess=Read, Geom=AllCheckpoint'
         #reads the geometry information from the checkpoint file
         mult_chg = '-1 2' # This is a negative ion calc so multiplicty and charge change!
 
@@ -75,7 +77,7 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
 
         torsion_data = f' \n'
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
-        calculation = 'SP, Geom=Checkpoint'
+        calculation = 'SP, Guess=Read, Geom=AllCheckpoint'
         #reads the geometry information from the checkpoint file
         mult_chg = '-1 2' # This is a negative ion calc so multiplicty and charge change!
 
@@ -83,7 +85,7 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
 
         torsion_data = f' \n'
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
-        calculation = 'opt=modredundant, Geom=Checkpoint'
+        calculation = 'opt, Guess=Read, Geom=AllCheckpoint'
         #reads the geometry information from the checkpoint file
         mult_chg = '1 2' # This is a positive ion so multiplicty and charge change!
 
@@ -91,16 +93,34 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
 
         torsion_data = f' \n'
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
-        calculation = 'SP, Geom=Checkpoint'
+        calculation = 'SP, Guess=Read, Geom=AllCheckpoint'
         #reads the geometry information from the checkpoint file
         mult_chg = '1 2' # This is a positive ion calc so multiplicty and charge change!
 
+    if (job_name=='n_a_geo'):
+
+        torsion_data = f' \n'
+        old_chk = f'%OldChk={mol_name}_opt_a.chk'
+        calculation = 'SP, Guess=Read, Geom=AllCheckpoint'
+        #reads the geometry information from the checkpoint file
+        mult_chg = '0 1'
+
+    if (job_name=='n_c_geo'):
+        torsion_data = f' \n'
+        old_chk = f'%OldChk={mol_name}_opt_c.chk'
+        calculation = 'SP, Guess=Read, Geom=AllCheckpoint'
+        #reads the geometry information from the checkpoint file
+        mult_chg = '0 1'
+
+
+
     file_name = f'{mol_name}_{job_name}.com'
-    chk_name = f'{mol_name}_{job_name}.chk'
+    chk_name = f'{mol_name}_{job_name}_{basis_set}.chk'
     title = f'{mol_name} {job_name} Smile String: {smile}'
 
     with open(file_name, 'w') as file:
         file.write(f'{old_chk}\n')
+        file.write(f'%nproc=4\n')
         file.write(f'%Chk={chk_name}\n') #
         file.write(f'#p {functional}/{basis_set} {calculation}, nosymm\n') #
         file.write(' \n')#
