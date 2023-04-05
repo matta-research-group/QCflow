@@ -1,10 +1,12 @@
 from fragments import *
 from find_torsion import *
 from write_gaussian import *
+from load_gaussian import *
 from slurm import *
 from torsion_parser import *
 import os
 import json
+import cclib
 
 
 def run_opt_neutral(mol_dic, functional='wB97XD', basis_set='cc-pVDZ'):
@@ -38,3 +40,85 @@ def run_opt_neutral(mol_dic, functional='wB97XD', basis_set='cc-pVDZ'):
         submit_slurm_job('pop_opt_n', mol_name)
         #goes back to previous directory
         os.chdir(os.path.dirname(os.getcwd()))
+
+def staging_opt(mol_name, mol_dic, job_type='pop_opt_n', functional='wB97XD', basis_set1='cc-pVDZ', basis_set2='cc-pVTZ', basis_set3='aug-cc-pVDZ'):
+    """
+    Checks if the geometry optimization as been completed at the highest desried basis set.
+    If it has then appends a dictionary showing this. If the calculations haven't been ran
+    all the way then runs them. If the calculation has failed then appends a dictionary
+    with the name of the oligomer and the basis set it failed at.
+
+    mol_name : the name of the oligomer as seen in the dictionary i.e. if melanin fragment (b) is combined
+                with organic electronic fragment (1) in the v1 position will be b_1_v1
+
+    mol_dic : dictionary of oligomers where key is the name of the oligomer and value is the SMILES string
+
+    job_type : Type of job ran e.g. pop_opt_n
+
+    functional : Preset is wB97XD
+
+    basis_set1 : Preset cc-pVDZ (Lowest basis set)
+
+    basis_set2 : Preset cc-pVTZ (Median basis set)
+
+    basis_set3 : Preset aug-cc-pVDZ (Highest basis set)
+
+    Returns three dictionaries:
+
+        fully_complete : Oligomers that have been calculated at the highest basis set
+
+        not_complete : Oligomers that failed and need manual assessment (shows basis set they failed at)
+
+        in_progress : Oligomers that are still in progress (shows basis set they are currently being ran at)
+
+
+    """
+    fully_complete = {}
+    not_complete = {}
+    in_progress = {}
+    k = mol_name
+
+    if os.path.isfile(f'{k}/{k}_{job_type}_{basis_set1}.log') == False:
+        #Then run it
+        run_opt_n(k, mol_dic, functional, basis_set1)
+        in_progress[f'{k}'] = basis_set1
+
+    if os.path.isfile(f'{k}/{k}_{job_type}_{basis_set1}.log') == True:
+    #If the file exists
+        data = cclib.ccopen(f'{k}/{k}_{job_type}_{basis_set1}.log').parse()
+        #parse that file
+        if data.metadata['success'] == False:
+            not_complete[f'{k}'] = basis_set1
+            #add to fail fictionary
+        if data.metadata['success'] == True:
+            #did the calculations work
+            if os.path.isfile(f'{k}/{k}_{job_type}_{basis_set2}.log') == False:
+                #Run the calc
+                run_opt_n(k, mol_dic, functional, basis_set2)
+                in_progress[f'{k}'] = basis_set2
+
+            if os.path.isfile(f'{k}/{k}_{job_type}_{basis_set2}.log') == True:
+                #Then check the next basis set worked or not
+                data2 = cclib.ccopen(f'{k}/{k}_{job_type}_{basis_set2}.log').parse()
+                if data2.metadata['success'] == False:
+                    #if the calc says failed then return not complete
+                    not_complete[f'{k}'] = basis_set2
+
+                if data2.metadata['success'] == True:
+                    #checking calculation worked
+                    if os.path.isfile(f'{k}/{k}_{job_type}_{basis_set3}.log') == False:
+                        #Run the calc
+                        run_opt_n(k, mol_dic, functional, basis_set3)
+                        in_progress[f'{k}'] = basis_set3
+
+                    if os.path.isfile(f'{k}/{k}_{job_type}_{basis_set3}.log') == True:
+                        #Checking if the final basis set worked or not
+                        data3 = cclib.ccopen(f'{k}/{k}_{job_type}_{basis_set3}.log').parse()
+                        if data3.metadata['success'] == True:
+                            fully_complete[f'{k}'] = basis_set3
+                            #All calculated and fine
+                        if data3.metadata['success'] == False:
+                            not_complete[f'{k}'] = basis_set3
+
+
+    return fully_complete, not_complete, in_progress

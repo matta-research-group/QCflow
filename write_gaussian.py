@@ -24,8 +24,8 @@ def write_gaussian(job_name, mol_name, smile, functional='wB97XD', basis_set='au
                 neutral optimised anion geometry -> n_a_geo
                 neutral optimised cation geometry -> n_c_geo
 
-    mol_name : the name of the dimer/trimer from the dictionary e.g. if fragment 0 was attached to fragment 1
-                then the dimer name is 0_1
+    mol_name : the name of the oligomer as seen in the dictionary i.e. if melanin fragment (b) is combined
+                with organic electronic fragment (1) in the v1 position will be b_1_v1
 
     smile : The SMILE string of the molecule
 
