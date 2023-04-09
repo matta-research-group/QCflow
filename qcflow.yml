@@ -1,0 +1,7 @@
+name: qcflow
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - rdkit=2022.09.5
+  - cclib=1.7.2
