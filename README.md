@@ -17,7 +17,7 @@ Naming Convention:
 - Optimisation cation → `opt_c`
 
 
-Installation
+## Installation
 
 ```bash
 git clone https://github.com/matta-research-group/QCflow.git
