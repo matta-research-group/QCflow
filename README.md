@@ -1,4 +1,4 @@
-# auto_workflow
+# QCflow
 
 A HTC workflow leveraging [rdkit](https://github.com/rdkit/rdkit) and [cclib](https://github.com/cclib/cclib).
 
