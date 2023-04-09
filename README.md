@@ -9,9 +9,9 @@ A HTC workflow leveraging [rdkit](https://github.com/rdkit/rdkit) and [cclib](ht
 
 Naming Convention:
 
-- Torsional scan neutral → tor
-- Optimisation neutral/Population analysis → pop_opt_n
-- Vertical anion → ver_a
-- Vertical cation → ver_c
-- Optimisation anion → opt_a
-- Optimisation cation → opt_c
+- Torsional scan neutral → `tor`
+- Optimisation neutral/Population analysis → `pop_opt_n`
+- Vertical anion → `ver_a`
+- Vertical cation → `ver_c`
+- Optimisation anion → `opt_a`
+- Optimisation cation → `opt_c`
