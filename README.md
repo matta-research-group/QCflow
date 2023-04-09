@@ -1,6 +1,6 @@
 # QCflow
 
-A HTC workflow leveraging [rdkit](https://github.com/rdkit/rdkit) and [cclib](https://github.com/cclib/cclib).
+A HTS QC workflow leveraging [rdkit](https://github.com/rdkit/rdkit) and [cclib](https://github.com/cclib/cclib).
 
 - SMILES with attachment points are combined together to form dimers and trimers
 - `.com` Gaussian input files, `.sh` SLURM submission files are created.
