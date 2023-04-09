@@ -15,3 +15,16 @@ Naming Convention:
 - Vertical cation → `ver_c`
 - Optimisation anion → `opt_a`
 - Optimisation cation → `opt_c`
+
+
+Installation
+
+```bash
+git clone https://github.com/matta-research-group/QCflow.git
+cd QCflow
+# install requirements into new environment
+conda env create -f qcflow.yml
+conda activate qcflow
+# install the qcflow package
+pip install .
+```
