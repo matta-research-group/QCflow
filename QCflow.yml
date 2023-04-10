@@ -3,3 +3,5 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - rdkit>2022.09.1
+  - cclib>1.7.1
