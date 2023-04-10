@@ -23,8 +23,8 @@ Naming Convention:
 git clone https://github.com/matta-research-group/QCflow.git
 cd QCflow
 # install requirements into new environment
-conda env create -f qcflow.yml
-conda activate qcflow
-# install the qcflow package
+conda env create -f QCflow.yml
+conda activate QCflow
+# install the QCflow package
 pip install .
 ```
