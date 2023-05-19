@@ -8,8 +8,8 @@ CC1=C(*)SC(*)=C1
  C1(*)=CC=C(*)S1
  C12=C(*)SC(*)=C1OCCO2
  C12=NSN=C1C(*)=CC=C2(*)
- O=C1NC(*)C2=C1C(*)NC2=O
- O=C1N(C)C(*)C2=C1C(*)N(C)C2=O
+ O=c1[nH]c(*)c2c(=O)[nH]c(*)c12
+ Cn2c(*)c1c(=O)n(C)c(*)c1c2=O
  c2cc(*)c1SCSc1c2(*)
  S=C1SC2=C(*)SC(*)=C2S1
  C1(C=CC(*)=C2)=C2C=CC(*)=C1
