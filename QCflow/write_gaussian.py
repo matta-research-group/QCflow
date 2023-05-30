@@ -17,6 +17,7 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
     job_name : The type of job run. Possible runs:
                 Torsional scan neutral → tor
                 Optimisation neutral/Population analysis → pop_opt_n
+                Simple Optimisation -> opt
                 Vertical anion → ver_a
                 Vertical cation → ver_c
                 Optimisation anion → opt_a
@@ -63,13 +64,17 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         calculation = 'opt=modredundant, Pop=Full'
         mult_chg = '0 1' # by default all molecules are neutral and singlets!
 
-    if (job_name=='opt_a'):
 
+    if (job_name=='opt'):
+
+        # get atom names
+        symbols = [a.GetSymbol() for a in mol.GetAtoms()]
+        # get x y z coords
+        geometry = conformer
+        old_chk = f' \n'
         torsion_data = f' \n'
-        old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
-        calculation = 'opt=modredundant, Geom=Checkpoint'
-        #reads the geometry information from the checkpoint file
-        mult_chg = '-1 2' # This is a negative ion calc so multiplicty and charge change!
+        calculation = 'optl'
+        mult_chg = '0 1' # by default all molecules are neutral and singlets!
 
     if (job_name=='ver_a'):
 
