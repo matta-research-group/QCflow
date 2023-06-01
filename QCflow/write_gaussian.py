@@ -73,7 +73,7 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         geometry = conformer
         old_chk = f' \n'
         torsion_data = f' \n'
-        calculation = 'optl'
+        calculation = 'opt'
         mult_chg = '0 1' # by default all molecules are neutral and singlets!
 
     if (job_name=='ver_a'):
