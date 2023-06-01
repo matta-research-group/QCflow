@@ -112,7 +112,7 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         file.write(f'{title}\n')#
         file.write(' \n')#
         file.write(f'{mult_chg} \n')#
-        if (job_name=='tor') or (job_name=='pop_opt_n'):
+        if (job_name=='tor') or (job_name=='pop_opt_n') or (job_name=='opt'):
             for atom,symbol in enumerate(symbols):
                 p = geometry.GetAtomPosition(atom)
                 # atom  x y z
