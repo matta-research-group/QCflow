@@ -12,11 +12,12 @@ from itertools import combinations
 from typing import List
 
 
-def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-31G*', mol=None, torsion=None, conformer=None):
+def write_gaussian(job_name, mol_name, smile, functional='wB97XD', basis_set='aug-cc-pVDZ', mol=None, torsion=None, conformer=None):
     """
     job_name : The type of job run. Possible runs:
                 Torsional scan neutral → tor
                 Optimisation neutral/Population analysis → pop_opt_n
+                Hirshfeld → Hirshfeld
                 Vertical anion → ver_a
                 Vertical cation → ver_c
                 Optimisation anion → opt_a
@@ -27,9 +28,9 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
 
     smile : The SMILE string of the molecule
 
-    functional : Preset is B3LYP
+    functional : Preset is wB97XD
 
-    basis_set : Preset is 6-31G*
+    basis_set : Preset is aug-cc-pVDZ
 
     mol : The rdkit string of the dimer
 
@@ -61,6 +62,13 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         old_chk = f' \n'
         torsion_data = f' \n'
         calculation = 'opt=modredundant, Pop=Full'
+        mult_chg = '0 1' # by default all molecules are neutral and singlets!
+
+    if (job_name=='Hirshfeld'):
+        #made for hesfeld pop calculation
+        old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
+        torsion_data = f' \n'
+        calculation = 'Guess=(Only,Read), Pop=Hirshfeld, Geom=Checkpoint'
         mult_chg = '0 1' # by default all molecules are neutral and singlets!
 
     if (job_name=='opt_a'):
