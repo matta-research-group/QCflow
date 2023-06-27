@@ -74,7 +74,28 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         old_chk = f' \n'
         torsion_data = f' \n'
         calculation = 'opt'
-        mult_chg = '0 1' # by default all molecules are neutral and singlets!
+        if Descriptors.NumRadicalElectrons(mol) == 0:
+            mult_chg = '0 1'
+        if Descriptors.NumRadicalElectrons(mol) == 1:
+            mult_chg = '0 2'
+        if Descriptors.NumRadicalElectrons(mol) == 2:
+            mult_chg = '0 4' # assume they recombine?
+
+    if (job_name=='sp'):
+
+        # get atom names
+        symbols = [a.GetSymbol() for a in mol.GetAtoms()]
+        # get x y z coords
+        geometry = conformer
+        old_chk = f' \n'
+        torsion_data = f' \n'
+        calculation = 'sp'
+        if Descriptors.NumRadicalElectrons(mol) == 0:
+            mult_chg = '0 1'
+        if Descriptors.NumRadicalElectrons(mol) == 1:
+            mult_chg = '0 2'
+        if Descriptors.NumRadicalElectrons(mol) == 2:
+            mult_chg = '0 4' # assume they recombine?
 
     if (job_name=='ver_a'):
 
