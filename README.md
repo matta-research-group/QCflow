@@ -43,7 +43,7 @@ QCflow can prepare and submit input files for the following jobs:
 - Geometry optimisation -> `opt`
 - Torsional scan neutral → `tor`
 - Optimisation neutral/Population analysis → `pop_opt_n`
-- Vertical anion → `ver_a`
-- Vertical cation → `ver_c`
+- Single point calculation, anion → `ver_a`
+- Single point calculation, cation → `ver_c`
 - Optimisation anion → `opt_a`
 - Optimisation cation → `opt_c`
