@@ -15,10 +15,9 @@ from typing import List
 def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-31G*', mol=None, torsion=None, conformer=None):
     """
     job_name : The type of job run. Possible runs:
-                Single Point calculation -> sp
-                Simple Optimisation -> opt
                 Torsional scan neutral → tor
                 Optimisation neutral/Population analysis → pop_opt_n
+                Simple Optimisation -> opt
                 Vertical anion → ver_a
                 Vertical cation → ver_c
                 Optimisation anion → opt_a
@@ -40,38 +39,6 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
     conformer : The corrected rdkit coordinates of a dimer, only used after a torsional scan has been done and
                 is the lowest energy coordinates
     """
-    if (job_name=='sp'):
-
-        # get atom names
-        symbols = [a.GetSymbol() for a in mol.GetAtoms()]
-        # get x y z coords
-        geometry = conformer
-        old_chk = f' \n'
-        torsion_data = f' \n'
-        calculation = 'sp'
-        if Descriptors.NumRadicalElectrons(mol) == 0:
-            mult_chg = '0 1'
-        if Descriptors.NumRadicalElectrons(mol) == 1:
-            mult_chg = '0 2'
-        if Descriptors.NumRadicalElectrons(mol) == 2:
-            mult_chg = '0 4' # assume they recombine?
-
-
-    if (job_name=='opt'):
-
-        # get atom names
-        symbols = [a.GetSymbol() for a in mol.GetAtoms()]
-        # get x y z coords
-        geometry = conformer
-        old_chk = f' \n'
-        torsion_data = f' \n'
-        calculation = 'opt'
-        if Descriptors.NumRadicalElectrons(mol) == 0:
-            mult_chg = '0 1'
-        if Descriptors.NumRadicalElectrons(mol) == 1:
-            mult_chg = '0 2'
-        if Descriptors.NumRadicalElectrons(mol) == 2:
-            mult_chg = '0 4' # assume they recombine?
 
     if (job_name=='tor'):
 
@@ -94,7 +61,19 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         geometry = conformer
         old_chk = f' \n'
         torsion_data = f' \n'
-        calculation = 'Pop=Full'
+        calculation = 'opt=modredundant, Pop=Full'
+        mult_chg = '0 1' # by default all molecules are neutral and singlets!
+
+
+    if (job_name=='opt'):
+
+        # get atom names
+        symbols = [a.GetSymbol() for a in mol.GetAtoms()]
+        # get x y z coords
+        geometry = conformer
+        old_chk = f' \n'
+        torsion_data = f' \n'
+        calculation = 'optl'
         mult_chg = '0 1' # by default all molecules are neutral and singlets!
 
     if (job_name=='ver_a'):
@@ -103,7 +82,7 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
         calculation = 'SP, Geom=Checkpoint'
         #reads the geometry information from the checkpoint file
-        mult_chg = '-1 2' # This is a negative ion calc so multiplicity and charge change!
+        mult_chg = '-1 2' # This is a negative ion calc so multiplicty and charge change!
 
     if (job_name=='opt_c'):
 
@@ -111,7 +90,7 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
         calculation = 'opt=modredundant, Geom=Checkpoint'
         #reads the geometry information from the checkpoint file
-        mult_chg = '1 2' # This is a positive ion so multiplicity and charge change!
+        mult_chg = '1 2' # This is a positive ion so multiplicty and charge change!
 
     if (job_name=='ver_c'):
 
@@ -119,7 +98,7 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
         calculation = 'SP, Geom=Checkpoint'
         #reads the geometry information from the checkpoint file
-        mult_chg = '1 2' # This is a positive ion calc so multiplicity and charge change!
+        mult_chg = '1 2' # This is a positive ion calc so multiplicty and charge change!
 
     file_name = f'{mol_name}_{job_name}.com'
     chk_name = f'{mol_name}_{job_name}.chk'
@@ -133,7 +112,7 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         file.write(f'{title}\n')#
         file.write(' \n')#
         file.write(f'{mult_chg} \n')#
-        if (job_name=='tor') or (job_name=='pop_opt_n') or (job_name=='opt') or (job_name=='sp'):
+        if (job_name=='tor') or (job_name=='pop_opt_n'):
             for atom,symbol in enumerate(symbols):
                 p = geometry.GetAtomPosition(atom)
                 # atom  x y z
