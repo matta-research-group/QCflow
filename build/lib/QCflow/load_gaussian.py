@@ -1,6 +1,6 @@
-from fragments import *
-from torsion_run import *
-from write_gaussian import *
+from QCflow.fragments import *
+from QCflow.torsion_run import *
+from QCflow.write_gaussian import *
 import json
 import csv
 import cclib

@@ -1,4 +1,3 @@
-import MDAnalysis as mda
 import itertools
 import subprocess
 import numpy as np

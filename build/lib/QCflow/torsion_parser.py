@@ -1,8 +1,8 @@
-from fragments import *
-from torsion_run import *
-from write_gaussian import *
-from load_gaussian import *
-from slurm import *
+from QCflow.fragments import *
+from QCflow.torsion_run import *
+from QCflow.write_gaussian import *
+from QCflow.load_gaussian import *
+from QCflow.slurm import *
 import json
 import csv
 import matplotlib.pyplot as plt
