@@ -6,7 +6,7 @@ import os.path
 import shutil
 import subprocess
 from rdkit import Chem
-from rdkit.Chem import AllChem, Draw
+from rdkit.Chem import AllChem, Draw, Descriptors
 import requests
 from itertools import combinations
 from typing import List
