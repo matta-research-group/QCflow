@@ -54,7 +54,7 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         if Descriptors.NumRadicalElectrons(mol) == 1:
             mult_chg = '0 2'
         if Descriptors.NumRadicalElectrons(mol) == 2:
-            mult_chg = '0 4' # assume they recombine?
+            mult_chg = '0 3' # assume they recombine?
 
 
     if (job_name=='opt'):
@@ -71,7 +71,7 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         if Descriptors.NumRadicalElectrons(mol) == 1:
             mult_chg = '0 2'
         if Descriptors.NumRadicalElectrons(mol) == 2:
-            mult_chg = '0 4' # assume they recombine?
+            mult_chg = '0 3' 
 
     if (job_name=='tor'):
 
