@@ -23,6 +23,8 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
                 Vertical cation → ver_c
                 Optimisation anion → opt_a
                 Optimisation cation → opt_c
+                neutral charge, optimised anion geometry -> n_a_geo
+                neutral charge, optimised cation geometry -> n_c_geo
 
     mol_name : the name of the dimer/trimer from the dictionary e.g. if fragment 0 was attached to fragment 1
                 then the dimer name is 0_1
@@ -101,27 +103,51 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
 
         torsion_data = f' \n'
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
-        calculation = 'SP, Geom=Checkpoint'
-        #reads the geometry information from the checkpoint file
+        calculation = 'SP, Guess=Read, Geom=Checkpoint'
+        #reads the geometry information from the checkpoint file and Guess=Read projects one basis set to another
         mult_chg = '-1 2' # This is a negative ion calc so multiplicity and charge change!
+
+    if (job_name=='opt_a'):
+
+        torsion_data = f' \n'
+        old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
+        calculation = 'opt, Guess=Read, Geom=Checkpoint'
+        #reads the geometry information from the checkpoint file
+        mult_chg = '-1 2' # This is a negative ion calc so multiplicty and charge change!
 
     if (job_name=='opt_c'):
 
         torsion_data = f' \n'
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
-        calculation = 'opt=modredundant, Geom=Checkpoint'
-        #reads the geometry information from the checkpoint file
+        calculation = 'opt=modredundant, Guess=Read, Geom=Checkpoint'
+        #reads the geometry information from the checkpoint file and Guess=Read projects one basis set to another
         mult_chg = '1 2' # This is a positive ion so multiplicity and charge change!
 
     if (job_name=='ver_c'):
 
         torsion_data = f' \n'
         old_chk = f'%OldChk={mol_name}_pop_opt_n.chk'
-        calculation = 'SP, Geom=Checkpoint'
-        #reads the geometry information from the checkpoint file
+        calculation = 'SP, Geom=Checkpoint, Guess=Read'
+        #reads the geometry information from the checkpoint file and Guess=Read projects one basis set to another
         mult_chg = '1 2' # This is a positive ion calc so multiplicity and charge change!
 
+    if (job_name=='n_a_geo'):
+
+        torsion_data = f' \n'
+        old_chk = f'%OldChk={mol_name}_opt_a.chk'
+        calculation = 'SP, Guess=Read, Geom=AllCheckpoint'
+        #reads the geometry information from the checkpoint file and Guess=Read projects one basis set to another
+        mult_chg = '0 1'
+
+    if (job_name=='n_c_geo'):
+        torsion_data = f' \n'
+        old_chk = f'%OldChk={mol_name}_opt_c.chk'
+        calculation = 'SP, Guess=Read, Geom=AllCheckpoint'
+        #reads the geometry information from the checkpoint file and Guess=Read projects one basis set to another
+        mult_chg = '0 1'
+
     file_name = f'{mol_name}_{job_name}.com'
+    #Includes information about basis set to allow for ramping
     chk_name = f'{mol_name}_{job_name}.chk'
     title = f'{mol_name} {job_name} Smile String: {smile}'
 

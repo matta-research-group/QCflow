@@ -20,6 +20,8 @@ def write_slurm(job_name, mol_name):
                 Optimisation anion → opt_a
                 Optimisation cation → opt_c
                 Optimisation neutral → opt_n
+                Neutral optimised anion geometry -> n_a_geo
+                Neutral optimised cation geometry -> n_c_geo
 
     mol_name : the name of the dimer from the dictionary e.g. if fragment 0 was attached to fragment 1
                     then the dimer name is 0_1
@@ -62,13 +64,15 @@ def write_slurm(job_name, mol_name):
 def submit_slurm_job(job_name, mol_name):
     """
     job_name : The type of job run. Possible runs
-                Torsional scan neutral → tor.com
-                Population analysis → pop_n.com
-                Vertical anion → ver_a.com
-                Vertical cation → ver_c.com
-                Optimisation anion → opt_a.com
-                Optimisation cation → opt_c.com
-                Optimisation neutral → opt_n.com
+                Torsional scan neutral → tor
+                Population analysis → pop_n
+                Vertical anion → ver_a
+                Vertical cation → ver_c
+                Optimisation anion → opt_a
+                Optimisation cation → opt_c
+                Optimisation neutral → opt_n
+                Neutral optimised anion geometry -> n_a_geo
+                Neutral optimised cation geometry -> n_c_geo
 
     mol_name : the name of the dimer from the dictionary e.g. if fragment 0 was attached to fragment 1
                     then the dimer name is 0_1
