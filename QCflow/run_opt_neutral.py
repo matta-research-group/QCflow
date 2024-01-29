@@ -28,7 +28,7 @@ def run_opt_neutral(mol_name, mol_smile, mol_dic, functional='B3LYP', basis_set=
     #gets rdkit estimated coordinates of dimer
     mol3d = embed_molecule(mol)
     #Saves the torsional scan as .csv and finds the lowest energy geometry
-    conf_geo = torsional_parser(mol_name, mol_dic)
+    conf_geo = torsion_parser(mol_name, mol_dic)
     #writes a guassian input file
     write_gaussian('pop_opt_n', mol_name, mol_smile, functional, basis_set, mol3d, 0, conf_geo)
     #writes the slurm file
