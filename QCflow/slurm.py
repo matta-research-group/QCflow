@@ -13,6 +13,8 @@ def write_slurm(job_name, mol_name):
     is being submited
 
     job_name : The type of job run. Possible runs
+                Single Point calculation -> sp
+                Simple Optimisation -> opt
                 Torsional scan neutral → tor
                 Population analysis → pop_n
                 Vertical anion → ver_a
