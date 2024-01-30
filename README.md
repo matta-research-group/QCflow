@@ -47,3 +47,5 @@ QCflow can prepare and submit input files for the following jobs:
 - Single point calculation, cation → `ver_c`
 - Optimisation anion → `opt_a`
 - Optimisation cation → `opt_c`
+- Neutral charge, optimised anion geometry -> `n_a_geo`
+- Neutral charge, optimised cation geometry -> `n_c_geo`
