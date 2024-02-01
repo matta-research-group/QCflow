@@ -8,10 +8,11 @@ from QCflow.torsion_parser import *
 def run_torsion(mol_dic, functional='B3LYP', basis_set='6-31G*'):
 
     '''
-    When provided with a .json file of all dimers, this function
+    When provided with a .json file, this function
     creates the SLURM and guassian input file and then submits the jobs
 
-    mol_dic : name of the .json file containing the dimers
+    mol_dic : name of the .json file containing the molecules
+              the expected format is {name : smiles}
 
     functional : Preset is B3LYP
 
