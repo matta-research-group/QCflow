@@ -39,11 +39,11 @@ The `run_torsion` and `run_opt_neutral` functions contain example workflows that
 ## Calculation settings
 
 QCflow can prepare and submit input files for the following jobs: 
-- Single point calculation -> `sp`
-- Geometry optimisation -> `opt`
-- Torsional scan neutral → `tor`
-- Optimisation neutral/Population analysis → `pop_opt_n`
-- Single point calculation, anion → `ver_a`
-- Single point calculation, cation → `ver_c`
+- Single point calculation, neutral -> `sp`
+- Single point calculation, anion → `sp_a`
+- Single point calculation, cation → `sp_c`
+- Geometry optimisation, neutral -> `opt`
+- Torsional scan, neutral → `tor`
 - Optimisation anion → `opt_a`
 - Optimisation cation → `opt_c`
+- Optimisation neutral + Population analysis → `pop_opt_n`
