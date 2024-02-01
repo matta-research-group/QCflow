@@ -64,22 +64,23 @@ def data_dic(mol_dic, job_type):
         parsed_dic[f'{k}'] = data
     return parsed_dic
 
-def clean_dir(mol_dic, file_type, dir_loc):
+def clean_directory(mol_dic, file_type, dir_loc):
     """
     Removes unwanted files
 
     mol_dic : Dictionary of oligomers in which all the calculations in which
                 the user wants to clean up the directories
 
-    file_type : The type of file examples('.txt', '.err', '.out')
+    file_type : File extension, as string ('.txt', '.err', '.out')
 
     dir_loc : Location of the main directory in which all the oligomers directories
                 are located. Example('/scratch/prj/mime/tor_input')
     """
+    
     for k, v in mol_dic.items():
         dir_name = f'{dir_loc}/{k}'
         #The directory of the calculations
         location = os.listdir(dir_name)
         for item in location:
-            if item.endswith(f'{file_type}'):
+            if item.endswith(str(file_type)):
                 os.remove(os.path.join(dir_name, item))
