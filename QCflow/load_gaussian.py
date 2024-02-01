@@ -14,8 +14,8 @@ def load_data(mol_name, job_name):
     job_name : The type of job run. Possible runs:
                 Torsional scan neutral → tor
                 Optimisation neutral/Population analysis → pop_opt_n
-                Vertical anion → ver_a
-                Vertical cation → ver_c
+                Vertical anion → sp_a
+                Vertical cation → sp_c
                 Optimisation anion → opt_a
                 Optimisation cation → opt_c
     """
