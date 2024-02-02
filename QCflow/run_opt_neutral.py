@@ -38,38 +38,8 @@ def run_opt_neutral(mol_name, mol_smile, mol_dic, functional='B3LYP', basis_set=
     #goes back to previous directory
     os.chdir(os.path.dirname(os.getcwd()))
 
-def run_opt_neutral_set_dihedral(mol_name, mol_smile, functional='B3LYP', basis_set='6-31G*', dihedral_angle=0):
-    """
-    Submits a neutral optimization with population analysis when provided with the name of the mol
 
-    mol_name : name of oligomer
-
-    mol_smile : SMILE string of oligomer
-
-    functional : preset is B3LYP
-
-    basis_set : preset is 6-31G*
-
-    dihedral_angle : Angle to set dihedral to (preset is 0)
-    """
-    #goes into directory
-    os.chdir(f'{mol_name}')
-    #turns smiles string into rdkit object
-    mol = Chem.MolFromSmiles(mol_smile)
-    #gets rdkit estimated coordinates of dimer
-    mol3d = embed_molecule(mol)
-    #Saves the torsional scan as .csv and finds the lowest energy geometry
-    conf_geo = setting_dihedral(mol_smile, dihedral_angle)
-    #writes a guassian input file
-    write_gaussian('pop_opt_n', mol_name, mol_smile, functional, basis_set, mol3d, 0, conf_geo)
-    #writes the slurm file
-    write_slurm('pop_opt_n', mol_name)
-    #submits the slurm jon
-    submit_slurm_job('pop_opt_n', mol_name)
-    #goes back to previous directory
-    os.chdir(os.path.dirname(os.getcwd()))
-
-def staging_opt(mol_name, mol_dic, job_type='pop_opt_n', functional='B3LYP', basis_set1='3-21G', basis_set2='6-31G*', basis_set3='6-31G**'):
+def staging_opt(mol_name, mol_dic, job_type, functional, basis_set1, basis_set2):
     """
     Checks if the geometry optimization as been completed at the highest desried basis set.
     If it has then appends a dictionary showing this. If the calculations haven't been ran
@@ -83,13 +53,11 @@ def staging_opt(mol_name, mol_dic, job_type='pop_opt_n', functional='B3LYP', bas
 
     job_type : Type of job ran e.g. pop_opt_n
 
-    functional : Preset is B3LYP
+    functional : Functional used in calculations (e.g. B3LYP)
 
-    basis_set1 : Preset 3-21G* (Lowest basis set)
+    basis_set1 : Lowest basis set used (e.g.  3-21G*)
 
-    basis_set2 : Preset 6-31G* (Median basis set)
-
-    basis_set3 : Preset 6-31G** (Highest basis set)
+    basis_set2 : Highest basis set used Preset (e.g. 6-31G*)
 
     Returns three dictionaries:
 
@@ -119,34 +87,15 @@ def staging_opt(mol_name, mol_dic, job_type='pop_opt_n', functional='B3LYP', bas
             not_complete[f'{k}'] = basis_set1
             #add to fail fictionary
         if data.metadata['success'] == True:
-            #did the calculations work
-            if os.path.isfile(f'{k}/{k}_{job_type}.log') == False:
-                #Run the calc
+            #If the calculations worked, was it done at highest basis set
+            if data.metadata['basis_set'] == basis_set1:
+                #Run the calc at higher basis set if no
                 run_opt_n(k, mol_dic, functional, basis_set2)
                 in_progress[f'{k}'] = basis_set2
 
-            if os.path.isfile(f'{k}/{k}_{job_type}.log') == True:
-                #Then check the next basis set worked or not
-                data2 = cclib.ccopen(f'{k}/{k}_{job_type}.log').parse()
-                if data2.metadata['success'] == False:
-                    #if the calc says failed then return not complete
-                    not_complete[f'{k}'] = basis_set2
-
-                if data2.metadata['success'] == True:
-                    #checking calculation worked
-                    if os.path.isfile(f'{k}/{k}_{job_type}.log') == False:
-                        #Run the calc
-                        run_opt_n(k, mol_dic, functional, basis_set3)
-                        in_progress[f'{k}'] = basis_set3
-
-                    if os.path.isfile(f'{k}/{k}_{job_type}.log') == True:
-                        #Checking if the final basis set worked or not
-                        data3 = cclib.ccopen(f'{k}/{k}_{job_type}.log').parse()
-                        if data3.metadata['success'] == True:
-                            fully_complete[f'{k}'] = basis_set3
-                            #All calculated and fine
-                        if data3.metadata['success'] == False:
-                            not_complete[f'{k}'] = basis_set3
+            if data.metadata['basis_set'] == basis_set2:
+                #If ran at highest basis set then calculation complete
+                fully_complete[f'{k}'] = basis_set2
 
 
     return fully_complete, not_complete, in_progress

@@ -1,8 +1,8 @@
-from fragments import *
-from find_torsion import *
-from write_gaussian import *
-from slurm import *
-from torsion_parser import *
+from QCflow.fragments import *
+from QCflow.find_torsion import *
+from QCflow.write_gaussian import *
+from QCflow.slurm import *
+from QCflow.torsion_parser import *
 
 
 def run_torsion(mol_dic, functional='B3LYP', basis_set='6-31G*'):
