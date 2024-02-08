@@ -39,7 +39,7 @@ def run_opt_neutral(mol_name, mol_smile, mol_dic, functional='B3LYP', basis_set=
     os.chdir(os.path.dirname(os.getcwd()))
 
 
-def staging_opt(mol_name, mol_dic, job_type, functional, basis_set1, basis_set2):
+def staging_opt(mol_name, mol_smile, mol_dic, job_type, functional, basis_set1, basis_set2):
     """
     Checks if the geometry optimization as been completed at the highest desried basis set.
     If it has then appends a dictionary showing this. If the calculations haven't been ran
@@ -48,6 +48,8 @@ def staging_opt(mol_name, mol_dic, job_type, functional, basis_set1, basis_set2)
 
     mol_name : the name of the oligomer as seen in the dictionary i.e. if melanin fragment (b) is combined
                 with organic electronic fragment (1) in the v1 position will be b_1_v1
+
+    mol_smile : SMILE string of oligomer
 
     mol_dic : dictionary of oligomers where key is the name of the oligomer and value is the SMILES string
 
@@ -76,7 +78,7 @@ def staging_opt(mol_name, mol_dic, job_type, functional, basis_set1, basis_set2)
 
     if os.path.isfile(f'{k}/{k}_{job_type}.log') == False:
         #Then run it
-        run_opt_neutral(k, mol_dic, functional, basis_set1)
+        run_opt_neutral(k, mol_smile, mol_dic, functional, basis_set1)
         in_progress[f'{k}'] = basis_set1
 
     if os.path.isfile(f'{k}/{k}_{job_type}.log') == True:
@@ -90,7 +92,7 @@ def staging_opt(mol_name, mol_dic, job_type, functional, basis_set1, basis_set2)
             #If the calculations worked, was it done at highest basis set
             if data.metadata['basis_set'] == basis_set1:
                 #Run the calc at higher basis set if no
-                run_opt_neutral(k, mol_dic, functional, basis_set2)
+                run_opt_neutral(k, mol_smile, mol_dic, functional, basis_set2)
                 in_progress[f'{k}'] = basis_set2
 
             if data.metadata['basis_set'] == basis_set2:
