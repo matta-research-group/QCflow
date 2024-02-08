@@ -76,7 +76,7 @@ def staging_opt(mol_name, mol_dic, job_type, functional, basis_set1, basis_set2)
 
     if os.path.isfile(f'{k}/{k}_{job_type}.log') == False:
         #Then run it
-        run_opt_n(k, mol_dic, functional, basis_set1)
+        run_opt_neutral(k, mol_dic, functional, basis_set1)
         in_progress[f'{k}'] = basis_set1
 
     if os.path.isfile(f'{k}/{k}_{job_type}.log') == True:
@@ -90,7 +90,7 @@ def staging_opt(mol_name, mol_dic, job_type, functional, basis_set1, basis_set2)
             #If the calculations worked, was it done at highest basis set
             if data.metadata['basis_set'] == basis_set1:
                 #Run the calc at higher basis set if no
-                run_opt_n(k, mol_dic, functional, basis_set2)
+                run_opt_neutral(k, mol_dic, functional, basis_set2)
                 in_progress[f'{k}'] = basis_set2
 
             if data.metadata['basis_set'] == basis_set2:
