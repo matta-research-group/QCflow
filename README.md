@@ -47,3 +47,4 @@ QCflow can prepare and submit input files for the following jobs:
 - Optimisation anion → `opt_a`
 - Optimisation cation → `opt_c`
 - Optimisation neutral + Population analysis → `pop_opt_n`
+

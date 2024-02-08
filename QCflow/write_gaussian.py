@@ -26,6 +26,8 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
                 Single point cation → sp_c
                 Optimisation anion → opt_a
                 Optimisation cation → opt_c
+                neutral charge, optimised anion geometry -> n_a_geo
+                neutral charge, optimised cation geometry -> n_c_geo
 
     mol_name   : the name of the molecule
 
@@ -135,6 +137,7 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
         mult_chg = '-1 2' # This is a negative ion calc so multiplicity and charge change!
                                                                                           
     file_name = f'{mol_name}_{job_name}.com'
+    #Includes information about basis set to allow for ramping
     chk_name = f'{mol_name}_{job_name}.chk'
     title = f'{mol_name} {job_name} Smile String: {smile}'
 

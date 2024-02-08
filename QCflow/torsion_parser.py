@@ -106,3 +106,38 @@ def torsion_parser(mol_name, mol_dic):
         correct_pos = conf.SetAtomPosition(i, data.converged_geometries[min_energy][i])
     #Uses this min energy torsion to give the correct geometry
     return conf
+
+def setting_dihedral(mol_smile, deg):
+    """
+    Settings the dihedral angle of the torsion for individual scans
+
+    mol_smiles : smi string of dimer
+
+    deg : desired dihedral angle (0 or 180 for planar)
+
+    returns a dimer with a dihedral angle that is inputted by user
+    """
+    mol = Chem.MolFromSmiles(mol_smile)
+    #turns smiles string into rdkit object
+    mol3d = embed_molecule(mol)
+    #gets rdkit estimated coordinates of dimer
+    conf = mol3d.GetConformer()
+    #getting the conformer
+
+    bond = getBond(mol)
+    #finds the bond between the fragment
+    torsion = getTorsion(mol, bond[0])
+    #torsion of the bond between the fragment
+    t1, t2, t3, t4 = [t for t in torsion]
+    #getting atoms involved in torsion
+    rdkit.Chem.rdMolTransforms.SetDihedralDeg(conf, t1, t2, t3, t4, deg)
+    #setting the dihedral angle
+    mp = AllChem.MMFFGetMoleculeProperties(mol3d)
+    #mol properties
+    ff = AllChem.MMFFGetMoleculeForceField(mol3d, mp)
+    #force field
+    for i in torsion:
+        ff.MMFFAddPositionConstraint(i, 0, 1.e4)
+    ff.Minimize(maxIts=10000)
+
+    return conf
