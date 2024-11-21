@@ -89,6 +89,7 @@ def submit_slurm_job(job_name, mol_name):
     bytes: The standard output from the SLURM job submission command.
     """
 
+    #string = f'sbatch --partition nmes_cpu --reservation nmes_chemistry {mol_name}_{job_name}.sh'
     string = f'sbatch {mol_name}_{job_name}.sh'
 
     process = subprocess.run(string,
