@@ -1,10 +1,7 @@
 name: Run Tests
 
 on: 
-  push:
-    branches:
-      - main
-      - 'qcflow-*'
+  workflow_dispatch:
 
 jobs:
   test:
@@ -21,6 +18,7 @@ jobs:
           conda config --add channels conda-forge
           conda config --add channels anaconda
           conda env create -f QCflow.yml
+          conda init bash
           conda activate QCflow
       - name: Run Tests
         run: python -m pytest -v QCflow/tests/
