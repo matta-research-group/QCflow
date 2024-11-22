@@ -25,5 +25,4 @@ jobs:
           source ~/.bashrc
           conda activate QCflow
       - name: Run Tests
-        run: python import pytest
-        run: python -m pytest -v QCflow/tests/
+        run: python import pytest; pytest -v QCflow/tests/
