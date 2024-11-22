@@ -17,6 +17,9 @@ jobs:
           auto-activate-base: false
       - name: Create and activate environment
         run: |
+          conda config --add channels defaults
+          conda config --add channels conda-forge
+          conda config --add channels anaconda
           conda env create -f QCflow.yml
           conda activate QCflow
       - name: Run Tests
