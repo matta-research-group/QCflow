@@ -23,7 +23,7 @@ Only Gaussian is supported at the moment, but we plan to add support for Psi4.
 ## Installation
 
 ```bash
-git clone https://github.com/matta-research-group/QCflow.git
+git clone https://github.com/matta-research-group/QCflow/qcflow-0.2.git
 cd QCflow
 # install requirements into new environment
 conda env create -f QCflow.yml
