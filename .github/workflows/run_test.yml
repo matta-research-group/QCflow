@@ -1,42 +1,23 @@
-default_stages: [push]
-repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
-    hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-yaml
-    -   id: check-added-large-files
-        args: [ "--maxkb=120000" ]
-    -   id: check-json
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
-    hooks:
-    - id: flake8
--   repo: https://github.com/psf/black
-    rev: 22.3.0
-    hooks:
-    -   id: black
-        language_version: python3.9
--   repo: https://github.com/pre-commit/mirrors-jshint
-    rev: v2.9.7
-    hooks:
-    -   id: jshint
--   repo: https://github.com/pre-commit/mirrors-scss-lint
-    rev: v0.57.1-1
-    hooks:
-    -   id: scss-lint
--   repo: https://github.com/asottile/reorder_python_imports
-    rev: v1.7.0
-    hooks:
-    -   id: reorder-python-imports
--   repo: local
-    hooks:
-    -   id: pytest-check
-        stages: [push]
-        types: [python]
-        name: pytest-check
-        entry: python -m pytest -v QCflow/tests/
-        language: system
-        pass_filenames: false
-        always_run: true
+name: Run Tests
+
+on: 
+  push:
+    branches:
+      - main
+      - 'qcflow-*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r QCflow.yml
+      - name: Run Tests
+        run: python -m pytest -v QCflow/tests/
