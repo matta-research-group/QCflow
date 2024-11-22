@@ -34,7 +34,8 @@ pip install .
 
 ## Usage Examples
 
-The `run_torsion` and `run_opt_neutral` functions contain example workflows that read in molecules from `.smi` files and submit quantum chemistry jobs for each molecule.
+The `run_calc` and `run_torsion` functions contain example workflows that submit gaussian calculations to the KCL CREATE HPC. 
+Users external to Kings College London will need to alter the slurm.py file to match their HPC submission requirements.
 
 ## Calculation settings
 
@@ -42,9 +43,12 @@ QCflow can prepare and submit input files for the following jobs:
 - Single point calculation, neutral -> `sp`
 - Single point calculation, anion → `sp_a`
 - Single point calculation, cation → `sp_c`
+- Single point calculation neutral charge, cationic geometry → `n_c_geo`
+- Single point calculation neutral charge, anioinc geometry → `n_a_geo`
 - Geometry optimisation, neutral -> `opt`
 - Torsional scan, neutral → `tor`
 - Optimisation anion → `opt_a`
 - Optimisation cation → `opt_c`
 - Optimisation neutral + Population analysis → `pop_opt_n`
+- Single point Hirshfeld calculation → `sp_hirsh`
 

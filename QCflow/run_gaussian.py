@@ -47,7 +47,7 @@ def rdkit_predict_conf(mol_smiles, num_of_conformer=100, max_iter=500, min_energ
 
 def run_calc(job_name, mol_name, mol_smile, functional='B3LYP', basis_set='6-31G*'):
     """
-    Submits a neutral optimization with population analysis when provided with the name of the molecule.
+    Submits a gaussian calculation to CREATE HPC.
 
     Parameters:
     job_name (str): Name of the job to be submitted.
