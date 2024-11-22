@@ -24,5 +24,9 @@ jobs:
           conda init bash
           source ~/.bashrc
           conda activate QCflow
+          python -m pip install --upgrade pip
+          python -m pip install pytest  # Ensure pytest is installed
       - name: Run Tests
-        run: python import pytest; pytest -v QCflow/tests/
+        run: |
+          conda activate QCflow
+          python -m pytest -v QCflow/tests/
