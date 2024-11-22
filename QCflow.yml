@@ -50,7 +50,6 @@ dependencies:
   - libgfortran5
   - libglib
   - libiconv
-  - libintl
   - libjpeg-turbo
   - liblapack
   - libmpdec
