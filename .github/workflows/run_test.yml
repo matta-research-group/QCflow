@@ -22,6 +22,7 @@ jobs:
           conda config --add channels anaconda
           conda env create -f QCflow.yml
           conda init bash
+          source ~/.bashrc
           conda activate QCflow
       - name: Run Tests
         run: python -m pytest -v QCflow/tests/
