@@ -9,6 +9,8 @@ from rdkit.Chem import AllChem, rdMolTransforms
 
 test_dic = {'b_18_v2' : 'COc1cc2cc(-c3nccc4nsnc34)n(C)c2cc1OC'}
 
+os.chdir('./tests')
+
 def test_QCflow_imported():
     """Sample test, will always pass so long as import statement worked"""
     assert "QCflow" in sys.modules
