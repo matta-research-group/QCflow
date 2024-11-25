@@ -2,7 +2,7 @@
 
 # QCflow
 
-[![QCflow](https://github.com/matta-research-group/QCflow/actions/workflows/run_test.yml/badge.svg?branch=qcflow-0.2)](https://github.com/matta-research-group/QCflow/actions/workflows/run_test.yml)
+[![QCflow stable](https://github.com/matta-research-group/QCflow/actions/workflows/run_test.yml/badge.svg?branch=qcflow-0.2)](https://github.com/matta-research-group/QCflow/actions/workflows/run_test.yml)
 
 A cheminformatics -> quantum chemistry workflow toolkit leveraging [rdkit](https://github.com/rdkit/rdkit) and [cclib](https://github.com/cclib/cclib).
 
