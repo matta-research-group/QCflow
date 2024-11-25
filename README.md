@@ -106,5 +106,4 @@ QCflow can prepare and submit input files for the following jobs:
     ├── test.py
     ├── torsion_1
     │   └── torsion_1_tor.log
-    └── writing_tests.ipynb
 ```
