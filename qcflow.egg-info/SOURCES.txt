@@ -15,4 +15,4 @@ qcflow.egg-info/PKG-INFO
 qcflow.egg-info/SOURCES.txt
 qcflow.egg-info/dependency_links.txt
 qcflow.egg-info/top_level.txt
-tests/tests.py
+tests/test.py
