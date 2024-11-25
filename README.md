@@ -54,3 +54,57 @@ QCflow can prepare and submit input files for the following jobs:
 - Optimisation neutral + Population analysis → `pop_opt_n`
 - Single point Hirshfeld calculation → `sp_hirsh`
 
+## Files
+
+```bash
+├── LICENSE
+├── __pycache__
+│   ├── fragments.cpython-39.pyc
+│   ├── run_torsional.cpython-39.pyc
+│   ├── torsion.cpython-39.pyc
+│   └── write_input.cpython-39.pyc
+├── QCflow
+│   ├── energy_calculations.py
+│   ├── find_torsion.py
+│   ├── fragments.py
+│   ├── future_functions
+│   │   └── orbital_parse.py
+│   ├── __init__.py
+│   ├── load_gaussian.py
+│   ├── run_gaussian.py
+│   ├── slurm.py
+│   ├── testing_data.py
+│   ├── torsion_parser.py
+│   └── write_gaussian.py
+├── qcflow.egg-info
+│   ├── dependency_links.txt
+│   ├── PKG-INFO
+│   ├── SOURCES.txt
+│   └── top_level.txt
+├── QCflow_logo_narrow.jpg
+├── QCflow.yml
+├── README.md
+├── setup.py
+└── tests
+    ├── b_18_v2
+    │   ├── $(basename $INPUTFILE .com).log
+    │   ├── b_18_v2_n_a_geo.log
+    │   ├── b_18_v2_n_c_geo.log
+    │   ├── b_18_v2_opt_a.log
+    │   ├── b_18_v2_opt_c.log
+    │   ├── b_18_v2_opt.com
+    │   ├── b_18_v2_opt.log
+    │   ├── b_18_v2_opt.sh
+    │   ├── b_18_v2_sp_a.log
+    │   ├── b_18_v2_sp_c.log
+    │   ├── b_18_v2_sp_hirsh.log
+    │   ├── b_18_v2_tor.log
+    │   └── fort.7
+    ├── example_dic.json
+    ├── fake_dict.json
+    ├── test_dict.json
+    ├── test.py
+    ├── torsion_1
+    │   └── torsion_1_tor.log
+    └── writing_tests.ipynb
+```
