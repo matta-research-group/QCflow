@@ -57,12 +57,21 @@ QCflow can prepare and submit input files for the following jobs:
 ## Files
 
 ```bash
+├── build
+│   ├── bdist.macosx-10.13-x86_64
+│   └── lib
+│       └── QCflow
+│           ├── energy_calculations.py
+│           ├── find_torsion.py
+│           ├── fragments.py
+│           ├── __init__.py
+│           ├── load_gaussian.py
+│           ├── run_gaussian.py
+│           ├── slurm.py
+│           ├── testing_data.py
+│           ├── torsion_parser.py
+│           └── write_gaussian.py
 ├── LICENSE
-├── __pycache__
-│   ├── fragments.cpython-39.pyc
-│   ├── run_torsional.cpython-39.pyc
-│   ├── torsion.cpython-39.pyc
-│   └── write_input.cpython-39.pyc
 ├── QCflow
 │   ├── energy_calculations.py
 │   ├── find_torsion.py
@@ -71,6 +80,28 @@ QCflow can prepare and submit input files for the following jobs:
 │   │   └── orbital_parse.py
 │   ├── __init__.py
 │   ├── load_gaussian.py
+│   ├── __pycache__
+│   │   ├── find_torsion.cpython-311.pyc
+│   │   ├── find_torsion.cpython-39.pyc
+│   │   ├── fragments.cpython-311.pyc
+│   │   ├── fragments.cpython-38.pyc
+│   │   ├── fragments.cpython-39.pyc
+│   │   ├── __init__.cpython-311.pyc
+│   │   ├── __init__.cpython-38.pyc
+│   │   ├── __init__.cpython-39.pyc
+│   │   ├── load_gaussian.cpython-311.pyc
+│   │   ├── load_gaussian.cpython-39.pyc
+│   │   ├── run_opt_neutral.cpython-311.pyc
+│   │   ├── run_opt_neutral.cpython-39.pyc
+│   │   ├── run_opt_set_dihedral.cpython-311.pyc
+│   │   ├── slurm.cpython-311.pyc
+│   │   ├── slurm.cpython-39.pyc
+│   │   ├── torsion_parser.cpython-311.pyc
+│   │   ├── torsion_parser.cpython-39.pyc
+│   │   ├── torsion_run.cpython-311.pyc
+│   │   ├── torsion_run.cpython-39.pyc
+│   │   ├── write_gaussian.cpython-311.pyc
+│   │   └── write_gaussian.cpython-39.pyc
 │   ├── run_gaussian.py
 │   ├── slurm.py
 │   ├── testing_data.py
@@ -87,7 +118,6 @@ QCflow can prepare and submit input files for the following jobs:
 ├── setup.py
 └── tests
     ├── b_18_v2
-    │   ├── $(basename $INPUTFILE .com).log
     │   ├── b_18_v2_n_a_geo.log
     │   ├── b_18_v2_n_c_geo.log
     │   ├── b_18_v2_opt_a.log
@@ -98,8 +128,7 @@ QCflow can prepare and submit input files for the following jobs:
     │   ├── b_18_v2_sp_a.log
     │   ├── b_18_v2_sp_c.log
     │   ├── b_18_v2_sp_hirsh.log
-    │   ├── b_18_v2_tor.log
-    │   └── fort.7
+    │   └── b_18_v2_tor.log
     ├── example_dic.json
     ├── fake_dict.json
     ├── __pycache__
