@@ -7,14 +7,14 @@ from itertools import combinations
 from typing import List
 from CombineMols.CombineMols import CombineMols
 
-def adding_attach(smi, find='[cH;x2]', get_rid='C([*])'):
+def adding_attach(smi, find='[cH;^2]', get_rid='C([I])'):
     """
     Adds an attachment point to a given fragment.
 
     Parameters:
     smi (str): The SMILES string of the fragment.
     find (str): The SMARTS pattern of the possible attachment point. Default is '[cH;x2]'.
-    get_rid (str): The replacement pattern for the attachment point. Default is 'C([*])'.
+    get_rid (str): The replacement pattern for the attachment point. Default is 'C([I])'.
 
     Returns:
     list: A list of unique SMILES strings representing the fragment with the added attachment point.
@@ -35,7 +35,7 @@ def adding_attach(smi, find='[cH;x2]', get_rid='C([*])'):
 
     return cleaned
 
-def generate_attachment_points(frag_dic):
+def generate_attachment_points(frag_dic, find='[cH;^2]', get_rid='C([I])'):
     """
     This function takes a dictionary of fragments and generates attachment points for each fragment.
     The attachment points are determined by using the 'adding_attach' function.
@@ -44,6 +44,8 @@ def generate_attachment_points(frag_dic):
 
     Parameters:
     frag_dic (dict): A dictionary containing fragment information with keys as identifiers and values as SMILE strings.
+    find (str): The SMARTS pattern of the possible attachment point. Default is '[cH;^2]'.
+    get_rid (str): The replacement pattern for the attachment point. Default is 'C([I])'.
 
     Returns:
     dict: A dictionary containing attachment points. Keys are composed of identifiers followed by
@@ -58,7 +60,7 @@ def generate_attachment_points(frag_dic):
     p = Chem.MolFromSmiles('I')
 
     for k, v in frag_dic.items():
-        all_attach = adding_attach(v, find='[cH;^2]', get_rid='C([I])') #using 'I' because a combine function uses it later
+        all_attach = adding_attach(v, find, get_rid) #using 'I' because a combine function uses it later
         #finding sp2 carbons
         mol_test = Chem.MolFromSmiles(all_attach[0])
 
@@ -70,7 +72,7 @@ def generate_attachment_points(frag_dic):
         if mol_test.HasSubstructMatch(p) == False: #if there is no iodine attachment, add hydrogens and try aliphatic carbons
             add_h = Chem.AddHs(mol_test)
             smi_h = Chem.MolToSmiles(add_h)
-            all_attach2 = adding_attach(smi_h, find='[CH;^2]', get_rid='C([I])') #attaching at aliphatic carbons
+            all_attach2 = adding_attach(smi_h, find, get_rid) #attaching at aliphatic carbons
 
             for i, attach_point in enumerate(all_attach2):
                 attach_dic[f'{k}_{chr(ord("A") + i)}'] = attach_point #adds letter as some have more than one attachment
