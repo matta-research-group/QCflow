@@ -116,7 +116,7 @@ def test_adding_attch():
 def test_generate_attachment_points():
     test_mol_dic = {'test' : 'C1=CC=CS1'}
 
-    test_mol_dic_attach = generate_attachment_points(test_mol_dic, find='[cH;^2]', get_rid='C([I])')
+    test_mol_dic_attach = QCflow.fragments.generate_attachment_points(test_mol_dic, find='[cH;^2]', get_rid='C([I])')
 
     assert (test_mol_dic_attach == {'test_A': 'Ic1cccs1', 'test_B': 'Ic1ccsc1'}) or (test_mol_dic_attach == {'test_A': 'Ic1ccsc1', 'test_B': 'Ic1cccs1'})
 
