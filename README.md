@@ -36,8 +36,17 @@ pip install .
 
 ## Usage Examples
 
-The `run_calc` and `run_torsion` functions contain example workflows that submit gaussian calculations to the KCL CREATE HPC. 
+The `run_calc` and `run_torsion` functions within `run_gaussian.py` are example workflows that submit gaussian calculations to the KCL CREATE HPC. 
+
 Users external to Kings College London will need to alter the slurm.py file to match their HPC submission requirements.
+
+Altering the loaded modules found on line `55` within `slurm.py` file will allow you to submit jobs to your HPC.
+
+```bash
+file.write(f'module load gaussian_sse4/16-C-gcc-13.2.0 \n') ### KCL CREATE HPC
+
+file.write(f'module load your_gaussian_module \n') ### Your HPC
+```
 
 ## Calculation settings
 
