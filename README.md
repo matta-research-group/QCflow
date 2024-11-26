@@ -11,15 +11,18 @@ A typical workflow involves:
 1. Generating a series of input molecules as `SMILES` - optionally, by combining different fragments into larger molecules/oligomers  
 
 2. For each molecule:
-    a. write `.com` Gaussian input files, `.sh` SLURM submission files 
-    b. submit job (assuming you are working within a HPC)
+   
+    a. write `.com` Gaussian input files, `.sh` SLURM submission files
+    
+    b. submit a job (assuming you are working within a HPC)
+   
     c. parse output file to submit further calculations or retrieve descriptors
 
-3. Combine descriptors and results in a `pandas` dataframe format or similar for plotting / further analysis
+3. Combine descriptors and results in a [pandas](https://pandas.pydata.org/) dataframe format or similar for plotting / further analysis
 
 ## Supported QC codes 
 
-Only Gaussian is supported at the moment, but we plan to add support for Psi4.
+Only [Gaussian](https://gaussian.com/man/) is supported at the moment, but we plan to add support for [Psi4](https://psicode.org/).
 
 
 ## Installation
@@ -34,19 +37,21 @@ conda activate QCflow
 pip install .
 ```
 
-## Usage Examples
+## Usage Examples and Advice
 
-The `run_calc` and `run_torsion` functions within `run_gaussian.py` are example workflows that submit gaussian calculations to the KCL CREATE HPC. 
+The [run_calc](https://github.com/matta-research-group/QCflow/blob/qcflow-0.2/QCflow/run_gaussian.py#L48) and [run_torsion](https://github.com/matta-research-group/QCflow/blob/qcflow-0.2/QCflow/run_gaussian.py#L142) functions within [run_gaussian.py](https://github.com/matta-research-group/QCflow/blob/qcflow-0.2/QCflow/run_gaussian.py) are example workflows that submit gaussian calculations to the [KCL CREATE HPC](https://www.kcl.ac.uk/research/facilities/hpc-digital-platforms). 
 
 Users external to Kings College London will need to alter the slurm.py file to match their HPC submission requirements.
 
-Altering the loaded modules found on line `55` within `slurm.py` file will allow you to submit jobs to your HPC.
+Altering the loaded modules found on line [55](https://github.com/matta-research-group/QCflow/blob/qcflow-0.2/QCflow/slurm.py#L55) within `slurm.py` file will allow you to submit jobs to your HPC.
 
 ```bash
 file.write(f'module load gaussian_sse4/16-C-gcc-13.2.0 \n') ### KCL CREATE HPC
 
 file.write(f'module load your_gaussian_module \n') ### Your HPC
 ```
+Once the alteration has been made, just ```pip install .``` again and the package will update for your HPC.
+
 
 ## Calculation settings
 
