@@ -39,7 +39,7 @@ pip install .
 
 ## Usage Examples and Advice
 
-The [run_calc](https://github.com/matta-research-group/QCflow/blob/qcflow-0.2/QCflow/run_gaussian.py#L48) and [run_torsion](https://github.com/matta-research-group/QCflow/blob/qcflow-0.2/QCflow/run_gaussian.py#L142) functions within [run_gaussian.py](https://github.com/matta-research-group/QCflow/blob/qcflow-0.2/QCflow/run_gaussian.py) are example workflows that submit gaussian calculations to the [KCL CREATE HPC](https://www.kcl.ac.uk/research/facilities/hpc-digital-platforms). 
+The [run_calc](https://github.com/matta-research-group/QCflow/blob/qcflow-0.2/QCflow/run_gaussian.py#L48) and [run_torsion](https://github.com/matta-research-group/QCflow/blob/qcflow-0.2/QCflow/run_gaussian.py#L142) functions within `run_gaussian.py` are example workflows that submit gaussian calculations to the [KCL CREATE HPC](https://www.kcl.ac.uk/research/facilities/hpc-digital-platforms). 
 
 Users external to Kings College London will need to alter the slurm.py file to match their HPC submission requirements.
 
