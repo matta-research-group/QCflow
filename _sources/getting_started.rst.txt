@@ -3,6 +3,11 @@ Getting Started with QCflow
 
 Welcome to the QCflow documentation!
 
+.. image:: https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QCflow_logo_narrow.jpg?raw=true
+    :alt: QCflow Logo
+    :width: 200px
+
+
 Installation
 ------------
 
@@ -21,8 +26,7 @@ To install QCflow, you can use `conda`. Run the following commands in your termi
 Basic Usage
 -----------
 
-Example usage can be found in our notebooks and python script `examples <https://github.com/matta-research-group/QCflow/Examples>`_.
-
+Example usage can be found in our notebooks and python script `examples <https://github.com/matta-research-group/QCflow/tree/qcflow-0.3/Examples>`_.
 
 Contributing
 ------------
@@ -38,3 +42,8 @@ License
 -------
 
 QCflow is licensed under the `MIT License <https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/LICENSE>`_.
+
+Developers
+----------
+
+Tristan Stephens-Jones and Micaela Matta within the `Matta Research Group <https://www.mattaresearch.com/>`_ at King's College London.
