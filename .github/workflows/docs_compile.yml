@@ -2,7 +2,9 @@ name: compile_docs
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+      - 'qcflow-*'
 
 jobs:
   build:
