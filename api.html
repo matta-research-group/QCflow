@@ -394,25 +394,55 @@ and output files.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="QCflow.run_gaussian.run_calc">
 <span class="sig-prename descclassname"><span class="pre">QCflow.run_gaussian.</span></span><span class="sig-name descname"><span class="pre">run_calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_smile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'B3LYP'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6-31G*'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/run_gaussian.html#run_calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.run_gaussian.run_calc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Submits a gaussian calculation to CREATE HPC.</p>
+<dd><p>Submits a Gaussian calculation to CREATE HPC.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>job_name (str)</strong> (<em>Name of the job to be submitted.</em>)</p></li>
-<li><p><strong>mol_name (str)</strong> (<em>Name of the oligomer.</em>)</p></li>
-<li><p><strong>mol_smile (str)</strong> (<em>SMILE string of the oligomer.</em>)</p></li>
-<li><p><strong>functional (str, optional)</strong> (<em>Quantum chemistry functional to be used (default is ‘B3LYP’).</em>)</p></li>
-<li><p><strong>basis_set (str, optional)</strong> (<em>Basis set to be used (default is ‘6-31G</em>’).*)</p></li>
-<li><p><strong>This function performs the following steps</strong></p></li>
-<li><p><strong>1. Creates a directory for the molecule.</strong></p></li>
-<li><p><strong>2. Changes the current working directory to the newly created directory.</strong></p></li>
-<li><p><strong>3. Converts the SMILES string to an RDKit molecule object.</strong></p></li>
-<li><p><strong>4. Generates 3D coordinates for the molecule.</strong></p></li>
-<li><p><strong>5. Writes a Gaussian input file for the molecule.</strong></p></li>
-<li><p><strong>6. Writes a SLURM script for job submission.</strong></p></li>
-<li><p><strong>7. Submits the SLURM job.</strong></p></li>
-<li><p><strong>8. Returns to the previous directory.</strong></p></li>
+<li><p><strong>job_name</strong> (<em>str</em>) – The type of job to run. Possible values:
+- ‘sp’: Single Point neutral
+- ‘opt’: Optimisation neutral
+- ‘tor’: Torsional scan neutral
+- ‘pop_opt_n’: Optimisation neutral + Population analysis
+- ‘sp_a’: Single point anion
+- ‘sp_c’: Single point cation
+- ‘opt_a’: Optimisation anion
+- ‘opt_c’: Optimisation cation
+- ‘n_a_geo’: Neutral charge, optimised anion geometry
+- ‘n_c_geo’: Neutral charge, optimised cation geometry
+- ‘sp_hirsh’: Single Point Hirshfeld</p></li>
+<li><p><strong>mol_name</strong> (<em>str</em>) – Name of the oligomer.</p></li>
+<li><p><strong>mol_smile</strong> (<em>str</em>) – SMILES string of the oligomer.</p></li>
+<li><p><strong>functional</strong> (<em>str, optional</em>) – Quantum chemistry functional to be used (default is ‘B3LYP’).</p></li>
+<li><p><strong>basis_set</strong> (<em>str, optional</em>) – Basis set to be used (default is ‘6-31G*’).</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>- For ‘sp_a’, ‘sp_c’, ‘opt_a’, ‘opt_c’, ‘n_a_geo’, ‘n_c_geo’, and ‘sp_hirsh’</em> –</p>
+<ul>
+<li><p>Writes a Gaussian input file directly.</p></li>
+</ul>
+</li>
+<li><p><em>- For ‘opt’, ‘sp’, and ‘pop_opt_n’</em> –</p>
+<ul>
+<li><p>Converts the SMILES string to an RDKit molecule object.</p></li>
+<li><p>Generates 3D coordinates for the molecule.</p></li>
+<li><p>Predicts the conformer geometry.</p></li>
+<li><p>Writes a Gaussian input file with the conformer geometry.</p></li>
+</ul>
+</li>
+<li><p><em>- For ‘tor’</em> –</p>
+<ul>
+<li><p>Converts the SMILES string to an RDKit molecule object.</p></li>
+<li><p>Identifies the bond for torsional scan.</p></li>
+<li><p>Determines the torsion angle.</p></li>
+<li><p>Generates 3D coordinates for the molecule.</p></li>
+<li><p>Writes a Gaussian input file with the torsion angle.</p></li>
+</ul>
+</li>
+<li><p><em>Finally, the function writes a SLURM script, submits the job, and returns to the previous directory.</em></p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -441,32 +471,6 @@ in_progress (dict): Oligomers that are still in progress (shows basis set they a
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>A tuple containing three dictionaries:</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="QCflow.run_gaussian.run_torsion">
-<span class="sig-prename descclassname"><span class="pre">QCflow.run_gaussian.</span></span><span class="sig-name descname"><span class="pre">run_torsion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'B3LYP'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6-31G*'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/run_gaussian.html#run_torsion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.run_gaussian.run_torsion" title="Permalink to this definition">¶</a></dt>
-<dd><p>When provided with a dictionary of molecules, this function creates the SLURM
-and Gaussian input files and then submits the torsional scan.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>mol_name (str)</strong> (<em>Name of the oligomer.</em>)</p></li>
-<li><p><strong>mol_smile (str)</strong> (<em>SMILE string of the oligomer.</em>)</p></li>
-<li><p><strong>functional (str)</strong> (<em>The functional to be used in Gaussian calculations. Default is ‘B3LYP’.</em>)</p></li>
-<li><p><strong>basis_set (str)</strong> (<em>The basis set to be used in Gaussian calculations. Default is ‘6-31G</em>’.*)</p></li>
-<li><p><strong>The function performs the following steps for each molecule</strong></p></li>
-<li><p><strong>1. Creates a directory named after the molecule.</strong></p></li>
-<li><p><strong>2. Converts the SMILES string to an RDKit molecule object.</strong></p></li>
-<li><p><strong>3. Identifies the bond and torsion of the molecule.</strong></p></li>
-<li><p><strong>4. Generates 3D coordinates for the molecule.</strong></p></li>
-<li><p><strong>5. Writes the Gaussian input file.</strong></p></li>
-<li><p><strong>6. Writes the SLURM job file.</strong></p></li>
-<li><p><strong>7. Submits the SLURM job.</strong></p></li>
-<li><p><strong>8. Returns to the previous directory.</strong></p></li>
-</ul>
 </dd>
 </dl>
 </dd></dl>
