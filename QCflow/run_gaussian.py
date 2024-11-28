@@ -10,14 +10,16 @@ def rdkit_predict_conf(mol_smiles, num_of_conformer=100, max_iter=500, min_energ
     """
     Generates conformers for a given molecule using RDKit and returns the lowest energy conformer.
 
-    Parameters:
+    Parameters
+    ----------
     mol_smiles (str): The SMILES representation of the molecule.
     num_of_conformer (int): The number of conformers to be generated (default: 100).
     max_iter (int): The maximum number of iterations for conformer optimization (default: 500).
     min_energy_MMFF (float): The minimum energy threshold for selecting the lowest energy conformer (default: 10000).
     min_energy_index_MMFF (int): The index of the lowest energy conformer (default: 0).
 
-    Returns:
+    Returns
+    -------
     conf (Chem.Conformer): The lowest energy conformer of the molecule.
 
     """
@@ -49,7 +51,8 @@ def run_calc(job_name, mol_name, mol_smile, functional='B3LYP', basis_set='6-31G
     """
     Submits a gaussian calculation to CREATE HPC.
 
-    Parameters:
+    Parameters
+    ----------
     job_name (str): Name of the job to be submitted.
     mol_name (str): Name of the oligomer.
     mol_smile (str): SMILE string of the oligomer.
@@ -92,7 +95,8 @@ def staging_opt(job_name, mol_name, mol_smile, mol_dic, functional, basis_set):
     If it has, then appends a dictionary showing this. If the calculations haven't been run
     all the way, then runs them. If the calculation has failed, then appends a dictionary
     
-    Parameters:
+    Parameters
+    ----------
     job_name (str): Type of job run e.g. pop_opt_n
     mol_name (str): The name of the oligomer as seen in the dictionary i.e. if melanin fragment (b) is combined
     mol_smile (str): SMILE string of oligomer
@@ -100,7 +104,8 @@ def staging_opt(job_name, mol_name, mol_smile, mol_dic, functional, basis_set):
     functional (str): Functional used in calculations (e.g. B3LYP)
     basis_set (str): Basis set used (e.g. 6-31G*)
     
-    Returns:
+    Returns
+    -------
     tuple: A tuple containing three dictionaries:
         fully_complete (dict): Oligomers that have been calculated at the highest basis set
         not_complete (dict): Oligomers that failed and need manual assessment (shows basis set they failed at)
@@ -144,7 +149,8 @@ def run_torsion(mol_name, mol_smiles, functional='B3LYP', basis_set='6-31G*'):
     When provided with a dictionary of molecules, this function creates the SLURM 
     and Gaussian input files and then submits the torsional scan.
 
-    Parameters:
+    Parameters
+    ----------
     mol_name (str): Name of the oligomer.
     mol_smile (str): SMILE string of the oligomer.
     functional (str): The functional to be used in Gaussian calculations. Default is 'B3LYP'.

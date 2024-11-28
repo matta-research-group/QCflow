@@ -3,7 +3,9 @@ import subprocess
 def write_slurm(job_name, mol_name, cpus=10):
     """
     Writes a SLURM batch script for a specified job type and molecule name.
-    Parameters:
+
+    Parameters
+    ----------
     job_name (str): The type of job to run. Possible values are:
         - 'sp' : Single Point calculation
         - 'opt' : Simple Optimisation
@@ -20,7 +22,8 @@ def write_slurm(job_name, mol_name, cpus=10):
                     then the dimer name is '0_1'.
     cpus (int, optional): The number of CPUs to allocate for the job. Default is 10.
     
-    Notes:
+    Notes
+    -----
     The function generates a SLURM batch script file named '{mol_name}_{job_name}.sh' with appropriate
     configurations based on the job type and molecule name. The script includes settings for job name,
     output and error files, partition, number of tasks, nodes, CPUs per task, memory per CPU, and time limit.
@@ -70,7 +73,8 @@ def submit_slurm_job(job_name, mol_name):
     """
     Submits a SLURM job using the specified job name and molecule name. Works on the KCL CREATE HPC.
 
-    Parameters:
+    Parameters
+    ----------
     job_name (str): The type of job to run. Possible values include:
         - 'tor' : Torsional scan neutral
         - 'pop_n' : Population analysis
@@ -85,7 +89,8 @@ def submit_slurm_job(job_name, mol_name):
     mol_name (str): The name of the dimer from the dictionary. For example, if fragment 0 was attached to fragment 1,
                     then the dimer name would be '0_1'.
 
-    Returns:
+    Returns
+    -------
     bytes: The standard output from the SLURM job submission command.
     """
 

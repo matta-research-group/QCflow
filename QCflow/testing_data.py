@@ -6,10 +6,12 @@ def success_test(parsed_dic):
     """
     Tests if the calculation has been successful for each cclib parsed object.
 
-    Parameters:
+    Parameters
+    ----------
     parsed_dic (dict): A dictionary where the key is the name of the oligomer and the value is the cclib object.
 
-    Returns:
+    Returns
+    -------
     tuple: Two lists - the first list contains the names of oligomers that passed, and the second list contains the names of oligomers that failed.
     """
     passed = []
@@ -25,13 +27,15 @@ def functional_test(parsed_dic, functional):
     """
     Tests if the calculations in the parsed cclib objects were done using the specified functional.
 
-    Parameters:
-        parsed_dic (dict): A dictionary where the key is the name of the oligomer and the value is the cclib object.
-        functional (str): The desired functional of the calculation.
+    Parameters
+    ----------
+    parsed_dic (dict): A dictionary where the key is the name of the oligomer and the value is the cclib object.
+    functional (str): The desired functional of the calculation.
 
-    Returns:
-        tuple: Two lists - the first list contains the names of oligomers that passed the test, 
-               and the second list contains the names of oligomers that failed the test.
+    Returns
+    -------
+    tuple: Two lists - the first list contains the names of oligomers that passed the test, 
+            and the second list contains the names of oligomers that failed the test.
     """
 
     passed = []
@@ -47,12 +51,14 @@ def basis_set_test(parsed_dic, basis_set):
     """
     Tests if the calculations in the parsed dictionary have been done using the correct basis set.
 
-    Parameters:
+    Parameters
+    ----------
     parsed_dic (dict): A dictionary of parsed rdkit objects with the key being the name of the oligomer 
                        and the value being the cclib object.
     basis_set (str): The desired basis set for the calculation.
 
-    Returns:
+    Returns
+    -------
     tuple: Two lists - the first list contains the names of oligomers that passed the basis set check,
            and the second list contains the names of oligomers that failed the basis set check.
     """
