@@ -305,19 +305,19 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values are:</em>) –</p>
+<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values:</em>) –</p>
 <ul>
-<li><p>‘sp’ : Single Point calculation</p></li>
-<li><p>‘opt’ : Simple Optimisation</p></li>
-<li><p>‘tor’ : Torsional scan neutral</p></li>
-<li><p>‘pop_n’ : Population analysis</p></li>
-<li><p>‘ver_a’ : Vertical anion</p></li>
-<li><p>‘ver_c’ : Vertical cation</p></li>
-<li><p>‘opt_a’ : Optimisation anion</p></li>
-<li><p>‘opt_c’ : Optimisation cation</p></li>
-<li><p>‘opt_n’ : Optimisation neutral</p></li>
-<li><p>‘n_a_geo’ : Neutral optimised anion geometry</p></li>
-<li><p>‘n_c_geo’ : Neutral optimised cation geometry</p></li>
+<li><p>‘sp’: Single Point neutral</p></li>
+<li><p>‘opt’: Optimisation neutral</p></li>
+<li><p>‘tor’: Torsional scan neutral</p></li>
+<li><p>‘pop_opt_n’: Optimisation neutral + Population analysis</p></li>
+<li><p>‘sp_a’: Single point anion</p></li>
+<li><p>‘sp_c’: Single point cation</p></li>
+<li><p>‘opt_a’: Optimisation anion</p></li>
+<li><p>‘opt_c’: Optimisation cation</p></li>
+<li><p>‘n_a_geo’: Neutral charge, optimised anion geometry</p></li>
+<li><p>‘n_c_geo’: Neutral charge, optimised cation geometry</p></li>
+<li><p>‘sp_hirsh’: Single Point Hirshfeld</p></li>
 </ul>
 </li>
 <li><p><strong>mol_name (str)</strong> (<em>The name of the dimer from the dictionary, e.g., if fragment 0 was attached to fragment 1,</em>) – then the dimer name is ‘0_1’.</p></li>
@@ -340,17 +340,19 @@ and output files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values include:</em>) –</p>
+<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values:</em>) –</p>
 <ul>
-<li><p>‘tor’ : Torsional scan neutral</p></li>
-<li><p>‘pop_n’ : Population analysis</p></li>
-<li><p>‘ver_a’ : Vertical anion</p></li>
-<li><p>‘ver_c’ : Vertical cation</p></li>
-<li><p>‘opt_a’ : Optimisation anion</p></li>
-<li><p>‘opt_c’ : Optimisation cation</p></li>
-<li><p>‘opt_n’ : Optimisation neutral</p></li>
-<li><p>‘n_a_geo’ : Neutral optimised anion geometry</p></li>
-<li><p>‘n_c_geo’ : Neutral optimised cation geometry</p></li>
+<li><p>‘sp’: Single Point neutral</p></li>
+<li><p>‘opt’: Optimisation neutral</p></li>
+<li><p>‘tor’: Torsional scan neutral</p></li>
+<li><p>‘pop_opt_n’: Optimisation neutral + Population analysis</p></li>
+<li><p>‘sp_a’: Single point anion</p></li>
+<li><p>‘sp_c’: Single point cation</p></li>
+<li><p>‘opt_a’: Optimisation anion</p></li>
+<li><p>‘opt_c’: Optimisation cation</p></li>
+<li><p>‘n_a_geo’: Neutral charge, optimised anion geometry</p></li>
+<li><p>‘n_c_geo’: Neutral charge, optimised cation geometry</p></li>
+<li><p>‘sp_hirsh’: Single Point Hirshfeld</p></li>
 </ul>
 </li>
 <li><p><strong>mol_name (str)</strong> (<em>The name of the dimer from the dictionary. For example, if fragment 0 was attached to fragment 1,</em>) – then the dimer name would be ‘0_1’.</p></li>
@@ -398,18 +400,21 @@ and output files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>job_name</strong> (<em>str</em>) – The type of job to run. Possible values:
-- ‘sp’: Single Point neutral
-- ‘opt’: Optimisation neutral
-- ‘tor’: Torsional scan neutral
-- ‘pop_opt_n’: Optimisation neutral + Population analysis
-- ‘sp_a’: Single point anion
-- ‘sp_c’: Single point cation
-- ‘opt_a’: Optimisation anion
-- ‘opt_c’: Optimisation cation
-- ‘n_a_geo’: Neutral charge, optimised anion geometry
-- ‘n_c_geo’: Neutral charge, optimised cation geometry
-- ‘sp_hirsh’: Single Point Hirshfeld</p></li>
+<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values:</em>) –</p>
+<ul>
+<li><p>‘sp’: Single Point neutral</p></li>
+<li><p>‘opt’: Optimisation neutral</p></li>
+<li><p>‘tor’: Torsional scan neutral</p></li>
+<li><p>‘pop_opt_n’: Optimisation neutral + Population analysis</p></li>
+<li><p>‘sp_a’: Single point anion</p></li>
+<li><p>‘sp_c’: Single point cation</p></li>
+<li><p>‘opt_a’: Optimisation anion</p></li>
+<li><p>‘opt_c’: Optimisation cation</p></li>
+<li><p>‘n_a_geo’: Neutral charge, optimised anion geometry</p></li>
+<li><p>‘n_c_geo’: Neutral charge, optimised cation geometry</p></li>
+<li><p>‘sp_hirsh’: Single Point Hirshfeld</p></li>
+</ul>
+</li>
 <li><p><strong>mol_name</strong> (<em>str</em>) – Name of the oligomer.</p></li>
 <li><p><strong>mol_smile</strong> (<em>str</em>) – SMILES string of the oligomer.</p></li>
 <li><p><strong>functional</strong> (<em>str, optional</em>) – Quantum chemistry functional to be used (default is ‘B3LYP’).</p></li>
@@ -456,7 +461,21 @@ all the way, then runs them. If the calculation has failed, then appends a dicti
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>job_name (str)</strong> (<em>Type of job run e.g. pop_opt_n</em>)</p></li>
+<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values:</em>) –</p>
+<ul>
+<li><p>‘sp’: Single Point neutral</p></li>
+<li><p>‘opt’: Optimisation neutral</p></li>
+<li><p>‘tor’: Torsional scan neutral</p></li>
+<li><p>‘pop_opt_n’: Optimisation neutral + Population analysis</p></li>
+<li><p>‘sp_a’: Single point anion</p></li>
+<li><p>‘sp_c’: Single point cation</p></li>
+<li><p>‘opt_a’: Optimisation anion</p></li>
+<li><p>‘opt_c’: Optimisation cation</p></li>
+<li><p>‘n_a_geo’: Neutral charge, optimised anion geometry</p></li>
+<li><p>‘n_c_geo’: Neutral charge, optimised cation geometry</p></li>
+<li><p>‘sp_hirsh’: Single Point Hirshfeld</p></li>
+</ul>
+</li>
 <li><p><strong>mol_name (str)</strong> (<em>The name of the oligomer as seen in the dictionary i.e. if melanin fragment (b) is combined</em>)</p></li>
 <li><p><strong>mol_smile (str)</strong> (<em>SMILE string of oligomer</em>)</p></li>
 <li><p><strong>mol_dic (dict)</strong> (<em>Dictionary of oligomers where key is the name of the oligomer and value is the SMILES string</em>)</p></li>
