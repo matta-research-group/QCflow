@@ -3,6 +3,10 @@
 # QCflow
 
 [![QCflow stable](https://github.com/matta-research-group/QCflow/actions/workflows/run_test.yml/badge.svg?branch=qcflow-0.2)](https://github.com/matta-research-group/QCflow/actions/workflows/run_test.yml)
+![Python](https://img.shields.io/badge/language-Python-blue.svg)
+[![Documentation](https://img.shields.io/badge/Documentation-Online-brightgreen)](https://matta-research-group.github.io/QCflow/)
+[![GitHub Last commit](https://img.shields.io/github/last-commit/matta-research-group/QCflow)](https://github.com/matta-research-group/QCflow/commits/qcflow-0.3)
+[![GitHub stars](https://img.shields.io/github/stars/matta-research-group/QCflow)](https://github.com/matta-research-group/QCflow/stargazers)
 
 A cheminformatics -> quantum chemistry workflow toolkit leveraging [rdkit](https://github.com/rdkit/rdkit) and [cclib](https://github.com/cclib/cclib).
 
