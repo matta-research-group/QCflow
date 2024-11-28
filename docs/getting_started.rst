@@ -21,7 +21,7 @@ To install QCflow, you can use `conda`. Run the following commands in your termi
 Basic Usage
 -----------
 
-Example usage can be found in our 
+Example usage can be found in our notebooks and python script `examples <https://github.com/matta-research-group/QCflow/Examples>`_.
 
 
 Contributing
