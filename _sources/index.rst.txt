@@ -6,8 +6,8 @@
 Welcome to QCflows documentation!
 =========================================================
 .. image:: https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QCflow_logo_narrow.jpg?raw=true
-    :alt: QCflow Logo
-    :width: 200px
+   :alt: QCflow Logo
+   :width: 200px
 
 .. toctree::
    :maxdepth: 2
