@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QCflow.slurm &mdash; QCflow 0.2.0 documentation</title>
+  <title>QCflow.slurm &mdash; QCflow 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../../_static/documentation_options.js?v=e259d695"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -89,18 +89,18 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    job_name (str): The type of job to run. Possible values are:</span>
-<span class="sd">        - &#39;sp&#39; : Single Point calculation</span>
-<span class="sd">        - &#39;opt&#39; : Simple Optimisation</span>
-<span class="sd">        - &#39;tor&#39; : Torsional scan neutral</span>
-<span class="sd">        - &#39;pop_n&#39; : Population analysis</span>
-<span class="sd">        - &#39;ver_a&#39; : Vertical anion</span>
-<span class="sd">        - &#39;ver_c&#39; : Vertical cation</span>
-<span class="sd">        - &#39;opt_a&#39; : Optimisation anion</span>
-<span class="sd">        - &#39;opt_c&#39; : Optimisation cation</span>
-<span class="sd">        - &#39;opt_n&#39; : Optimisation neutral</span>
-<span class="sd">        - &#39;n_a_geo&#39; : Neutral optimised anion geometry</span>
-<span class="sd">        - &#39;n_c_geo&#39; : Neutral optimised cation geometry</span>
+<span class="sd">    job_name (str): The type of job to run. Possible values:</span>
+<span class="sd">        - &#39;sp&#39;: Single Point neutral</span>
+<span class="sd">        - &#39;opt&#39;: Optimisation neutral</span>
+<span class="sd">        - &#39;tor&#39;: Torsional scan neutral                                                                                </span>
+<span class="sd">        - &#39;pop_opt_n&#39;: Optimisation neutral + Population analysis                                                                                </span>
+<span class="sd">        - &#39;sp_a&#39;: Single point anion                                                                                </span>
+<span class="sd">        - &#39;sp_c&#39;: Single point cation</span>
+<span class="sd">        - &#39;opt_a&#39;: Optimisation anion</span>
+<span class="sd">        - &#39;opt_c&#39;: Optimisation cation</span>
+<span class="sd">        - &#39;n_a_geo&#39;: Neutral charge, optimised anion geometry</span>
+<span class="sd">        - &#39;n_c_geo&#39;: Neutral charge, optimised cation geometry</span>
+<span class="sd">        - &#39;sp_hirsh&#39;: Single Point Hirshfeld </span>
 <span class="sd">    mol_name (str): The name of the dimer from the dictionary, e.g., if fragment 0 was attached to fragment 1,</span>
 <span class="sd">                    then the dimer name is &#39;0_1&#39;.</span>
 <span class="sd">    cpus (int, optional): The number of CPUs to allocate for the job. Default is 10.</span>
@@ -161,16 +161,18 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    job_name (str): The type of job to run. Possible values include:</span>
-<span class="sd">        - &#39;tor&#39; : Torsional scan neutral</span>
-<span class="sd">        - &#39;pop_n&#39; : Population analysis</span>
-<span class="sd">        - &#39;ver_a&#39; : Vertical anion</span>
-<span class="sd">        - &#39;ver_c&#39; : Vertical cation</span>
-<span class="sd">        - &#39;opt_a&#39; : Optimisation anion</span>
-<span class="sd">        - &#39;opt_c&#39; : Optimisation cation</span>
-<span class="sd">        - &#39;opt_n&#39; : Optimisation neutral</span>
-<span class="sd">        - &#39;n_a_geo&#39; : Neutral optimised anion geometry</span>
-<span class="sd">        - &#39;n_c_geo&#39; : Neutral optimised cation geometry</span>
+<span class="sd">    job_name (str): The type of job to run. Possible values:</span>
+<span class="sd">        - &#39;sp&#39;: Single Point neutral</span>
+<span class="sd">        - &#39;opt&#39;: Optimisation neutral</span>
+<span class="sd">        - &#39;tor&#39;: Torsional scan neutral                                                                                </span>
+<span class="sd">        - &#39;pop_opt_n&#39;: Optimisation neutral + Population analysis                                                                                </span>
+<span class="sd">        - &#39;sp_a&#39;: Single point anion                                                                                </span>
+<span class="sd">        - &#39;sp_c&#39;: Single point cation</span>
+<span class="sd">        - &#39;opt_a&#39;: Optimisation anion</span>
+<span class="sd">        - &#39;opt_c&#39;: Optimisation cation</span>
+<span class="sd">        - &#39;n_a_geo&#39;: Neutral charge, optimised anion geometry</span>
+<span class="sd">        - &#39;n_c_geo&#39;: Neutral charge, optimised cation geometry</span>
+<span class="sd">        - &#39;sp_hirsh&#39;: Single Point Hirshfeld </span>
 
 <span class="sd">    mol_name (str): The name of the dimer from the dictionary. For example, if fragment 0 was attached to fragment 1,</span>
 <span class="sd">                    then the dimer name would be &#39;0_1&#39;.</span>

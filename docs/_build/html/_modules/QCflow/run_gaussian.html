@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QCflow.run_gaussian &mdash; QCflow 0.2.0 documentation</title>
+  <title>QCflow.run_gaussian &mdash; QCflow 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../../_static/documentation_options.js?v=e259d695"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -135,39 +135,84 @@
 <a class="viewcode-back" href="../../api.html#QCflow.run_gaussian.run_calc">[docs]</a>
 <span class="k">def</span> <span class="nf">run_calc</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">,</span> <span class="n">mol_smile</span><span class="p">,</span> <span class="n">functional</span><span class="o">=</span><span class="s1">&#39;B3LYP&#39;</span><span class="p">,</span> <span class="n">basis_set</span><span class="o">=</span><span class="s1">&#39;6-31G*&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Submits a gaussian calculation to CREATE HPC.</span>
+<span class="sd">    Submits a Gaussian calculation to CREATE HPC.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    job_name (str): Name of the job to be submitted.</span>
-<span class="sd">    mol_name (str): Name of the oligomer.</span>
-<span class="sd">    mol_smile (str): SMILE string of the oligomer.</span>
-<span class="sd">    functional (str, optional): Quantum chemistry functional to be used (default is &#39;B3LYP&#39;).</span>
-<span class="sd">    basis_set (str, optional): Basis set to be used (default is &#39;6-31G*&#39;).</span>
+<span class="sd">    job_name (str): The type of job to run. Possible values:</span>
+<span class="sd">        - &#39;sp&#39;: Single Point neutral</span>
+<span class="sd">        - &#39;opt&#39;: Optimisation neutral</span>
+<span class="sd">        - &#39;tor&#39;: Torsional scan neutral                                                                                </span>
+<span class="sd">        - &#39;pop_opt_n&#39;: Optimisation neutral + Population analysis                                                                                </span>
+<span class="sd">        - &#39;sp_a&#39;: Single point anion                                                                                </span>
+<span class="sd">        - &#39;sp_c&#39;: Single point cation</span>
+<span class="sd">        - &#39;opt_a&#39;: Optimisation anion</span>
+<span class="sd">        - &#39;opt_c&#39;: Optimisation cation</span>
+<span class="sd">        - &#39;n_a_geo&#39;: Neutral charge, optimised anion geometry</span>
+<span class="sd">        - &#39;n_c_geo&#39;: Neutral charge, optimised cation geometry</span>
+<span class="sd">        - &#39;sp_hirsh&#39;: Single Point Hirshfeld </span>
+<span class="sd">    mol_name : str</span>
+<span class="sd">        Name of the oligomer.</span>
+<span class="sd">    mol_smile : str</span>
+<span class="sd">        SMILES string of the oligomer.</span>
+<span class="sd">    functional : str, optional</span>
+<span class="sd">        Quantum chemistry functional to be used (default is &#39;B3LYP&#39;).</span>
+<span class="sd">    basis_set : str, optional</span>
+<span class="sd">        Basis set to be used (default is &#39;6-31G*&#39;).</span>
 
-<span class="sd">    This function performs the following steps:</span>
-<span class="sd">    1. Creates a directory for the molecule.</span>
-<span class="sd">    2. Changes the current working directory to the newly created directory.</span>
-<span class="sd">    3. Converts the SMILES string to an RDKit molecule object.</span>
-<span class="sd">    4. Generates 3D coordinates for the molecule.</span>
-<span class="sd">    5. Writes a Gaussian input file for the molecule.</span>
-<span class="sd">    6. Writes a SLURM script for job submission.</span>
-<span class="sd">    7. Submits the SLURM job.</span>
-<span class="sd">    8. Returns to the previous directory.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    - For &#39;sp_a&#39;, &#39;sp_c&#39;, &#39;opt_a&#39;, &#39;opt_c&#39;, &#39;n_a_geo&#39;, &#39;n_c_geo&#39;, and &#39;sp_hirsh&#39;:</span>
+<span class="sd">        - Writes a Gaussian input file directly.</span>
+<span class="sd">    - For &#39;opt&#39;, &#39;sp&#39;, and &#39;pop_opt_n&#39;:</span>
+<span class="sd">        - Converts the SMILES string to an RDKit molecule object.</span>
+<span class="sd">        - Generates 3D coordinates for the molecule.</span>
+<span class="sd">        - Predicts the conformer geometry.</span>
+<span class="sd">        - Writes a Gaussian input file with the conformer geometry.</span>
+<span class="sd">    - For &#39;tor&#39;:</span>
+<span class="sd">        - Converts the SMILES string to an RDKit molecule object.</span>
+<span class="sd">        - Identifies the bond for torsional scan.</span>
+<span class="sd">        - Determines the torsion angle.</span>
+<span class="sd">        - Generates 3D coordinates for the molecule.</span>
+<span class="sd">        - Writes a Gaussian input file with the torsion angle.</span>
+<span class="sd">    Finally, the function writes a SLURM script, submits the job, and returns to the previous directory.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
 
     <span class="c1">#makes a directory for the molecule</span>
     <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="c1">#goes into directory</span>
     <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="c1">#turns smiles string into rdkit object</span>
-    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">mol_smile</span><span class="p">)</span>
-    <span class="c1">#gets rdkit estimated coordinates of dimer</span>
-    <span class="n">mol3d</span> <span class="o">=</span> <span class="n">embed_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
 
-    <span class="n">conf_geo</span> <span class="o">=</span> <span class="n">rdkit_predict_conf</span><span class="p">(</span><span class="n">mol_smile</span><span class="p">)</span>
-    <span class="c1">#writes a guassian input file</span>
-    <span class="n">write_gaussian</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">,</span> <span class="n">mol_smile</span><span class="p">,</span> <span class="n">functional</span><span class="p">,</span> <span class="n">basis_set</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="n">mol3d</span><span class="p">,</span> <span class="n">torsion</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">conformer</span><span class="o">=</span><span class="n">conf_geo</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;sp_a&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;sp_c&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;opt_c&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;opt_a&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;n_a_geo&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;n_c_geo&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;sp_hirsh&#39;</span><span class="p">):</span>
+
+        <span class="n">write_gaussian</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">,</span> <span class="n">mol_smile</span><span class="p">,</span> <span class="n">functional</span><span class="p">,</span> <span class="n">basis_set</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;opt&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;sp&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;pop_opt_n&#39;</span><span class="p">):</span>
+        <span class="c1">#turns smiles string into rdkit object</span>
+        <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">mol_smile</span><span class="p">)</span>
+        <span class="c1">#gets rdkit estimated coordinates of dimer</span>
+        <span class="n">mol3d</span> <span class="o">=</span> <span class="n">embed_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+
+        <span class="n">conf_geo</span> <span class="o">=</span> <span class="n">rdkit_predict_conf</span><span class="p">(</span><span class="n">mol_smile</span><span class="p">)</span>
+        <span class="c1">#writes a guassian input file</span>
+        <span class="n">write_gaussian</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">,</span> <span class="n">mol_smile</span><span class="p">,</span> <span class="n">functional</span><span class="p">,</span> <span class="n">basis_set</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="n">mol3d</span><span class="p">,</span> <span class="n">torsion</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">conformer</span><span class="o">=</span><span class="n">conf_geo</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;tor&#39;</span><span class="p">):</span>
+        <span class="c1">#turns smiles string into rdkit object</span>
+        <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">mol_smile</span><span class="p">)</span>
+        <span class="c1">#finds the bond between the fragment</span>
+        <span class="n">bond</span> <span class="o">=</span> <span class="n">getBond</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="c1">#torsion of the bond between the fragment</span>
+        <span class="n">torsion</span> <span class="o">=</span> <span class="n">getTorsion</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1">#gets rdkit estimated coordinates of dimer</span>
+        <span class="n">mol3d</span> <span class="o">=</span> <span class="n">embed_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+
+        <span class="c1">#writes a guassian input file</span>
+        <span class="n">write_gaussian</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">,</span> <span class="n">mol_smile</span><span class="p">,</span> <span class="n">functional</span><span class="p">,</span> <span class="n">basis_set</span><span class="p">,</span> <span class="n">mol3d</span><span class="p">,</span> <span class="n">torsion</span><span class="p">)</span>
+
+    
     <span class="c1">#writes the slurm file</span>
     <span class="n">write_slurm</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">)</span>
     <span class="c1">#submits the slurm jon</span>
@@ -186,7 +231,18 @@
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    job_name (str): Type of job run e.g. pop_opt_n</span>
+<span class="sd">    job_name (str): The type of job to run. Possible values:</span>
+<span class="sd">        - &#39;sp&#39;: Single Point neutral</span>
+<span class="sd">        - &#39;opt&#39;: Optimisation neutral</span>
+<span class="sd">        - &#39;tor&#39;: Torsional scan neutral                                                                                </span>
+<span class="sd">        - &#39;pop_opt_n&#39;: Optimisation neutral + Population analysis                                                                                </span>
+<span class="sd">        - &#39;sp_a&#39;: Single point anion                                                                                </span>
+<span class="sd">        - &#39;sp_c&#39;: Single point cation</span>
+<span class="sd">        - &#39;opt_a&#39;: Optimisation anion</span>
+<span class="sd">        - &#39;opt_c&#39;: Optimisation cation</span>
+<span class="sd">        - &#39;n_a_geo&#39;: Neutral charge, optimised anion geometry</span>
+<span class="sd">        - &#39;n_c_geo&#39;: Neutral charge, optimised cation geometry</span>
+<span class="sd">        - &#39;sp_hirsh&#39;: Single Point Hirshfeld</span>
 <span class="sd">    mol_name (str): The name of the oligomer as seen in the dictionary i.e. if melanin fragment (b) is combined</span>
 <span class="sd">    mol_smile (str): SMILE string of oligomer</span>
 <span class="sd">    mol_dic (dict): Dictionary of oligomers where key is the name of the oligomer and value is the SMILES string</span>
@@ -231,57 +287,6 @@
 
 
     <span class="k">return</span> <span class="n">fully_complete</span><span class="p">,</span> <span class="n">not_complete</span><span class="p">,</span> <span class="n">in_progress</span></div>
-
-
-
-<div class="viewcode-block" id="run_torsion">
-<a class="viewcode-back" href="../../api.html#QCflow.run_gaussian.run_torsion">[docs]</a>
-<span class="k">def</span> <span class="nf">run_torsion</span><span class="p">(</span><span class="n">mol_name</span><span class="p">,</span> <span class="n">mol_smiles</span><span class="p">,</span> <span class="n">functional</span><span class="o">=</span><span class="s1">&#39;B3LYP&#39;</span><span class="p">,</span> <span class="n">basis_set</span><span class="o">=</span><span class="s1">&#39;6-31G*&#39;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    When provided with a dictionary of molecules, this function creates the SLURM </span>
-<span class="sd">    and Gaussian input files and then submits the torsional scan.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    mol_name (str): Name of the oligomer.</span>
-<span class="sd">    mol_smile (str): SMILE string of the oligomer.</span>
-<span class="sd">    functional (str): The functional to be used in Gaussian calculations. Default is &#39;B3LYP&#39;.</span>
-<span class="sd">    basis_set (str): The basis set to be used in Gaussian calculations. Default is &#39;6-31G*&#39;.</span>
-
-<span class="sd">    The function performs the following steps for each molecule:</span>
-<span class="sd">    1. Creates a directory named after the molecule.</span>
-<span class="sd">    2. Converts the SMILES string to an RDKit molecule object.</span>
-<span class="sd">    3. Identifies the bond and torsion of the molecule.</span>
-<span class="sd">    4. Generates 3D coordinates for the molecule.</span>
-<span class="sd">    5. Writes the Gaussian input file.</span>
-<span class="sd">    6. Writes the SLURM job file.</span>
-<span class="sd">    7. Submits the SLURM job.</span>
-<span class="sd">    8. Returns to the previous directory.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    
-    <span class="c1">#makes directory called after the job name</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="c1">#goes into that directory</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-        <span class="c1">#turns smiles string into rdkit object</span>
-    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">mol_smiles</span><span class="p">)</span>
-        <span class="c1">#finds the bond between the fragment</span>
-    <span class="n">bond</span> <span class="o">=</span> <span class="n">getBond</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-        <span class="c1">#torsion of the bond between the fragment</span>
-    <span class="n">torsion</span> <span class="o">=</span> <span class="n">getTorsion</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="c1">#gets rdkit estimated coordinates of dimer</span>
-    <span class="n">mol3d</span> <span class="o">=</span> <span class="n">embed_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
-
-        <span class="c1">#writes a guassian input file</span>
-    <span class="n">write_gaussian</span><span class="p">(</span><span class="s1">&#39;tor&#39;</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">,</span> <span class="n">mol_smiles</span><span class="p">,</span> <span class="n">functional</span><span class="p">,</span> <span class="n">basis_set</span><span class="p">,</span> <span class="n">mol3d</span><span class="p">,</span> <span class="n">torsion</span><span class="p">)</span>
-        <span class="c1">#writes the slurm file</span>
-    <span class="n">write_slurm</span><span class="p">(</span><span class="s1">&#39;tor&#39;</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">)</span>
-        <span class="c1">#submits the slurm jon</span>
-    <span class="n">submit_slurm_job</span><span class="p">(</span><span class="s1">&#39;tor&#39;</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">)</span>
-        <span class="c1">#goes back to previous directory</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()))</span></div>
 
 </pre></div>
 

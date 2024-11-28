@@ -53,8 +53,7 @@ def run_calc(job_name, mol_name, mol_smile, functional='B3LYP', basis_set='6-31G
 
     Parameters
     ----------
-    job_name : str
-        The type of job to run. Possible values:
+    job_name (str): The type of job to run. Possible values:
         - 'sp': Single Point neutral
         - 'opt': Optimisation neutral
         - 'tor': Torsional scan neutral                                                                                
@@ -65,7 +64,7 @@ def run_calc(job_name, mol_name, mol_smile, functional='B3LYP', basis_set='6-31G
         - 'opt_c': Optimisation cation
         - 'n_a_geo': Neutral charge, optimised anion geometry
         - 'n_c_geo': Neutral charge, optimised cation geometry
-        - 'sp_hirsh': Single Point Hirshfeld
+        - 'sp_hirsh': Single Point Hirshfeld 
     mol_name : str
         Name of the oligomer.
     mol_smile : str
@@ -143,7 +142,18 @@ def staging_opt(job_name, mol_name, mol_smile, mol_dic, functional, basis_set):
     
     Parameters
     ----------
-    job_name (str): Type of job run e.g. pop_opt_n
+    job_name (str): The type of job to run. Possible values:
+        - 'sp': Single Point neutral
+        - 'opt': Optimisation neutral
+        - 'tor': Torsional scan neutral                                                                                
+        - 'pop_opt_n': Optimisation neutral + Population analysis                                                                                
+        - 'sp_a': Single point anion                                                                                
+        - 'sp_c': Single point cation
+        - 'opt_a': Optimisation anion
+        - 'opt_c': Optimisation cation
+        - 'n_a_geo': Neutral charge, optimised anion geometry
+        - 'n_c_geo': Neutral charge, optimised cation geometry
+        - 'sp_hirsh': Single Point Hirshfeld
     mol_name (str): The name of the oligomer as seen in the dictionary i.e. if melanin fragment (b) is combined
     mol_smile (str): SMILE string of oligomer
     mol_dic (dict): Dictionary of oligomers where key is the name of the oligomer and value is the SMILES string

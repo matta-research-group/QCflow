@@ -6,18 +6,18 @@ def write_slurm(job_name, mol_name, cpus=10):
 
     Parameters
     ----------
-    job_name (str): The type of job to run. Possible values are:
-        - 'sp' : Single Point calculation
-        - 'opt' : Simple Optimisation
-        - 'tor' : Torsional scan neutral
-        - 'pop_n' : Population analysis
-        - 'ver_a' : Vertical anion
-        - 'ver_c' : Vertical cation
-        - 'opt_a' : Optimisation anion
-        - 'opt_c' : Optimisation cation
-        - 'opt_n' : Optimisation neutral
-        - 'n_a_geo' : Neutral optimised anion geometry
-        - 'n_c_geo' : Neutral optimised cation geometry
+    job_name (str): The type of job to run. Possible values:
+        - 'sp': Single Point neutral
+        - 'opt': Optimisation neutral
+        - 'tor': Torsional scan neutral                                                                                
+        - 'pop_opt_n': Optimisation neutral + Population analysis                                                                                
+        - 'sp_a': Single point anion                                                                                
+        - 'sp_c': Single point cation
+        - 'opt_a': Optimisation anion
+        - 'opt_c': Optimisation cation
+        - 'n_a_geo': Neutral charge, optimised anion geometry
+        - 'n_c_geo': Neutral charge, optimised cation geometry
+        - 'sp_hirsh': Single Point Hirshfeld 
     mol_name (str): The name of the dimer from the dictionary, e.g., if fragment 0 was attached to fragment 1,
                     then the dimer name is '0_1'.
     cpus (int, optional): The number of CPUs to allocate for the job. Default is 10.
@@ -75,16 +75,18 @@ def submit_slurm_job(job_name, mol_name):
 
     Parameters
     ----------
-    job_name (str): The type of job to run. Possible values include:
-        - 'tor' : Torsional scan neutral
-        - 'pop_n' : Population analysis
-        - 'ver_a' : Vertical anion
-        - 'ver_c' : Vertical cation
-        - 'opt_a' : Optimisation anion
-        - 'opt_c' : Optimisation cation
-        - 'opt_n' : Optimisation neutral
-        - 'n_a_geo' : Neutral optimised anion geometry
-        - 'n_c_geo' : Neutral optimised cation geometry
+    job_name (str): The type of job to run. Possible values:
+        - 'sp': Single Point neutral
+        - 'opt': Optimisation neutral
+        - 'tor': Torsional scan neutral                                                                                
+        - 'pop_opt_n': Optimisation neutral + Population analysis                                                                                
+        - 'sp_a': Single point anion                                                                                
+        - 'sp_c': Single point cation
+        - 'opt_a': Optimisation anion
+        - 'opt_c': Optimisation cation
+        - 'n_a_geo': Neutral charge, optimised anion geometry
+        - 'n_c_geo': Neutral charge, optimised cation geometry
+        - 'sp_hirsh': Single Point Hirshfeld 
 
     mol_name (str): The name of the dimer from the dictionary. For example, if fragment 0 was attached to fragment 1,
                     then the dimer name would be '0_1'.
