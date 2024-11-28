@@ -1,0 +1,1077 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>QCflow Documentation &mdash; QCflow 0.2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Getting Started with QCflow" href="getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> QCflow
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with QCflow</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">QCflow Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.load_gaussian">QCflow.load_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.write_gaussian">QCflow.write_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.slurm">QCflow.slurm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.run_gaussian">QCflow.run_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.testing_data">QCflow.testing_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.energy_calculations">QCflow.energy_calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.find_torsion">QCflow.find_torsion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.torsion_parser">QCflow.torsion_parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.fragments">QCflow.fragments</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">QCflow</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>QCflow Documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-QCflow">
+<span id="qcflow-documentation"></span><h1>QCflow Documentation<a class="headerlink" href="#module-QCflow" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="module-QCflow.load_gaussian">
+<span id="qcflow-load-gaussian"></span><h1>QCflow.load_gaussian<a class="headerlink" href="#module-QCflow.load_gaussian" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.load_gaussian.load_data">
+<span class="sig-prename descclassname"><span class="pre">QCflow.load_gaussian.</span></span><span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/load_gaussian.html#load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.load_gaussian.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens and reads the .log data file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol_name (str)</strong> (<em>Name of molecule.</em>)</p></li>
+<li><p><strong>job_name (str)</strong> (<em>The type of job run. Possible runs:</em>) –</p>
+<ul>
+<li><p>Single Point neutral → sp</p></li>
+<li><p>Optimisation neutral → opt</p></li>
+<li><p>Torsional scan neutral → tor</p></li>
+<li><p>Optimisation neutral + Population analysis → pop_opt_n</p></li>
+<li><p>Single point anion → sp_a</p></li>
+<li><p>Single point cation → sp_c</p></li>
+<li><p>Optimisation anion → opt_a</p></li>
+<li><p>Optimisation cation → opt_c</p></li>
+<li><p>neutral charge, optimised anion geometry → n_a_geo</p></li>
+<li><p>neutral charge, optimised cation geometry → n_c_geo</p></li>
+<li><p>Single Point Hirshfeld → sp_hirsh</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>cclib.parser.data.ccData</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Parsed data from the .log file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.load_gaussian.save_dictionary">
+<span class="sig-prename descclassname"><span class="pre">QCflow.load_gaussian.</span></span><span class="sig-name descname"><span class="pre">save_dictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_dic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_of_dic</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/load_gaussian.html#save_dictionary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.load_gaussian.save_dictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the created dictionary as a .json file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol_dic (dict)</strong> (<em>Dictionary of oligomers where the key is the number of the oligomer and the value is the SMILE string.</em>)</p></li>
+<li><p><strong>name_of_dic (str)</strong> (<em>Desired name of the json file (without the .json extension).</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.load_gaussian.open_dictionary">
+<span class="sig-prename descclassname"><span class="pre">QCflow.load_gaussian.</span></span><span class="sig-name descname"><span class="pre">open_dictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/load_gaussian.html#open_dictionary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.load_gaussian.open_dictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a saved dictionary file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dictionary_file (str)</strong> (<em>The name of the .json file in which the dictionary is saved.</em>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The dictionary loaded from the specified .json file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.load_gaussian.data_dic">
+<span class="sig-prename descclassname"><span class="pre">QCflow.load_gaussian.</span></span><span class="sig-name descname"><span class="pre">data_dic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_dic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/load_gaussian.html#data_dic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.load_gaussian.data_dic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a dictionary of oligomers and the calculation performed, and returns a dictionary of parsed cclib objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol_dic (dict)</strong> (<em>A dictionary where keys are the names of oligomers and values are their SMILE strings.</em>)</p></li>
+<li><p><strong>job_type (str)</strong> (<em>The type of calculation performed.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A dictionary where keys are the names of the oligomers and values are the parsed cclib objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QCflow.write_gaussian">
+<span id="qcflow-write-gaussian"></span><h1>QCflow.write_gaussian<a class="headerlink" href="#module-QCflow.write_gaussian" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.write_gaussian.write_gaussian">
+<span class="sig-prename descclassname"><span class="pre">QCflow.write_gaussian.</span></span><span class="sig-name descname"><span class="pre">write_gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'B3LYP'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6-31G*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torsion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conformer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_chk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/write_gaussian.html#write_gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.write_gaussian.write_gaussian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a Gaussian input file based on the provided parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values:</em>) –</p>
+<ul>
+<li><p>‘sp’: Single Point neutral</p></li>
+<li><p>‘opt’: Optimisation neutral</p></li>
+<li><p>‘tor’: Torsional scan neutral</p></li>
+<li><p>‘pop_opt_n’: Optimisation neutral + Population analysis</p></li>
+<li><p>‘sp_a’: Single point anion</p></li>
+<li><p>‘sp_c’: Single point cation</p></li>
+<li><p>‘opt_a’: Optimisation anion</p></li>
+<li><p>‘opt_c’: Optimisation cation</p></li>
+<li><p>‘n_a_geo’: Neutral charge, optimised anion geometry</p></li>
+<li><p>‘n_c_geo’: Neutral charge, optimised cation geometry</p></li>
+<li><p>‘sp_hirsh’: Single Point Hirshfeld</p></li>
+</ul>
+</li>
+<li><p><strong>mol_name (str)</strong> (<em>The name of the molecule.</em>)</p></li>
+<li><p><strong>smile (str)</strong> (<em>The SMILE string of the molecule.</em>)</p></li>
+<li><p><strong>functional (str, optional)</strong> (<em>The functional to use. Default is ‘B3LYP’.</em>)</p></li>
+<li><p><strong>basis_set (str, optional)</strong> (<em>The basis set to use. Default is ‘6-31G</em>’.*)</p></li>
+<li><p><strong>mol (rdkit.Chem.rdchem.Mol, optional)</strong> (<em>The RDKit embedded molecule object.</em>)</p></li>
+<li><p><strong>torsion (tuple, optional)</strong> (<em>The torsion information for the rotatable bond.</em>)</p></li>
+<li><p><strong>conformer (rdkit.Chem.rdchem.Conformer, optional)</strong> (<em>The RDKit conformer of the molecule.</em>)</p></li>
+<li><p><strong>old_chk (str, optional)</strong> (<em>The previous checkpoint file used to guess geometry/MOs.</em>) – Example: ‘mol_name_opt_321G.chk’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>None</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Writes the Gaussian input file to disk.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QCflow.slurm">
+<span id="qcflow-slurm"></span><h1>QCflow.slurm<a class="headerlink" href="#module-QCflow.slurm" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.slurm.write_slurm">
+<span class="sig-prename descclassname"><span class="pre">QCflow.slurm.</span></span><span class="sig-name descname"><span class="pre">write_slurm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/slurm.html#write_slurm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.slurm.write_slurm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a SLURM batch script for a specified job type and molecule name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values are:</em>) –</p>
+<ul>
+<li><p>‘sp’ : Single Point calculation</p></li>
+<li><p>‘opt’ : Simple Optimisation</p></li>
+<li><p>‘tor’ : Torsional scan neutral</p></li>
+<li><p>‘pop_n’ : Population analysis</p></li>
+<li><p>‘ver_a’ : Vertical anion</p></li>
+<li><p>‘ver_c’ : Vertical cation</p></li>
+<li><p>‘opt_a’ : Optimisation anion</p></li>
+<li><p>‘opt_c’ : Optimisation cation</p></li>
+<li><p>‘opt_n’ : Optimisation neutral</p></li>
+<li><p>‘n_a_geo’ : Neutral optimised anion geometry</p></li>
+<li><p>‘n_c_geo’ : Neutral optimised cation geometry</p></li>
+</ul>
+</li>
+<li><p><strong>mol_name (str)</strong> (<em>The name of the dimer from the dictionary, e.g., if fragment 0 was attached to fragment 1,</em>) – then the dimer name is ‘0_1’.</p></li>
+<li><p><strong>cpus (int, optional)</strong> (<em>The number of CPUs to allocate for the job. Default is 10.</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The function generates a SLURM batch script file named ‘{mol_name}_{job_name}.sh’ with appropriate
+configurations based on the job type and molecule name. The script includes settings for job name,
+output and error files, partition, number of tasks, nodes, CPUs per task, memory per CPU, and time limit.
+It also sets up the environment and execution line for running Gaussian 16 (g16) with the specified input
+and output files.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.slurm.submit_slurm_job">
+<span class="sig-prename descclassname"><span class="pre">QCflow.slurm.</span></span><span class="sig-name descname"><span class="pre">submit_slurm_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/slurm.html#submit_slurm_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.slurm.submit_slurm_job" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submits a SLURM job using the specified job name and molecule name. Works on the KCL CREATE HPC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values include:</em>) –</p>
+<ul>
+<li><p>‘tor’ : Torsional scan neutral</p></li>
+<li><p>‘pop_n’ : Population analysis</p></li>
+<li><p>‘ver_a’ : Vertical anion</p></li>
+<li><p>‘ver_c’ : Vertical cation</p></li>
+<li><p>‘opt_a’ : Optimisation anion</p></li>
+<li><p>‘opt_c’ : Optimisation cation</p></li>
+<li><p>‘opt_n’ : Optimisation neutral</p></li>
+<li><p>‘n_a_geo’ : Neutral optimised anion geometry</p></li>
+<li><p>‘n_c_geo’ : Neutral optimised cation geometry</p></li>
+</ul>
+</li>
+<li><p><strong>mol_name (str)</strong> (<em>The name of the dimer from the dictionary. For example, if fragment 0 was attached to fragment 1,</em>) – then the dimer name would be ‘0_1’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>bytes</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The standard output from the SLURM job submission command.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QCflow.run_gaussian">
+<span id="qcflow-run-gaussian"></span><h1>QCflow.run_gaussian<a class="headerlink" href="#module-QCflow.run_gaussian" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.run_gaussian.rdkit_predict_conf">
+<span class="sig-prename descclassname"><span class="pre">QCflow.run_gaussian.</span></span><span class="sig-name descname"><span class="pre">rdkit_predict_conf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_of_conformer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_energy_MMFF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_energy_index_MMFF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/run_gaussian.html#rdkit_predict_conf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.run_gaussian.rdkit_predict_conf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates conformers for a given molecule using RDKit and returns the lowest energy conformer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol_smiles (str)</strong> (<em>The SMILES representation of the molecule.</em>)</p></li>
+<li><p><strong>num_of_conformer (int)</strong> (<em>The number of conformers to be generated (default: 100).</em>)</p></li>
+<li><p><strong>max_iter (int)</strong> (<em>The maximum number of iterations for conformer optimization (default: 500).</em>)</p></li>
+<li><p><strong>min_energy_MMFF (float)</strong> (<em>The minimum energy threshold for selecting the lowest energy conformer (default: 10000).</em>)</p></li>
+<li><p><strong>min_energy_index_MMFF (int)</strong> (<em>The index of the lowest energy conformer (default: 0).</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>conf (Chem.Conformer)</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The lowest energy conformer of the molecule.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.run_gaussian.run_calc">
+<span class="sig-prename descclassname"><span class="pre">QCflow.run_gaussian.</span></span><span class="sig-name descname"><span class="pre">run_calc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_smile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'B3LYP'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6-31G*'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/run_gaussian.html#run_calc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.run_gaussian.run_calc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submits a gaussian calculation to CREATE HPC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_name (str)</strong> (<em>Name of the job to be submitted.</em>)</p></li>
+<li><p><strong>mol_name (str)</strong> (<em>Name of the oligomer.</em>)</p></li>
+<li><p><strong>mol_smile (str)</strong> (<em>SMILE string of the oligomer.</em>)</p></li>
+<li><p><strong>functional (str, optional)</strong> (<em>Quantum chemistry functional to be used (default is ‘B3LYP’).</em>)</p></li>
+<li><p><strong>basis_set (str, optional)</strong> (<em>Basis set to be used (default is ‘6-31G</em>’).*)</p></li>
+<li><p><strong>This function performs the following steps</strong></p></li>
+<li><p><strong>1. Creates a directory for the molecule.</strong></p></li>
+<li><p><strong>2. Changes the current working directory to the newly created directory.</strong></p></li>
+<li><p><strong>3. Converts the SMILES string to an RDKit molecule object.</strong></p></li>
+<li><p><strong>4. Generates 3D coordinates for the molecule.</strong></p></li>
+<li><p><strong>5. Writes a Gaussian input file for the molecule.</strong></p></li>
+<li><p><strong>6. Writes a SLURM script for job submission.</strong></p></li>
+<li><p><strong>7. Submits the SLURM job.</strong></p></li>
+<li><p><strong>8. Returns to the previous directory.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.run_gaussian.staging_opt">
+<span class="sig-prename descclassname"><span class="pre">QCflow.run_gaussian.</span></span><span class="sig-name descname"><span class="pre">staging_opt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_smile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_dic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/run_gaussian.html#staging_opt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.run_gaussian.staging_opt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the calcultion has been completed at has been a success.
+If it has, then appends a dictionary showing this. If the calculations haven’t been run
+all the way, then runs them. If the calculation has failed, then appends a dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_name (str)</strong> (<em>Type of job run e.g. pop_opt_n</em>)</p></li>
+<li><p><strong>mol_name (str)</strong> (<em>The name of the oligomer as seen in the dictionary i.e. if melanin fragment (b) is combined</em>)</p></li>
+<li><p><strong>mol_smile (str)</strong> (<em>SMILE string of oligomer</em>)</p></li>
+<li><p><strong>mol_dic (dict)</strong> (<em>Dictionary of oligomers where key is the name of the oligomer and value is the SMILES string</em>)</p></li>
+<li><p><strong>functional (str)</strong> (<em>Functional used in calculations (e.g. B3LYP)</em>)</p></li>
+<li><p><strong>basis_set (str)</strong> (<em>Basis set used (e.g. 6-31G</em>)*)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tuple</strong> – fully_complete (dict): Oligomers that have been calculated at the highest basis set
+not_complete (dict): Oligomers that failed and need manual assessment (shows basis set they failed at)
+in_progress (dict): Oligomers that are still in progress (shows basis set they are currently being run at)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A tuple containing three dictionaries:</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.run_gaussian.run_torsion">
+<span class="sig-prename descclassname"><span class="pre">QCflow.run_gaussian.</span></span><span class="sig-name descname"><span class="pre">run_torsion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'B3LYP'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6-31G*'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/run_gaussian.html#run_torsion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.run_gaussian.run_torsion" title="Permalink to this definition">¶</a></dt>
+<dd><p>When provided with a dictionary of molecules, this function creates the SLURM
+and Gaussian input files and then submits the torsional scan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol_name (str)</strong> (<em>Name of the oligomer.</em>)</p></li>
+<li><p><strong>mol_smile (str)</strong> (<em>SMILE string of the oligomer.</em>)</p></li>
+<li><p><strong>functional (str)</strong> (<em>The functional to be used in Gaussian calculations. Default is ‘B3LYP’.</em>)</p></li>
+<li><p><strong>basis_set (str)</strong> (<em>The basis set to be used in Gaussian calculations. Default is ‘6-31G</em>’.*)</p></li>
+<li><p><strong>The function performs the following steps for each molecule</strong></p></li>
+<li><p><strong>1. Creates a directory named after the molecule.</strong></p></li>
+<li><p><strong>2. Converts the SMILES string to an RDKit molecule object.</strong></p></li>
+<li><p><strong>3. Identifies the bond and torsion of the molecule.</strong></p></li>
+<li><p><strong>4. Generates 3D coordinates for the molecule.</strong></p></li>
+<li><p><strong>5. Writes the Gaussian input file.</strong></p></li>
+<li><p><strong>6. Writes the SLURM job file.</strong></p></li>
+<li><p><strong>7. Submits the SLURM job.</strong></p></li>
+<li><p><strong>8. Returns to the previous directory.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QCflow.testing_data">
+<span id="qcflow-testing-data"></span><h1>QCflow.testing_data<a class="headerlink" href="#module-QCflow.testing_data" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.testing_data.success_test">
+<span class="sig-prename descclassname"><span class="pre">QCflow.testing_data.</span></span><span class="sig-name descname"><span class="pre">success_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parsed_dic</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/testing_data.html#success_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.testing_data.success_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests if the calculation has been successful for each cclib parsed object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parsed_dic (dict)</strong> (<em>A dictionary where the key is the name of the oligomer and the value is the cclib object.</em>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Two lists - the first list contains the names of oligomers that passed, and the second list contains the names of oligomers that failed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.testing_data.functional_test">
+<span class="sig-prename descclassname"><span class="pre">QCflow.testing_data.</span></span><span class="sig-name descname"><span class="pre">functional_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parsed_dic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/testing_data.html#functional_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.testing_data.functional_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests if the calculations in the parsed cclib objects were done using the specified functional.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parsed_dic (dict)</strong> (<em>A dictionary where the key is the name of the oligomer and the value is the cclib object.</em>)</p></li>
+<li><p><strong>functional (str)</strong> (<em>The desired functional of the calculation.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tuple</strong> – and the second list contains the names of oligomers that failed the test.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Two lists - the first list contains the names of oligomers that passed the test,</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.testing_data.basis_set_test">
+<span class="sig-prename descclassname"><span class="pre">QCflow.testing_data.</span></span><span class="sig-name descname"><span class="pre">basis_set_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parsed_dic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/testing_data.html#basis_set_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.testing_data.basis_set_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests if the calculations in the parsed dictionary have been done using the correct basis set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parsed_dic (dict)</strong> (<em>A dictionary of parsed rdkit objects with the key being the name of the oligomer</em>) – and the value being the cclib object.</p></li>
+<li><p><strong>basis_set (str)</strong> (<em>The desired basis set for the calculation.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tuple</strong> – and the second list contains the names of oligomers that failed the basis set check.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Two lists - the first list contains the names of oligomers that passed the basis set check,</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QCflow.energy_calculations">
+<span id="qcflow-energy-calculations"></span><h1>QCflow.energy_calculations<a class="headerlink" href="#module-QCflow.energy_calculations" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.energy_calculations.cal_reorg">
+<span class="sig-prename descclassname"><span class="pre">QCflow.energy_calculations.</span></span><span class="sig-name descname"><span class="pre">cal_reorg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sp_c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_c_geo</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/energy_calculations.html#cal_reorg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.energy_calculations.cal_reorg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the reorganization energy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>opt_n (cclib.io.ccread)</strong> (<em>cclib object for the neutral population optimization analysis.</em>)</p></li>
+<li><p><strong>sp_c (cclib.io.ccread)</strong> (<em>cclib object for the vertical anion or cation.</em>)</p></li>
+<li><p><strong>opt_c (cclib.io.ccread)</strong> (<em>cclib object for the optimized anion or cation.</em>)</p></li>
+<li><p><strong>n_c_geo (cclib.io.ccread)</strong> (<em>cclib object for the neutral ion at anion or cation geometry.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>float</strong> (<em>The reorganization energy in eV.</em>)</p></li>
+<li><p><em>The reorganization energy is calculated using the following formula</em></p></li>
+<li><p><em>reorg_en = (EcN - EnN) + (EnC - EcC)</em> –</p>
+<ul>
+<li><p>EnN is the SCF energy of the neutral population optimization.</p></li>
+<li><p>EcN is the SCF energy of the vertical anion or cation.</p></li>
+<li><p>EcC is the SCF energy of the optimized anion or cation.</p></li>
+<li><p>EnC is the SCF energy of the neutral ion charge at anion or cation geometry.</p></li>
+</ul>
+</li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.energy_calculations.cal_HOMO">
+<span class="sig-prename descclassname"><span class="pre">QCflow.energy_calculations.</span></span><span class="sig-name descname"><span class="pre">cal_HOMO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/energy_calculations.html#cal_HOMO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.energy_calculations.cal_HOMO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Highest Occupied Molecular Orbital (HOMO) energy.</p>
+<p>This function takes a cclib object representing the optimized neutral population and returns the HOMO energy in electron volts (eV).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>opt (cclib.parser.data.ccData)</strong> (<em>A cclib object parsed from a .log file containing the optimization analysis of the neutral population.</em>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>float</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The HOMO energy in electron volts (eV).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.energy_calculations.cal_LUMO">
+<span class="sig-prename descclassname"><span class="pre">QCflow.energy_calculations.</span></span><span class="sig-name descname"><span class="pre">cal_LUMO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/energy_calculations.html#cal_LUMO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.energy_calculations.cal_LUMO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the LUMO energy from the optimized neutral population.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>opt (cclib.parser.data.ccData_optdone)</strong> (<em>The cclib object containing the parsed .log file for neutral population optimization analysis.</em>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>float</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The LUMO energy in electron volts (eV).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.energy_calculations.cal_gap">
+<span class="sig-prename descclassname"><span class="pre">QCflow.energy_calculations.</span></span><span class="sig-name descname"><span class="pre">cal_gap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/energy_calculations.html#cal_gap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.energy_calculations.cal_gap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the HOMO-LUMO gap for an optimized neutral population.</p>
+<p>This function computes the energy difference between the Highest Occupied Molecular Orbital (HOMO)
+and the Lowest Unoccupied Molecular Orbital (LUMO) in electron volts (eV).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>opt (cclib.parser.ccData)</strong> (<em>A cclib object representing the parsed .log file for the</em>) – neutral population optimization analysis.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>float</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The energy difference between the HOMO and LUMO (HOMO-LUMO gap) in eV.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.energy_calculations.cal_IP">
+<span class="sig-prename descclassname"><span class="pre">QCflow.energy_calculations.</span></span><span class="sig-name descname"><span class="pre">cal_IP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">IP_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/energy_calculations.html#cal_IP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.energy_calculations.cal_IP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the ionization potential (IP) given the cclib objects for the optimized neutral and cation populations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>opt_n (cclib.parser.data.ccData_optdone)</strong> (<em>cclib object for the optimized neutral population.</em>)</p></li>
+<li><p><strong>cation (cclib.parser.data.ccData_optdone)</strong> (<em>cclib object for the optimized or vertical cation.</em>)</p></li>
+<li><p><strong>IP_type (str)</strong> (<em>Type of ionization potential to calculate. Can be ‘adiabatic’ or ‘vertical’.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>float</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The ionization potential (IP) calculated as the difference between the SCF energies of the optimized cation and neutral populations (eV).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.energy_calculations.cal_EA">
+<span class="sig-prename descclassname"><span class="pre">QCflow.energy_calculations.</span></span><span class="sig-name descname"><span class="pre">cal_EA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EA_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/energy_calculations.html#cal_EA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.energy_calculations.cal_EA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Electron Affinity (EA) given the optimized neutral population and optimized anion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>opt_n (cclib.io.ccread)</strong> (<em>Parsed cclib object for neutral population optimization analysis.</em>)</p></li>
+<li><p><strong>anion (cclib.io.ccread)</strong> (<em>Parsed cclib object for optimized or vertical anion.</em>)</p></li>
+<li><p><strong>EA_type (str)</strong> (<em>Type of electron affinity to calculate. Can be ‘adiabatic’ or ‘vertical’.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>float</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The calculated Electron Affinity (EA).</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The function assumes that the SCF energies are available in the <cite>scfenergies</cite> attribute of the cclib objects.</p></li>
+<li><p>The function uses the first SCF energy where the optimization status is 4 (indicating convergence).</p></li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QCflow.find_torsion">
+<span id="qcflow-find-torsion"></span><h1>QCflow.find_torsion<a class="headerlink" href="#module-QCflow.find_torsion" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.find_torsion.getBond">
+<span class="sig-prename descclassname"><span class="pre">QCflow.find_torsion.</span></span><span class="sig-name descname"><span class="pre">getBond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/find_torsion.html#getBond"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.find_torsion.getBond" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the rotatable bonds in a given RDKit molecule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mol (rdkit.Chem.Mol)</strong> (<em>An RDKit molecule object.</em>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A tuple of tuples, where each inner tuple contains the indices of atoms that form a rotatable bond.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.find_torsion.getTorsion">
+<span class="sig-prename descclassname"><span class="pre">QCflow.find_torsion.</span></span><span class="sig-name descname"><span class="pre">getTorsion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/find_torsion.html#getTorsion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.find_torsion.getTorsion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the torsion for the torsional scan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol (rdkit.Chem.Mol)</strong> (<em>RDKit molecule object representing the oligomer.</em>)</p></li>
+<li><p><strong>bond (tuple)</strong> (<em>Tuple of two integers representing the indices of the rotatable bond.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tuple</strong> – The format is (first_atom, bond_atom1, bond_atom2, last_atom).
+‘first_atom’ is the neighbor of ‘bond_atom1’ with the highest priority (N, S, O &gt; C).
+‘last_atom’ is the neighbor of ‘bond_atom2’ with the highest priority (N, S, O &gt; C).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A tuple of four integers representing the indices of the atoms involved in the torsion.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.find_torsion.embed_molecule">
+<span class="sig-prename descclassname"><span class="pre">QCflow.find_torsion.</span></span><span class="sig-name descname"><span class="pre">embed_molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/find_torsion.html#embed_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.find_torsion.embed_molecule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the 3D rdkit.Chem.Mol object of the given RDKit molecule and adds hydrogen atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mol (rdkit.Chem.Mol)</strong> (<em>An RDKit molecule object.</em>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>rdkit.Chem.Mol</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The RDKit molecule object with embedded 3D coordinates and added hydrogen atoms.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QCflow.torsion_parser">
+<span id="qcflow-torsion-parser"></span><h1>QCflow.torsion_parser<a class="headerlink" href="#module-QCflow.torsion_parser" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.torsion_parser.find_min_energy_index">
+<span class="sig-prename descclassname"><span class="pre">QCflow.torsion_parser.</span></span><span class="sig-name descname"><span class="pre">find_min_energy_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/torsion_parser.html#find_min_energy_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.torsion_parser.find_min_energy_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the index of the minimum energy from the torsional scan data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data (cclib.parser.data.ccData_optdone_bool)</strong> (<em>Loaded cclib data from the .log file containing the torsional information.</em>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>int</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The index corresponding to the minimum energy value in the torsional scan data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.torsion_parser.min_angle">
+<span class="sig-prename descclassname"><span class="pre">QCflow.torsion_parser.</span></span><span class="sig-name descname"><span class="pre">min_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/torsion_parser.html#min_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.torsion_parser.min_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the angle of the minimum energy torsion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data (cclib.parser.data.ccData)</strong> (<em>Loaded cclib data from the .log file containing the torsional information.</em>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>float</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The dihedral angle corresponding to the minimum energy torsion.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.torsion_parser.torsion_parser">
+<span class="sig-prename descclassname"><span class="pre">QCflow.torsion_parser.</span></span><span class="sig-name descname"><span class="pre">torsion_parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_smi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/torsion_parser.html#torsion_parser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.torsion_parser.torsion_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the torsional profile of a molecule and returns the optimized geometry at the lowest energy minimum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol_name (str)</strong> (<em>The name of the molecule (dimer or trimer).</em>)</p></li>
+<li><p><strong>mol_smi (str)</strong> (<em>SMILES string of the molecule.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>rdkit.Chem.rdchem.Conformer</strong> (<em>The optimized geometry at the lowest energy minimum.</em>)</p></li>
+<li><p><em>The function performs the following steps</em></p></li>
+<li><p><em>1. Converts the SMILES string into an RDKit molecule object.</em></p></li>
+<li><p><em>2. Adds hydrogen atoms to the molecule.</em></p></li>
+<li><p><em>3. Embeds the molecule in 3D space.</em></p></li>
+<li><p><em>4. Loads the torsional data from a .log file.</em></p></li>
+<li><p><em>5. Finds the minimum energy torsion.</em></p></li>
+<li><p><em>6. Sets the atom positions to the geometry corresponding to the minimum energy torsion.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.torsion_parser.setting_dihedral">
+<span class="sig-prename descclassname"><span class="pre">QCflow.torsion_parser.</span></span><span class="sig-name descname"><span class="pre">setting_dihedral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_smile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/torsion_parser.html#setting_dihedral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.torsion_parser.setting_dihedral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the dihedral angle of the torsion for individual scans.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol_smile (str)</strong> (<em>SMILES string of the dimer.</em>)</p></li>
+<li><p><strong>deg (float)</strong> (<em>Desired dihedral angle (0 or 180 for planar).</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>rdkit.Chem.rdchem.Conformer</strong> (<em>A conformer of the dimer with the specified dihedral angle.</em>)</p></li>
+<li><p><em>The function performs the following steps</em></p></li>
+<li><p><em>1. Converts the SMILES string into an RDKit molecule object.</em></p></li>
+<li><p><em>2. Embeds the molecule to get estimated 3D coordinates.</em></p></li>
+<li><p><em>3. Retrieves the conformer of the molecule.</em></p></li>
+<li><p><em>4. Identifies the bond and torsion angles between fragments.</em></p></li>
+<li><p><em>5. Sets the specified dihedral angle for the torsion.</em></p></li>
+<li><p><em>6. Applies MMFF force field and minimizes the energy of the molecule.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.torsion_parser.finding_dihedral_opt">
+<span class="sig-prename descclassname"><span class="pre">QCflow.torsion_parser.</span></span><span class="sig-name descname"><span class="pre">finding_dihedral_opt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/torsion_parser.html#finding_dihedral_opt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.torsion_parser.finding_dihedral_opt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the dihedral angle of a molecule given its SMILES string and log data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol_smiles (str)</strong> (<em>The SMILES string of the molecule.</em>)</p></li>
+<li><p><strong>log_data (object)</strong> (<em>An object containing log data, including converged geometries.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>float</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The dihedral angle in degrees.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.torsion_parser.find_planarity">
+<span class="sig-prename descclassname"><span class="pre">QCflow.torsion_parser.</span></span><span class="sig-name descname"><span class="pre">find_planarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/torsion_parser.html#find_planarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.torsion_parser.find_planarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the planarity of a given angle.
+This function computes the planarity of an angle by taking the absolute value of the cosine of the angle converted to radians.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>angle (float)</strong> (<em>The angle in degrees for which the planarity is to be calculated.</em>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>float</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The planarity value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.torsion_parser.getBondLinkers">
+<span class="sig-prename descclassname"><span class="pre">QCflow.torsion_parser.</span></span><span class="sig-name descname"><span class="pre">getBondLinkers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linker_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/torsion_parser.html#getBondLinkers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.torsion_parser.getBondLinkers" title="Permalink to this definition">¶</a></dt>
+<dd><p>From an RDKit molecule, finds the two atoms involved in specified type of rotatable bond.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol (rdkit.Chem.Mol)</strong> (<em>RDKit molecule object.</em>)</p></li>
+<li><p><strong>linker_type (str)</strong> (<em>Type of linker to search for. Options are ‘single’, ‘double’, ‘imine’, or ‘thio’.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A tuple, where indices of the atoms involved in the matching bonds.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.torsion_parser.getTorsion_one">
+<span class="sig-prename descclassname"><span class="pre">QCflow.torsion_parser.</span></span><span class="sig-name descname"><span class="pre">getTorsion_one</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/torsion_parser.html#getTorsion_one"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.torsion_parser.getTorsion_one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the first torsion of a multi torsion molecule. Works for triple, imine and double bonds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol (rdkit.Chem.Mol)</strong> (<em>RDKit molecule object representing the oligomer.</em>)</p></li>
+<li><p><strong>bond (tuple)</strong> (<em>Tuple of atom indices representing the rotatable bond.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A tuple containing the indices of the four atoms defining the torsion angle.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.torsion_parser.getTorsion_two">
+<span class="sig-prename descclassname"><span class="pre">QCflow.torsion_parser.</span></span><span class="sig-name descname"><span class="pre">getTorsion_two</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/torsion_parser.html#getTorsion_two"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.torsion_parser.getTorsion_two" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the second torsion of a multi torsion molecule. Works for triple, imine and double bonds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol (rdkit.Chem.Mol)</strong> (<em>RDKit molecule object representing the oligomer.</em>)</p></li>
+<li><p><strong>bond (tuple)</strong> (<em>Tuple of atom indices representing the rotatable bond.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tuple</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A tuple containing the indices of the four atoms defining the torsion angle.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.torsion_parser.finding_multi_planairty">
+<span class="sig-prename descclassname"><span class="pre">QCflow.torsion_parser.</span></span><span class="sig-name descname"><span class="pre">finding_multi_planairty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linker_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/torsion_parser.html#finding_multi_planairty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.torsion_parser.finding_multi_planairty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines the average planarity of a molecule based on its torsion angles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol_name (str)</strong> (<em>The name of the molecule, used to locate the optimization log file.</em>)</p></li>
+<li><p><strong>mol_smiles (str)</strong> (<em>The SMILES representation of the molecule.</em>)</p></li>
+<li><p><strong>linker_type (str)</strong> (<em>The type of linker in the molecule. Can be ‘thio’, ‘triple’, ‘double’, or ‘imine’.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>float</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The average planarity of the molecule.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-QCflow.fragments">
+<span id="qcflow-fragments"></span><h1>QCflow.fragments<a class="headerlink" href="#module-QCflow.fragments" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.fragments.adding_attach">
+<span class="sig-prename descclassname"><span class="pre">QCflow.fragments.</span></span><span class="sig-name descname"><span class="pre">adding_attach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">find</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'[cH;^2]'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_rid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C([I])'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/fragments.html#adding_attach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.fragments.adding_attach" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an attachment point to a given fragment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>smi (str)</strong> (<em>The SMILES string of the fragment.</em>)</p></li>
+<li><p><strong>find (str)</strong> (<em>The SMARTS pattern of the possible attachment point. Default is ‘[cH;x2]’.</em>)</p></li>
+<li><p><strong>get_rid (str)</strong> (<em>The replacement pattern for the attachment point. Default is ‘C([I])’.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>list</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A list of unique SMILES strings representing the fragment with the added attachment point.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.fragments.generate_attachment_points">
+<span class="sig-prename descclassname"><span class="pre">QCflow.fragments.</span></span><span class="sig-name descname"><span class="pre">generate_attachment_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frag_dic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">find</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'[cH;^2]'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_rid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C([I])'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/fragments.html#generate_attachment_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.fragments.generate_attachment_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a dictionary of fragments and generates attachment points for each fragment.
+The attachment points are determined by using the ‘adding_attach’ function.
+The attachment points are represented as alphabetical characters (‘A’, ‘B’, …) and are appended to the identifiers of the fragments.
+The resulting attachment points dictionary is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frag_dic (dict)</strong> (<em>A dictionary containing fragment information with keys as identifiers and values as SMILE strings.</em>)</p></li>
+<li><p><strong>find (str)</strong> (<em>The SMARTS pattern of the possible attachment point. Default is ‘[cH;^2]’.</em>)</p></li>
+<li><p><strong>get_rid (str)</strong> (<em>The replacement pattern for the attachment point. Default is ‘C([I])’.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict</strong> – alphabetical characters (‘A’, ‘B’, …) representing different attachment points for each fragment.
+Values are the corresponding attachment points obtained from the ‘adding_attach’ function. They are
+a rdkit mol object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A dictionary containing attachment points. Keys are composed of identifiers followed by</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.fragments.combine_structure">
+<span class="sig-prename descclassname"><span class="pre">QCflow.fragments.</span></span><span class="sig-name descname"><span class="pre">combine_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/fragments.html#combine_structure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.fragments.combine_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combines two molecules together at a specified attachment point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>molecule_a (object)</strong> (<em>The first molecule to be combined.</em>)</p></li>
+<li><p><strong>molecule_b (object)</strong> (<em>The second molecule to be combined.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>object</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The combined molecule.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.fragments.make_molecule_dic_from_2_dic">
+<span class="sig-prename descclassname"><span class="pre">QCflow.fragments.</span></span><span class="sig-name descname"><span class="pre">make_molecule_dic_from_2_dic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragment_dic_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_dic_2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/fragments.html#make_molecule_dic_from_2_dic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.fragments.make_molecule_dic_from_2_dic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a dictionary of molecule by combining two different fragment dictionaries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fragment_dic_1 (dict)</strong> (<em>The first fragment dictionary.</em>)</p></li>
+<li><p><strong>fragment_dic_2 (dict)</strong> (<em>The second fragment dictionary.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A dictionary of dimers, where the key is the name of the molecule and the value is the SMILES string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting Started with QCflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

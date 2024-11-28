@@ -1,0 +1,40 @@
+Getting Started with QCflow
+=============================
+
+Welcome to the QCflow documentation!
+
+Installation
+------------
+
+To install QCflow, you can use `conda`. Run the following commands in your terminal:
+
+.. code-block:: bash
+
+    git clone https://github.com/matta-research-group/QCflow/qcflow-0.3.git
+    cd QCflow
+    # install requirements into new environment
+    conda env create -f QCflow.yml
+    conda activate QCflow
+    # install the QCflow package
+    pip install .
+
+Basic Usage
+-----------
+
+Example usage can be found in our 
+
+
+Contributing
+------------
+
+We welcome contributions from the community. To submit your feature to be incorporated to the main branch, you should submit a Pull Request. The repository maintainers will review your pull request before accepting your changes.
+
+Support
+-------
+
+If you encounter any issues or have any questions, please open an issue on our `GitHub repository <https://github.com/matta-research-group/QCflow/issues>`_.
+
+License
+-------
+
+QCflow is licensed under the `MIT License <https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/LICENSE>`_.
