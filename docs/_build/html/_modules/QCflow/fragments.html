@@ -1,0 +1,255 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QCflow.fragments &mdash; QCflow 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            QCflow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started with QCflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">QCflow Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.load_gaussian">QCflow.load_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.write_gaussian">QCflow.write_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.slurm">QCflow.slurm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.run_gaussian">QCflow.run_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.testing_data">QCflow.testing_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.energy_calculations">QCflow.energy_calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.find_torsion">QCflow.find_torsion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.torsion_parser">QCflow.torsion_parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.fragments">QCflow.fragments</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QCflow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">QCflow.fragments</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for QCflow.fragments</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">rdkit</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span><span class="p">,</span> <span class="n">Draw</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">CombineMols.CombineMols</span> <span class="kn">import</span> <span class="n">CombineMols</span>
+
+<div class="viewcode-block" id="adding_attach">
+<a class="viewcode-back" href="../../api.html#QCflow.fragments.adding_attach">[docs]</a>
+<span class="k">def</span> <span class="nf">adding_attach</span><span class="p">(</span><span class="n">smi</span><span class="p">,</span> <span class="n">find</span><span class="o">=</span><span class="s1">&#39;[cH;^2]&#39;</span><span class="p">,</span> <span class="n">get_rid</span><span class="o">=</span><span class="s1">&#39;C([I])&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds an attachment point to a given fragment.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    smi (str): The SMILES string of the fragment.</span>
+<span class="sd">    find (str): The SMARTS pattern of the possible attachment point. Default is &#39;[cH;x2]&#39;.</span>
+<span class="sd">    get_rid (str): The replacement pattern for the attachment point. Default is &#39;C([I])&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list: A list of unique SMILES strings representing the fragment with the added attachment point.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">finder</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="n">find</span><span class="p">)</span>
+    <span class="n">replace</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">get_rid</span><span class="p">)</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">smi</span><span class="p">)</span>
+
+    <span class="n">one_attach</span> <span class="o">=</span> <span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdmolops</span><span class="o">.</span><span class="n">ReplaceSubstructs</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">finder</span><span class="p">,</span> <span class="n">replace</span><span class="p">)</span>
+
+    <span class="n">one_attach_smi</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">one_attach</span><span class="p">:</span>
+        <span class="n">smi</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">can_smi</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">CanonSmiles</span><span class="p">(</span><span class="n">smi</span><span class="p">)</span>
+        <span class="n">one_attach_smi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">can_smi</span><span class="p">)</span>
+
+    <span class="n">cleaned</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">one_attach_smi</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">cleaned</span></div>
+
+
+<div class="viewcode-block" id="generate_attachment_points">
+<a class="viewcode-back" href="../../api.html#QCflow.fragments.generate_attachment_points">[docs]</a>
+<span class="k">def</span> <span class="nf">generate_attachment_points</span><span class="p">(</span><span class="n">frag_dic</span><span class="p">,</span> <span class="n">find</span><span class="o">=</span><span class="s1">&#39;[cH;^2]&#39;</span><span class="p">,</span> <span class="n">get_rid</span><span class="o">=</span><span class="s1">&#39;C([I])&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function takes a dictionary of fragments and generates attachment points for each fragment.</span>
+<span class="sd">    The attachment points are determined by using the &#39;adding_attach&#39; function.</span>
+<span class="sd">    The attachment points are represented as alphabetical characters (&#39;A&#39;, &#39;B&#39;, ...) and are appended to the identifiers of the fragments.</span>
+<span class="sd">    The resulting attachment points dictionary is returned.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    frag_dic (dict): A dictionary containing fragment information with keys as identifiers and values as SMILE strings.</span>
+<span class="sd">    find (str): The SMARTS pattern of the possible attachment point. Default is &#39;[cH;^2]&#39;.</span>
+<span class="sd">    get_rid (str): The replacement pattern for the attachment point. Default is &#39;C([I])&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict: A dictionary containing attachment points. Keys are composed of identifiers followed by</span>
+<span class="sd">          alphabetical characters (&#39;A&#39;, &#39;B&#39;, ...) representing different attachment points for each fragment.</span>
+<span class="sd">          Values are the corresponding attachment points obtained from the &#39;adding_attach&#39; function. They are</span>
+<span class="sd">          a rdkit mol object.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">attach_dic</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="s1">&#39;I&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">frag_dic</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">all_attach</span> <span class="o">=</span> <span class="n">adding_attach</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">find</span><span class="p">,</span> <span class="n">get_rid</span><span class="p">)</span> <span class="c1">#using &#39;I&#39; because a combine function uses it later</span>
+        <span class="c1">#finding sp2 carbons</span>
+        <span class="n">mol_test</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">all_attach</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">mol_test</span><span class="o">.</span><span class="n">HasSubstructMatch</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">attach_point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_attach</span><span class="p">):</span>
+                <span class="n">attach_dic</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attach_point</span> <span class="c1">#adds letter as some have more than one attachment</span>
+
+        <span class="k">if</span> <span class="n">mol_test</span><span class="o">.</span><span class="n">HasSubstructMatch</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span> <span class="c1">#if there is no iodine attachment, add hydrogens and try aliphatic carbons</span>
+            <span class="n">add_h</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol_test</span><span class="p">)</span>
+            <span class="n">smi_h</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">add_h</span><span class="p">)</span>
+            <span class="n">all_attach2</span> <span class="o">=</span> <span class="n">adding_attach</span><span class="p">(</span><span class="n">smi_h</span><span class="p">,</span> <span class="n">find</span><span class="p">,</span> <span class="n">get_rid</span><span class="p">)</span> <span class="c1">#attaching at aliphatic carbons</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">attach_point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_attach2</span><span class="p">):</span>
+                <span class="n">attach_dic</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attach_point</span> <span class="c1">#adds letter as some have more than one attachment</span>
+
+    <span class="k">return</span> <span class="n">attach_dic</span></div>
+
+
+<div class="viewcode-block" id="combine_structure">
+<a class="viewcode-back" href="../../api.html#QCflow.fragments.combine_structure">[docs]</a>
+<span class="k">def</span> <span class="nf">combine_structure</span><span class="p">(</span><span class="n">molecule_a</span><span class="p">,</span> <span class="n">molecule_b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Combines two molecules together at a specified attachment point.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    molecule_a (object): The first molecule to be combined.</span>
+<span class="sd">    molecule_b (object): The second molecule to be combined.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    object: The combined molecule.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_mol</span> <span class="o">=</span> <span class="n">CombineMols</span><span class="p">(</span><span class="n">molecule_a</span><span class="p">,</span> <span class="n">molecule_b</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">)</span>
+    <span class="c1"># Combining two dimers together at attachment point denoted atom &#39;I&#39;</span>
+
+    <span class="n">new_mol_final</span> <span class="o">=</span> <span class="n">new_mol</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">new_mol_smi</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolToSmiles</span><span class="p">(</span><span class="n">new_mol_final</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_mol_smi</span></div>
+
+
+<div class="viewcode-block" id="make_molecule_dic_from_2_dic">
+<a class="viewcode-back" href="../../api.html#QCflow.fragments.make_molecule_dic_from_2_dic">[docs]</a>
+<span class="k">def</span> <span class="nf">make_molecule_dic_from_2_dic</span><span class="p">(</span><span class="n">fragment_dic_1</span><span class="p">,</span> <span class="n">fragment_dic_2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a dictionary of molecule by combining two different fragment dictionaries.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        fragment_dic_1 (dict): The first fragment dictionary.</span>
+<span class="sd">        fragment_dic_2 (dict): The second fragment dictionary.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        dict: A dictionary of dimers, where the key is the name of the molecule and the value is the SMILES string.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">mol_smiles</span> <span class="o">=</span> <span class="p">[</span><span class="n">combine_structure</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">fragment_dic_1</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span><span class="nb">list</span><span class="p">(</span><span class="n">fragment_dic_2</span><span class="o">.</span><span class="n">values</span><span class="p">()))]</span>
+
+    <span class="n">mol_names</span> <span class="o">=</span> <span class="p">[(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k1</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">k2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">fragment_dic_1</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span><span class="n">fragment_dic_2</span><span class="o">.</span><span class="n">keys</span><span class="p">())]</span>
+
+    <span class="n">mol_dic</span> <span class="o">=</span> <span class="p">{</span> <span class="n">k</span> <span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mol_names</span><span class="p">,</span> <span class="n">mol_smiles</span><span class="p">)</span> <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">mol_dic</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

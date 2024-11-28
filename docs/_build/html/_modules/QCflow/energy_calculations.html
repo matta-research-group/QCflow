@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QCflow.energy_calculations &mdash; QCflow 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            QCflow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started with QCflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">QCflow Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.load_gaussian">QCflow.load_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.write_gaussian">QCflow.write_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.slurm">QCflow.slurm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.run_gaussian">QCflow.run_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.testing_data">QCflow.testing_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.energy_calculations">QCflow.energy_calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.find_torsion">QCflow.find_torsion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.torsion_parser">QCflow.torsion_parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.fragments">QCflow.fragments</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QCflow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">QCflow.energy_calculations</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for QCflow.energy_calculations</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">QCflow.load_gaussian</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">cclib</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="cal_reorg">
+<a class="viewcode-back" href="../../api.html#QCflow.energy_calculations.cal_reorg">[docs]</a>
+<span class="k">def</span> <span class="nf">cal_reorg</span><span class="p">(</span><span class="n">opt_n</span><span class="p">,</span><span class="n">sp_c</span><span class="p">,</span><span class="n">opt_c</span><span class="p">,</span><span class="n">n_c_geo</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the reorganization energy.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    opt_n (cclib.io.ccread): cclib object for the neutral population optimization analysis.</span>
+<span class="sd">    sp_c (cclib.io.ccread): cclib object for the vertical anion or cation.</span>
+<span class="sd">    opt_c (cclib.io.ccread): cclib object for the optimized anion or cation.</span>
+<span class="sd">    n_c_geo (cclib.io.ccread): cclib object for the neutral ion at anion or cation geometry.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float: The reorganization energy in eV.</span>
+
+<span class="sd">    The reorganization energy is calculated using the following formula:</span>
+<span class="sd">    reorg_en = (EcN - EnN) + (EnC - EcC)</span>
+<span class="sd">        - EnN is the SCF energy of the neutral population optimization.</span>
+<span class="sd">        - EcN is the SCF energy of the vertical anion or cation.</span>
+<span class="sd">        - EcC is the SCF energy of the optimized anion or cation.</span>
+<span class="sd">        - EnC is the SCF energy of the neutral ion charge at anion or cation geometry.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">EnN</span> <span class="o">=</span> <span class="n">opt_n</span><span class="o">.</span><span class="n">scfenergies</span><span class="p">[</span><span class="n">opt_n</span><span class="o">.</span><span class="n">optstatus</span><span class="o">==</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">EcN</span> <span class="o">=</span> <span class="n">sp_c</span><span class="o">.</span><span class="n">scfenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">EcC</span> <span class="o">=</span> <span class="n">opt_c</span><span class="o">.</span><span class="n">scfenergies</span><span class="p">[</span><span class="n">opt_c</span><span class="o">.</span><span class="n">optstatus</span><span class="o">==</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">EnC</span> <span class="o">=</span> <span class="n">n_c_geo</span><span class="o">.</span><span class="n">scfenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">reorg_en</span> <span class="o">=</span> <span class="p">(</span><span class="n">EcN</span><span class="o">-</span><span class="n">EnN</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">EnC</span><span class="o">-</span><span class="n">EcC</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">reorg_en</span></div>
+
+
+<div class="viewcode-block" id="cal_HOMO">
+<a class="viewcode-back" href="../../api.html#QCflow.energy_calculations.cal_HOMO">[docs]</a>
+<span class="k">def</span> <span class="nf">cal_HOMO</span><span class="p">(</span><span class="n">opt</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the Highest Occupied Molecular Orbital (HOMO) energy.</span>
+
+<span class="sd">    This function takes a cclib object representing the optimized neutral population and returns the HOMO energy in electron volts (eV).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    opt (cclib.parser.data.ccData): A cclib object parsed from a .log file containing the optimization analysis of the neutral population.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float: The HOMO energy in electron volts (eV).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">HOMO</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">opt</span><span class="o">.</span><span class="n">homos</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+    <span class="k">return</span> <span class="n">HOMO</span></div>
+
+
+<div class="viewcode-block" id="cal_LUMO">
+<a class="viewcode-back" href="../../api.html#QCflow.energy_calculations.cal_LUMO">[docs]</a>
+<span class="k">def</span> <span class="nf">cal_LUMO</span><span class="p">(</span><span class="n">opt</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the LUMO energy from the optimized neutral population.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    opt (cclib.parser.data.ccData_optdone): The cclib object containing the parsed .log file for neutral population optimization analysis.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float: The LUMO energy in electron volts (eV).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LUMO</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">opt</span><span class="o">.</span><span class="n">homos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">LUMO</span></div>
+
+
+<div class="viewcode-block" id="cal_gap">
+<a class="viewcode-back" href="../../api.html#QCflow.energy_calculations.cal_gap">[docs]</a>
+<span class="k">def</span> <span class="nf">cal_gap</span><span class="p">(</span><span class="n">opt</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the HOMO-LUMO gap for an optimized neutral population.</span>
+
+<span class="sd">    This function computes the energy difference between the Highest Occupied Molecular Orbital (HOMO) </span>
+<span class="sd">    and the Lowest Unoccupied Molecular Orbital (LUMO) in electron volts (eV).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    opt (cclib.parser.ccData): A cclib object representing the parsed .log file for the </span>
+<span class="sd">                                     neutral population optimization analysis.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float: The energy difference between the HOMO and LUMO (HOMO-LUMO gap) in eV.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">gap</span> <span class="o">=</span> <span class="n">cal_LUMO</span><span class="p">(</span><span class="n">opt</span><span class="p">)</span> <span class="o">-</span> <span class="n">cal_HOMO</span><span class="p">(</span><span class="n">opt</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">gap</span></div>
+
+
+<div class="viewcode-block" id="cal_IP">
+<a class="viewcode-back" href="../../api.html#QCflow.energy_calculations.cal_IP">[docs]</a>
+<span class="k">def</span> <span class="nf">cal_IP</span><span class="p">(</span><span class="n">opt_n</span><span class="p">,</span> <span class="n">cation</span><span class="p">,</span> <span class="n">IP_type</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the ionization potential (IP) given the cclib objects for the optimized neutral and cation populations.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    opt_n (cclib.parser.data.ccData_optdone): cclib object for the optimized neutral population.</span>
+<span class="sd">    cation (cclib.parser.data.ccData_optdone): cclib object for the optimized or vertical cation.</span>
+<span class="sd">    IP_type (str): Type of ionization potential to calculate. Can be &#39;adiabatic&#39; or &#39;vertical&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float: The ionization potential (IP) calculated as the difference between the SCF energies of the optimized cation and neutral populations (eV).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">EnN</span> <span class="o">=</span> <span class="n">opt_n</span><span class="o">.</span><span class="n">scfenergies</span><span class="p">[</span><span class="n">opt_n</span><span class="o">.</span><span class="n">optstatus</span><span class="o">==</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">IP_type</span> <span class="o">==</span> <span class="s1">&#39;adiabatic&#39;</span><span class="p">:</span>
+
+        <span class="n">EcC</span> <span class="o">=</span> <span class="n">cation</span><span class="o">.</span><span class="n">scfenergies</span><span class="p">[</span><span class="n">cation</span><span class="o">.</span><span class="n">optstatus</span><span class="o">==</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">IP</span> <span class="o">=</span> <span class="n">EcC</span> <span class="o">-</span> <span class="n">EnN</span>
+
+    <span class="k">if</span> <span class="n">IP_type</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span>
+
+        <span class="n">EcN</span> <span class="o">=</span> <span class="n">cation</span><span class="o">.</span><span class="n">scfenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">IP</span> <span class="o">=</span> <span class="n">EcN</span> <span class="o">-</span> <span class="n">EnN</span>
+
+    <span class="k">return</span> <span class="n">IP</span></div>
+
+
+<div class="viewcode-block" id="cal_EA">
+<a class="viewcode-back" href="../../api.html#QCflow.energy_calculations.cal_EA">[docs]</a>
+<span class="k">def</span> <span class="nf">cal_EA</span><span class="p">(</span><span class="n">opt_n</span><span class="p">,</span> <span class="n">anion</span><span class="p">,</span> <span class="n">EA_type</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the Electron Affinity (EA) given the optimized neutral population and optimized anion.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    opt_n (cclib.io.ccread): Parsed cclib object for neutral population optimization analysis.</span>
+<span class="sd">    anion (cclib.io.ccread): Parsed cclib object for optimized or vertical anion.</span>
+<span class="sd">    EA_type (str): Type of electron affinity to calculate. Can be &#39;adiabatic&#39; or &#39;vertical&#39;.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float: The calculated Electron Affinity (EA).</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    ------</span>
+<span class="sd">        - The function assumes that the SCF energies are available in the `scfenergies` attribute of the cclib objects.</span>
+<span class="sd">        - The function uses the first SCF energy where the optimization status is 4 (indicating convergence).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">EnN</span> <span class="o">=</span> <span class="n">opt_n</span><span class="o">.</span><span class="n">scfenergies</span><span class="p">[</span><span class="n">opt_n</span><span class="o">.</span><span class="n">optstatus</span><span class="o">==</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">EA_type</span> <span class="o">==</span> <span class="s1">&#39;adiabatic&#39;</span><span class="p">:</span>
+
+        <span class="n">EaA</span> <span class="o">=</span> <span class="n">anion</span><span class="o">.</span><span class="n">scfenergies</span><span class="p">[</span><span class="n">anion</span><span class="o">.</span><span class="n">optstatus</span><span class="o">==</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">EA</span> <span class="o">=</span> <span class="n">EnN</span> <span class="o">-</span> <span class="n">EaA</span>
+
+    <span class="k">if</span> <span class="n">EA_type</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span>
+        
+        <span class="n">EaN</span> <span class="o">=</span> <span class="n">anion</span><span class="o">.</span><span class="n">scfenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+        <span class="n">EA</span> <span class="o">=</span> <span class="n">EnN</span> <span class="o">-</span> <span class="n">EaN</span>
+
+    <span class="k">return</span> <span class="n">EA</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

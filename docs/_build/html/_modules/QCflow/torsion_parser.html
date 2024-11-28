@@ -1,0 +1,477 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QCflow.torsion_parser &mdash; QCflow 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            QCflow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started with QCflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">QCflow Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.load_gaussian">QCflow.load_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.write_gaussian">QCflow.write_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.slurm">QCflow.slurm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.run_gaussian">QCflow.run_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.testing_data">QCflow.testing_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.energy_calculations">QCflow.energy_calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.find_torsion">QCflow.find_torsion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.torsion_parser">QCflow.torsion_parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.fragments">QCflow.fragments</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QCflow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">QCflow.torsion_parser</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for QCflow.torsion_parser</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">QCflow.fragments</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">QCflow.load_gaussian</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">QCflow.find_torsion</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cclib</span>
+<span class="kn">import</span> <span class="nn">rdkit</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">rdkit</span> <span class="kn">import</span> <span class="n">Chem</span>
+<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">Draw</span>
+<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">AllChem</span>
+<span class="kn">from</span> <span class="nn">rdkit.Chem</span> <span class="kn">import</span> <span class="n">rdMolTransforms</span>
+
+<div class="viewcode-block" id="find_min_energy_index">
+<a class="viewcode-back" href="../../api.html#QCflow.torsion_parser.find_min_energy_index">[docs]</a>
+<span class="k">def</span> <span class="nf">find_min_energy_index</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the index of the minimum energy from the torsional scan data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data (cclib.parser.data.ccData_optdone_bool): Loaded cclib data from the .log file containing the torsional information.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int: The index corresponding to the minimum energy value in the torsional scan data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#finds opt energy of each 10 deg scan</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">scanenergies</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">scfenergies</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">optstatus</span> <span class="o">==</span> <span class="mi">4</span><span class="p">]</span>
+    <span class="c1">#finds min energy of all opt 36 scans</span>
+    <span class="n">mini</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">scanenergies</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">scanenergies</span><span class="p">))</span>
+    <span class="c1">#gets index corresponding to minimum energy</span>
+    <span class="n">mini_value</span> <span class="o">=</span> <span class="n">mini</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">mini_value</span></div>
+
+
+<div class="viewcode-block" id="min_angle">
+<a class="viewcode-back" href="../../api.html#QCflow.torsion_parser.min_angle">[docs]</a>
+<span class="k">def</span> <span class="nf">min_angle</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the angle of the minimum energy torsion.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data (cclib.parser.data.ccData): Loaded cclib data from the .log file containing the torsional information.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float: The dihedral angle corresponding to the minimum energy torsion.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">scanenergies</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">scfenergies</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">optstatus</span> <span class="o">==</span> <span class="mi">4</span><span class="p">]</span>
+    <span class="n">min_ang_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">scanenergies</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">scanenergies</span><span class="p">))</span>
+    <span class="c1">#Location of the min angle</span>
+    <span class="n">min_ang</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">scanparm</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">min_ang_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="c1">#Dihedral angle of the min energy</span>
+    <span class="k">return</span> <span class="n">min_ang</span></div>
+
+
+<div class="viewcode-block" id="torsion_parser">
+<a class="viewcode-back" href="../../api.html#QCflow.torsion_parser.torsion_parser">[docs]</a>
+<span class="k">def</span> <span class="nf">torsion_parser</span><span class="p">(</span><span class="n">mol_name</span><span class="p">,</span> <span class="n">mol_smi</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses the torsional profile of a molecule and returns the optimized geometry at the lowest energy minimum.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mol_name (str): The name of the molecule (dimer or trimer).</span>
+<span class="sd">    mol_smi (str): SMILES string of the molecule.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rdkit.Chem.rdchem.Conformer: The optimized geometry at the lowest energy minimum.</span>
+
+<span class="sd">    The function performs the following steps:</span>
+<span class="sd">    1. Converts the SMILES string into an RDKit molecule object.</span>
+<span class="sd">    2. Adds hydrogen atoms to the molecule.</span>
+<span class="sd">    3. Embeds the molecule in 3D space.</span>
+<span class="sd">    4. Loads the torsional data from a .log file.</span>
+<span class="sd">    5. Finds the minimum energy torsion.</span>
+<span class="sd">    6. Sets the atom positions to the geometry corresponding to the minimum energy torsion.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">mol_smi</span><span class="p">)</span>
+    <span class="c1"># Converts the SMILES string into an RDKit molecule object</span>
+    <span class="n">mol_h</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="c1"># Adds hydrogen atoms</span>
+    <span class="n">mol_3d</span> <span class="o">=</span> <span class="n">embed_molecule</span><span class="p">(</span><span class="n">mol_h</span><span class="p">)</span>
+    <span class="c1"># Embeds the molecule in 3D space</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">mol_3d</span><span class="o">.</span><span class="n">GetConformer</span><span class="p">()</span>
+    <span class="c1"># Gets the conformer of the molecule</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">cclib</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">ccread</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">_tor.log&#39;</span><span class="p">)</span>
+    <span class="c1"># Loads the torsional data from a .log file</span>
+    <span class="n">min_energy</span> <span class="o">=</span> <span class="n">find_min_energy_index</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="c1"># Finds the minimum energy torsion</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()):</span>
+        <span class="n">conf</span><span class="o">.</span><span class="n">SetAtomPosition</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">converged_geometries</span><span class="p">[</span><span class="n">min_energy</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+    <span class="c1"># Sets the atom positions to the geometry corresponding to the minimum energy torsion</span>
+
+    <span class="k">return</span> <span class="n">conf</span></div>
+
+
+<div class="viewcode-block" id="setting_dihedral">
+<a class="viewcode-back" href="../../api.html#QCflow.torsion_parser.setting_dihedral">[docs]</a>
+<span class="k">def</span> <span class="nf">setting_dihedral</span><span class="p">(</span><span class="n">mol_smile</span><span class="p">,</span> <span class="n">deg</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets the dihedral angle of the torsion for individual scans.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mol_smile (str): SMILES string of the dimer.</span>
+<span class="sd">    deg (float): Desired dihedral angle (0 or 180 for planar).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rdkit.Chem.rdchem.Conformer: A conformer of the dimer with the specified dihedral angle.</span>
+
+<span class="sd">    The function performs the following steps:</span>
+<span class="sd">    1. Converts the SMILES string into an RDKit molecule object.</span>
+<span class="sd">    2. Embeds the molecule to get estimated 3D coordinates.</span>
+<span class="sd">    3. Retrieves the conformer of the molecule.</span>
+<span class="sd">    4. Identifies the bond and torsion angles between fragments.</span>
+<span class="sd">    5. Sets the specified dihedral angle for the torsion.</span>
+<span class="sd">    6. Applies MMFF force field and minimizes the energy of the molecule.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">mol_smile</span><span class="p">)</span>
+    <span class="c1">#turns smiles string into rdkit object</span>
+    <span class="n">mol3d</span> <span class="o">=</span> <span class="n">embed_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="c1">#gets rdkit estimated coordinates of dimer</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">mol3d</span><span class="o">.</span><span class="n">GetConformer</span><span class="p">()</span>
+    <span class="c1">#getting the conformer</span>
+
+    <span class="n">bond</span> <span class="o">=</span> <span class="n">getBond</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="c1">#finds the bond between the fragment</span>
+    <span class="n">torsion</span> <span class="o">=</span> <span class="n">getTorsion</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">#torsion of the bond between the fragment</span>
+    <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">t3</span><span class="p">,</span> <span class="n">t4</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">torsion</span><span class="p">]</span>
+    <span class="c1">#getting atoms involved in torsion</span>
+    <span class="n">rdkit</span><span class="o">.</span><span class="n">Chem</span><span class="o">.</span><span class="n">rdMolTransforms</span><span class="o">.</span><span class="n">SetDihedralDeg</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">t3</span><span class="p">,</span> <span class="n">t4</span><span class="p">,</span> <span class="n">deg</span><span class="p">)</span>
+    <span class="c1">#setting the dihedral angle</span>
+    <span class="n">mp</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">MMFFGetMoleculeProperties</span><span class="p">(</span><span class="n">mol3d</span><span class="p">)</span>
+    <span class="c1">#mol properties</span>
+    <span class="n">ff</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">MMFFGetMoleculeForceField</span><span class="p">(</span><span class="n">mol3d</span><span class="p">,</span> <span class="n">mp</span><span class="p">)</span>
+    <span class="c1">#force field</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">torsion</span><span class="p">:</span>
+        <span class="n">ff</span><span class="o">.</span><span class="n">MMFFAddPositionConstraint</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.e4</span><span class="p">)</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">Minimize</span><span class="p">(</span><span class="n">maxIts</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">conf</span></div>
+
+
+<div class="viewcode-block" id="finding_dihedral_opt">
+<a class="viewcode-back" href="../../api.html#QCflow.torsion_parser.finding_dihedral_opt">[docs]</a>
+<span class="k">def</span> <span class="nf">finding_dihedral_opt</span><span class="p">(</span><span class="n">mol_smiles</span><span class="p">,</span> <span class="n">log_data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the dihedral angle of a molecule given its SMILES string and log data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        mol_smiles (str): The SMILES string of the molecule.</span>
+<span class="sd">        log_data (object): An object containing log data, including converged geometries.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        float: The dihedral angle in degrees.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">log_data</span>
+
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">mol_smiles</span><span class="p">)</span>
+    <span class="c1">#Converts the SMILE into rdkit readable string</span>
+    <span class="n">mol_h</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="c1">#Adds hydrogen atoms</span>
+    <span class="n">mol_3d</span> <span class="o">=</span> <span class="n">embed_molecule</span><span class="p">(</span><span class="n">mol_h</span><span class="p">)</span>
+    <span class="c1">#Embeds the molecule</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">mol_3d</span><span class="o">.</span><span class="n">GetConformer</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()):</span>
+        <span class="n">correct_pos</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">SetAtomPosition</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">converged_geometries</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+    <span class="c1">#Uses this min energy torsion to give the correct geometry</span>
+
+    <span class="n">bond</span> <span class="o">=</span> <span class="n">getBond</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+
+    <span class="n">torsion_atoms</span> <span class="o">=</span> <span class="n">getTorsion</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">rdMolTransforms</span><span class="o">.</span><span class="n">GetDihedralDeg</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">torsion_atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">torsion_atoms</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">torsion_atoms</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">torsion_atoms</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">angle</span></div>
+
+
+<div class="viewcode-block" id="find_planarity">
+<a class="viewcode-back" href="../../api.html#QCflow.torsion_parser.find_planarity">[docs]</a>
+<span class="k">def</span> <span class="nf">find_planarity</span><span class="p">(</span><span class="n">angle</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the planarity of a given angle.</span>
+<span class="sd">    This function computes the planarity of an angle by taking the absolute value of the cosine of the angle converted to radians.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    angle (float): The angle in degrees for which the planarity is to be calculated.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float: The planarity value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">planar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">angle</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">planar</span></div>
+
+
+<div class="viewcode-block" id="getBondLinkers">
+<a class="viewcode-back" href="../../api.html#QCflow.torsion_parser.getBondLinkers">[docs]</a>
+<span class="k">def</span> <span class="nf">getBondLinkers</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">linker_type</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    From an RDKit molecule, finds the two atoms involved in specified type of rotatable bond.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mol (rdkit.Chem.Mol): RDKit molecule object.</span>
+<span class="sd">    linker_type (str): Type of linker to search for. Options are &#39;single&#39;, &#39;double&#39;, &#39;imine&#39;, or &#39;thio&#39;.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple: A tuple, where indices of the atoms involved in the matching bonds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;single&#39;</span><span class="p">:</span>
+        <span class="c1">#rotatable bonds</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s1">&#39;[R!$(*#*)&amp;!D1]-!@[R!$(*#*)&amp;!D1]&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;double&#39;</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s1">&#39;[R!$(*#*)&amp;!D1]C=C-!@[R!$(*#*)&amp;!D1]&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;imine&#39;</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s1">&#39;[R!$(*#*)&amp;!D1]N=C-!@[R!$(*#*)&amp;!D1]&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;thio&#39;</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s1">&#39;[R!$(*#*)&amp;!D1]-!@[R!$(*#*)&amp;!D1]&#39;</span><span class="p">)</span>
+
+
+    <span class="n">bonds</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">bonds</span></div>
+
+
+<div class="viewcode-block" id="getTorsion_one">
+<a class="viewcode-back" href="../../api.html#QCflow.torsion_parser.getTorsion_one">[docs]</a>
+<span class="k">def</span> <span class="nf">getTorsion_one</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets the first torsion of a multi torsion molecule. Works for triple, imine and double bonds.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mol (rdkit.Chem.Mol): RDKit molecule object representing the oligomer.</span>
+<span class="sd">    bond (tuple): Tuple of atom indices representing the rotatable bond.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple: A tuple containing the indices of the four atoms defining the torsion angle.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># get neighbors of first atom in bond</span>
+    <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">GetNeighbors</span><span class="p">():</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">()</span>
+        <span class="n">mass</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetMass</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">idx</span><span class="o">!=</span><span class="n">bond</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="c1">#excludes the other atom in the bond</span>
+            <span class="k">if</span> <span class="n">mass</span> <span class="o">&gt;</span> <span class="mi">13</span><span class="p">:</span> <span class="c1"># N, S, O get priority</span>
+                <span class="n">first</span><span class="o">=</span><span class="n">idx</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">mass</span> <span class="o">&gt;</span> <span class="mi">12</span><span class="p">:</span> <span class="c1"># otherwise C</span>
+                <span class="n">first</span><span class="o">=</span><span class="n">idx</span>
+
+    <span class="k">return</span> <span class="n">first</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bond</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bond</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>     </div>
+
+
+<div class="viewcode-block" id="getTorsion_two">
+<a class="viewcode-back" href="../../api.html#QCflow.torsion_parser.getTorsion_two">[docs]</a>
+<span class="k">def</span> <span class="nf">getTorsion_two</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets the second torsion of a multi torsion molecule. Works for triple, imine and double bonds.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mol (rdkit.Chem.Mol): RDKit molecule object representing the oligomer.</span>
+<span class="sd">    bond (tuple): Tuple of atom indices representing the rotatable bond.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple: A tuple containing the indices of the four atoms defining the torsion angle.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtomWithIdx</span><span class="p">(</span><span class="n">bond</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">GetNeighbors</span><span class="p">():</span>
+        <span class="n">idx</span><span class="o">=</span><span class="n">atom</span><span class="o">.</span><span class="n">GetIdx</span><span class="p">()</span>
+        <span class="n">mass</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">GetMass</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">idx</span><span class="o">!=</span><span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="c1">#excludes the other atom in the bond</span>
+            <span class="k">if</span> <span class="n">mass</span> <span class="o">&gt;</span> <span class="mi">13</span><span class="p">:</span> <span class="c1"># N, S, O get priority</span>
+                <span class="n">last</span><span class="o">=</span><span class="n">idx</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">mass</span> <span class="o">&gt;</span> <span class="mi">12</span><span class="p">:</span> <span class="c1"># otherwise C</span>
+                <span class="n">last</span><span class="o">=</span><span class="n">idx</span>
+    
+    <span class="k">return</span> <span class="n">bond</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bond</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">bond</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">last</span></div>
+
+
+<div class="viewcode-block" id="finding_multi_planairty">
+<a class="viewcode-back" href="../../api.html#QCflow.torsion_parser.finding_multi_planairty">[docs]</a>
+<span class="k">def</span> <span class="nf">finding_multi_planairty</span><span class="p">(</span><span class="n">mol_name</span><span class="p">,</span> <span class="n">mol_smiles</span><span class="p">,</span> <span class="n">linker_type</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines the average planarity of a molecule based on its torsion angles.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mol_name (str): The name of the molecule, used to locate the optimization log file.</span>
+<span class="sd">    mol_smiles (str): The SMILES representation of the molecule.</span>
+<span class="sd">    linker_type (str): The type of linker in the molecule. Can be &#39;thio&#39;, &#39;triple&#39;, &#39;double&#39;, or &#39;imine&#39;.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float: The average planarity of the molecule.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">data</span> <span class="o">=</span> <span class="n">cclib</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">ccread</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">_opt.log&#39;</span><span class="p">)</span>
+
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">mol_smiles</span><span class="p">)</span>
+
+    <span class="n">mol_h</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="n">mol_3d</span> <span class="o">=</span> <span class="n">embed_molecule</span><span class="p">(</span><span class="n">mol_h</span><span class="p">)</span>
+    <span class="c1">#Embeds the molecule</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">mol_3d</span><span class="o">.</span><span class="n">GetConformer</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()):</span>
+        <span class="n">correct_pos</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">SetAtomPosition</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">converged_geometries</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+    <span class="c1">#Uses this min energy torsion to give the correct geometry</span>
+
+    <span class="c1">#bond = getBondLinkers(mol_3d, linker_type)</span>
+
+    <span class="k">if</span> <span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;thio&#39;</span><span class="p">:</span>
+        <span class="n">bond</span> <span class="o">=</span> <span class="n">getBondLinkers</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="s1">&#39;thio&#39;</span><span class="p">)</span>
+        
+        <span class="n">thio_bond_1</span> <span class="o">=</span> <span class="n">getTorsion</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">thio_bond_2</span> <span class="o">=</span> <span class="n">getTorsion</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="n">angle_1</span> <span class="o">=</span> <span class="n">rdMolTransforms</span><span class="o">.</span><span class="n">GetDihedralDeg</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">thio_bond_1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">thio_bond_1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">thio_bond_1</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">thio_bond_1</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">angle_2</span> <span class="o">=</span> <span class="n">rdMolTransforms</span><span class="o">.</span><span class="n">GetDihedralDeg</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">thio_bond_2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">thio_bond_2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">thio_bond_2</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">thio_bond_2</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;triple&#39;</span><span class="p">:</span>
+        <span class="n">angle_1</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">angle_2</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;double&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;imine&#39;</span><span class="p">):</span>
+        <span class="n">bond</span> <span class="o">=</span> <span class="n">getBondLinkers</span><span class="p">(</span><span class="n">mol_3d</span><span class="p">,</span> <span class="n">linker_type</span><span class="p">)</span>
+        
+        <span class="n">torsion_one</span> <span class="o">=</span> <span class="n">getTorsion_one</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">torsion_two</span> <span class="o">=</span> <span class="n">getTorsion_two</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">angle_1</span> <span class="o">=</span> <span class="n">rdMolTransforms</span><span class="o">.</span><span class="n">GetDihedralDeg</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">torsion_one</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">torsion_one</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">torsion_one</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">torsion_one</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">angle_2</span> <span class="o">=</span> <span class="n">rdMolTransforms</span><span class="o">.</span><span class="n">GetDihedralDeg</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">torsion_two</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">torsion_two</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">torsion_two</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">torsion_two</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+    <span class="n">planar_1</span> <span class="o">=</span> <span class="n">find_planarity</span><span class="p">(</span><span class="n">angle_1</span><span class="p">)</span>
+    <span class="n">planar_2</span> <span class="o">=</span> <span class="n">find_planarity</span><span class="p">(</span><span class="n">angle_2</span><span class="p">)</span>
+
+    <span class="n">average_planarity</span> <span class="o">=</span> <span class="p">(</span><span class="n">planar_1</span> <span class="o">+</span> <span class="n">planar_2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="k">return</span> <span class="n">average_planarity</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
