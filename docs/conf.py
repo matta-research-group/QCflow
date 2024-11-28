@@ -24,7 +24,7 @@ import QCflow
 
 project = 'QCflow'
 author = 'Tristan Stephens-Jones, Micaela Matta'
-release = '0.2.0'
+release = '0.3.0'
 
 # -- General configuration ---------------------------------------------------
 
@@ -127,7 +127,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'QCflow', 'QCflow Documentation',
-     author, 'QCflow', 'Tools for submitting gaussian jobs and analysisng data.',
+     author, 'QCflow', 'A cheminformatics -> quantum chemistry workflow toolkit leveraging rdkit and cclib.',
      'Miscellaneous'),
 ]
 
