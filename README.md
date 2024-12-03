@@ -32,7 +32,7 @@ Only [Gaussian](https://gaussian.com/man/) is supported at the moment, but we pl
 ## Installation
 
 ```bash
-git clone https://github.com/matta-research-group/QCflow/qcflow-0.3.git
+git clone https://github.com/matta-research-group/QCflow.git
 cd QCflow
 # install requirements into new environment
 conda env create -f QCflow.yml
