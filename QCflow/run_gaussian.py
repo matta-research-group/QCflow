@@ -92,12 +92,12 @@ def run_calc(job_name, mol_name, mol_smile, functional='B3LYP', basis_set='6-31G
         - Writes a Gaussian input file with the torsion angle.
     Finally, the function writes a SLURM script, submits the job, and returns to the previous directory.
     """
+    if os.path.exists(f'{mol_name}'):
+        os.chdir(f'{mol_name}') #goes into directory
+    else:
+        os.mkdir(f'{mol_name}') #makes a directory for the molecule
+        os.chdir(f'{mol_name}') #goes into directory
 
-
-    #makes a directory for the molecule
-    os.mkdir(f'{mol_name}')
-    #goes into directory
-    os.chdir(f'{mol_name}')
 
     if (job_name=='sp_a') or (job_name=='sp_c') or (job_name=='opt_c') or (job_name=='opt_a') or (job_name=='n_a_geo') or (job_name=='n_c_geo') or (job_name=='sp_hirsh'):
 
