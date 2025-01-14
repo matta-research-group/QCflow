@@ -87,7 +87,7 @@ def write_slurm_psi4(job_name, mol_name, time=24, cpus=10):
     The function generates a SLURM batch script file named '{mol_name}_{job_name}.sh' with appropriate
     configurations based on the job type and molecule name. The script includes settings for job name,
     output and error files, partition, number of tasks, nodes, CPUs per task, memory per CPU, and time limit.
-    It also sets up the environment and execution line for running Gaussian 16 (g16) with the specified input
+    It also sets up the environment and execution line for running Psi4 job with the specified input
     and output files.
     """
 
@@ -110,10 +110,7 @@ def write_slurm_psi4(job_name, mol_name, time=24, cpus=10):
         file.write(' \n')
         file.write(f'module purge \n')
         file.write(f'module load cuda/10.0.130-gcc-13.2.0 \n')
-        file.write(f'source /software/spackages_prod/apps/linux-ubuntu20.04-zen2/gcc-9.4.0/anaconda3-2021.05-5d7m6vbj62rh6onwyyz6mdqatpag2b3b/etc/profile.d/conda.sh \n')
-        file.write(f'conda activate psi4_rdkit \n')
         file.write(f'python3 {mol_name}_{job_name}.py \n')
-        file.write(f'conda deactivate \n')
 
 
 def submit_slurm_job(job_name, mol_name):

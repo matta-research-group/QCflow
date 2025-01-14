@@ -39,7 +39,7 @@ conda update psi4
 ## Installation
 
 ```bash
-git clone https://github.com/matta-research-group/QCflow.git
+git clone --single-branch --branch qcflow-psi4 https://github.com/matta-research-group/QCflow.git
 cd QCflow
 # install requirements into new environment
 conda env create -f QCflow.yml
