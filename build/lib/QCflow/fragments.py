@@ -11,12 +11,14 @@ def adding_attach(smi, find='[cH;^2]', get_rid='C([I])'):
     """
     Adds an attachment point to a given fragment.
 
-    Parameters:
+    Parameters
+    ----------
     smi (str): The SMILES string of the fragment.
     find (str): The SMARTS pattern of the possible attachment point. Default is '[cH;x2]'.
     get_rid (str): The replacement pattern for the attachment point. Default is 'C([I])'.
 
-    Returns:
+    Returns
+    -------
     list: A list of unique SMILES strings representing the fragment with the added attachment point.
     """
     finder = Chem.MolFromSmarts(find)
@@ -42,12 +44,14 @@ def generate_attachment_points(frag_dic, find='[cH;^2]', get_rid='C([I])'):
     The attachment points are represented as alphabetical characters ('A', 'B', ...) and are appended to the identifiers of the fragments.
     The resulting attachment points dictionary is returned.
 
-    Parameters:
+    Parameters
+    ----------
     frag_dic (dict): A dictionary containing fragment information with keys as identifiers and values as SMILE strings.
     find (str): The SMARTS pattern of the possible attachment point. Default is '[cH;^2]'.
     get_rid (str): The replacement pattern for the attachment point. Default is 'C([I])'.
 
-    Returns:
+    Returns
+    -------
     dict: A dictionary containing attachment points. Keys are composed of identifiers followed by
           alphabetical characters ('A', 'B', ...) representing different attachment points for each fragment.
           Values are the corresponding attachment points obtained from the 'adding_attach' function. They are
@@ -83,11 +87,13 @@ def combine_structure(molecule_a, molecule_b):
     """
     Combines two molecules together at a specified attachment point.
 
-    Parameters:
+    Parameters
+    ----------
     molecule_a (object): The first molecule to be combined.
     molecule_b (object): The second molecule to be combined.
 
-    Returns:
+    Returns
+    -------
     object: The combined molecule.
 
     """
@@ -104,11 +110,13 @@ def make_molecule_dic_from_2_dic(fragment_dic_1, fragment_dic_2):
     """
     Generates a dictionary of molecule by combining two different fragment dictionaries.
 
-    Parameters:
+    Parameters
+    ----------
         fragment_dic_1 (dict): The first fragment dictionary.
         fragment_dic_2 (dict): The second fragment dictionary.
 
-    Returns:
+    Returns
+    -------
         dict: A dictionary of dimers, where the key is the name of the molecule and the value is the SMILES string.
 
     """

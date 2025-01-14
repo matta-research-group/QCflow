@@ -6,18 +6,19 @@ def cal_reorg(opt_n,sp_c,opt_c,n_c_geo):
     """
     Calculate the reorganization energy.
 
-    Parameters:
+    Parameters
+    ----------
     opt_n (cclib.io.ccread): cclib object for the neutral population optimization analysis.
     sp_c (cclib.io.ccread): cclib object for the vertical anion or cation.
     opt_c (cclib.io.ccread): cclib object for the optimized anion or cation.
     n_c_geo (cclib.io.ccread): cclib object for the neutral ion at anion or cation geometry.
 
-    Returns:
+    Returns
+    -------
     float: The reorganization energy in eV.
 
     The reorganization energy is calculated using the following formula:
     reorg_en = (EcN - EnN) + (EnC - EcC)
-    where:
         - EnN is the SCF energy of the neutral population optimization.
         - EcN is the SCF energy of the vertical anion or cation.
         - EcC is the SCF energy of the optimized anion or cation.
@@ -39,10 +40,12 @@ def cal_HOMO(opt):
 
     This function takes a cclib object representing the optimized neutral population and returns the HOMO energy in electron volts (eV).
 
-    Parameters:
+    Parameters
+    ----------
     opt (cclib.parser.data.ccData): A cclib object parsed from a .log file containing the optimization analysis of the neutral population.
 
-    Returns:
+    Returns
+    -------
     float: The HOMO energy in electron volts (eV).
     """
     HOMO = opt.moenergies[0][opt.homos[0]]
@@ -53,10 +56,12 @@ def cal_LUMO(opt):
     """
     Calculate the LUMO energy from the optimized neutral population.
 
-    Parameters:
+    Parameters
+    ----------
     opt (cclib.parser.data.ccData_optdone): The cclib object containing the parsed .log file for neutral population optimization analysis.
 
-    Returns:
+    Returns
+    -------
     float: The LUMO energy in electron volts (eV).
     """
     LUMO = opt.moenergies[0][opt.homos[0]+1]
@@ -70,11 +75,13 @@ def cal_gap(opt):
     This function computes the energy difference between the Highest Occupied Molecular Orbital (HOMO) 
     and the Lowest Unoccupied Molecular Orbital (LUMO) in electron volts (eV).
 
-    Parameters:
+    Parameters
+    ----------
     opt (cclib.parser.ccData): A cclib object representing the parsed .log file for the 
                                      neutral population optimization analysis.
 
-    Returns:
+    Returns
+    -------
     float: The energy difference between the HOMO and LUMO (HOMO-LUMO gap) in eV.
     """
 
@@ -87,12 +94,14 @@ def cal_IP(opt_n, cation, IP_type):
     """
     Calculate the ionization potential (IP) given the cclib objects for the optimized neutral and cation populations.
 
-    Parameters:
+    Parameters
+    ----------
     opt_n (cclib.parser.data.ccData_optdone): cclib object for the optimized neutral population.
     cation (cclib.parser.data.ccData_optdone): cclib object for the optimized or vertical cation.
     IP_type (str): Type of ionization potential to calculate. Can be 'adiabatic' or 'vertical'.
 
-    Returns:
+    Returns
+    -------
     float: The ionization potential (IP) calculated as the difference between the SCF energies of the optimized cation and neutral populations (eV).
     """
 
@@ -116,15 +125,18 @@ def cal_EA(opt_n, anion, EA_type):
     """
     Calculate the Electron Affinity (EA) given the optimized neutral population and optimized anion.
     
-    Parameters:
+    Parameters
+    ----------
     opt_n (cclib.io.ccread): Parsed cclib object for neutral population optimization analysis.
     anion (cclib.io.ccread): Parsed cclib object for optimized or vertical anion.
     EA_type (str): Type of electron affinity to calculate. Can be 'adiabatic' or 'vertical'.
     
-    Returns:
+    Returns
+    -------
     float: The calculated Electron Affinity (EA).
     
-    Notes:
+    Notes
+    ------
         - The function assumes that the SCF energies are available in the `scfenergies` attribute of the cclib objects.
         - The function uses the first SCF energy where the optimization status is 4 (indicating convergence).
     """

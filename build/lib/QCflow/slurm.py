@@ -3,24 +3,27 @@ import subprocess
 def write_slurm(job_name, mol_name, cpus=10):
     """
     Writes a SLURM batch script for a specified job type and molecule name.
-    Parameters:
-    job_name (str): The type of job to run. Possible values are:
-        - 'sp' : Single Point calculation
-        - 'opt' : Simple Optimisation
-        - 'tor' : Torsional scan neutral
-        - 'pop_n' : Population analysis
-        - 'ver_a' : Vertical anion
-        - 'ver_c' : Vertical cation
-        - 'opt_a' : Optimisation anion
-        - 'opt_c' : Optimisation cation
-        - 'opt_n' : Optimisation neutral
-        - 'n_a_geo' : Neutral optimised anion geometry
-        - 'n_c_geo' : Neutral optimised cation geometry
+
+    Parameters
+    ----------
+    job_name (str): The type of job to run. Possible values:
+        - 'sp': Single Point neutral
+        - 'opt': Optimisation neutral
+        - 'tor': Torsional scan neutral                                                                                
+        - 'pop_opt_n': Optimisation neutral + Population analysis                                                                                
+        - 'sp_a': Single point anion                                                                                
+        - 'sp_c': Single point cation
+        - 'opt_a': Optimisation anion
+        - 'opt_c': Optimisation cation
+        - 'n_a_geo': Neutral charge, optimised anion geometry
+        - 'n_c_geo': Neutral charge, optimised cation geometry
+        - 'sp_hirsh': Single Point Hirshfeld 
     mol_name (str): The name of the dimer from the dictionary, e.g., if fragment 0 was attached to fragment 1,
                     then the dimer name is '0_1'.
     cpus (int, optional): The number of CPUs to allocate for the job. Default is 10.
     
-    Notes:
+    Notes
+    -----
     The function generates a SLURM batch script file named '{mol_name}_{job_name}.sh' with appropriate
     configurations based on the job type and molecule name. The script includes settings for job name,
     output and error files, partition, number of tasks, nodes, CPUs per task, memory per CPU, and time limit.
@@ -65,27 +68,79 @@ def write_slurm(job_name, mol_name, cpus=10):
         file.write(f'#Execution Line \n')
         file.write(f'g16 $INPUTFILE > $OUTPUTFILE \n')
 
+def write_slurm_psi4(job_name, mol_name, cpus=10):
+    """
+    Writes a SLURM batch script for a specified job type and molecule name.
+
+    Parameters
+    ----------
+    job_name (str): The type of job to run. Possible values:
+        - 'sp': Single Point neutral
+        - 'opt': Optimisation neutral
+    mol_name (str): The name of the dimer from the dictionary, e.g., if fragment 0 was attached to fragment 1,
+                    then the dimer name is '0_1'.
+    cpus (int, optional): The number of CPUs to allocate for the job. Default is 10.
+    
+    Notes
+    -----
+    The function generates a SLURM batch script file named '{mol_name}_{job_name}.sh' with appropriate
+    configurations based on the job type and molecule name. The script includes settings for job name,
+    output and error files, partition, number of tasks, nodes, CPUs per task, memory per CPU, and time limit.
+    It also sets up the environment and execution line for running Gaussian 16 (g16) with the specified input
+    and output files.
+    """
+
+    file_name = f'{mol_name}_{job_name}.sh'
+    
+    if (job_name == 'sp'):
+        calc_time = '24:00:00'
+    else:
+        calc_time = '48:00:00'
+
+    title = f'#!/bin/bash --login'
+    with open(file_name, 'w') as file:
+        file.write(f'{title}\n')#
+        file.write(f'#SBATCH -e {mol_name}_{job_name}.err \n')#
+        file.write(f'#SBATCH --job-name={mol_name}_{job_name} \n')
+        file.write(f'#SBATCH -p cpu \n')
+        file.write(f'#SBATCH --ntasks={cpus}\n')
+        file.write(f'#SBATCH --nodes=1 \n')
+        file.write(f'#SBATCH --cpus-per-task=1 \n')
+        file.write(f'#SBATCH --mem-per-cpu=4000 \n')
+        file.write(f'#SBATCH --time={calc_time} \n') #reduced to speed up queue time
+        file.write(' \n')
+        file.write(f'module purge \n')
+        file.write(f'module load cuda/10.0.130-gcc-13.2.0 \n')
+        file.write(f'source ~/.bashrc \n')
+        file.write(f'conda activate psi4_rdkit \n')
+        file.write(f'python3 {mol_name}_{job_name}.py \n')
+        file.write(f'conda deactivate \n')
+
 
 def submit_slurm_job(job_name, mol_name):
     """
     Submits a SLURM job using the specified job name and molecule name. Works on the KCL CREATE HPC.
 
-    Parameters:
-    job_name (str): The type of job to run. Possible values include:
-        - 'tor' : Torsional scan neutral
-        - 'pop_n' : Population analysis
-        - 'ver_a' : Vertical anion
-        - 'ver_c' : Vertical cation
-        - 'opt_a' : Optimisation anion
-        - 'opt_c' : Optimisation cation
-        - 'opt_n' : Optimisation neutral
-        - 'n_a_geo' : Neutral optimised anion geometry
-        - 'n_c_geo' : Neutral optimised cation geometry
+    Parameters
+    ----------
+    job_name (str): The type of job to run. Possible values:
+        - 'sp': Single Point neutral
+        - 'opt': Optimisation neutral
+        - 'tor': Torsional scan neutral                                                                                
+        - 'pop_opt_n': Optimisation neutral + Population analysis                                                                                
+        - 'sp_a': Single point anion                                                                                
+        - 'sp_c': Single point cation
+        - 'opt_a': Optimisation anion
+        - 'opt_c': Optimisation cation
+        - 'n_a_geo': Neutral charge, optimised anion geometry
+        - 'n_c_geo': Neutral charge, optimised cation geometry
+        - 'sp_hirsh': Single Point Hirshfeld 
 
     mol_name (str): The name of the dimer from the dictionary. For example, if fragment 0 was attached to fragment 1,
                     then the dimer name would be '0_1'.
 
-    Returns:
+    Returns
+    -------
     bytes: The standard output from the SLURM job submission command.
     """
 

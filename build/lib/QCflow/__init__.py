@@ -7,4 +7,5 @@ from . import slurm
 from . import energy_calculations
 from . import testing_data
 from . import run_gaussian
-
+from . import write_psi4
+from . import run_psi4

@@ -2,6 +2,33 @@ from QCflow.load_gaussian import *
 import cclib
 import numpy as np
 
+def extract_data_from_txt(file_path):
+    """
+    Extracts data from a .txt file with energy, HOMO, LUMO, and energy gap information.
+
+    Parameters
+    ----------
+    file_path (str): Path to the .txt file.
+
+    Returns
+    -------
+    dict: A dictionary with extracted values.
+    """
+    data = {}
+
+    with open(file_path, 'r') as file:
+        for line in file:
+            if "Optimized energy:" in line:
+                data["optimized_energy"] = float(line.split(":")[1].split()[0])  # Extract energy in Hatree
+            elif "HOMO:" in line:
+                data["homo"] = float(line.split(":")[1].split()[0])  # Extract HOMO in eV
+            elif "LUMO:" in line:
+                data["lumo"] = float(line.split(":")[1].split()[0])  # Extract LUMO in eV
+            elif "Energy gap" in line:
+                data["energy_gap"] = float(line.split(":")[1].split()[0])  # Extract energy gap in eV
+
+    return data
+
 def cal_reorg(opt_n,sp_c,opt_c,n_c_geo):
     """
     Calculate the reorganization energy.

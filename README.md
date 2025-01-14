@@ -28,6 +28,13 @@ A typical workflow involves:
 
 Only [Gaussian](https://gaussian.com/man/) is supported at the moment, but we plan to add support for [Psi4](https://psicode.org/).
 
+Psi4 is in the beta stages of support and can be found on the 'qcflow-psi4' branch.
+
+When installing the branch with psi4 please use the following command onc you have installed QCflow:
+
+```bash
+conda update psi4
+```
 
 ## Installation
 

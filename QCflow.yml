@@ -80,6 +80,7 @@ dependencies:
   - pillow
   - pip
   - pixman
+  - psi4
   - pthread-stubs
   - pycairo
   - pyparsing

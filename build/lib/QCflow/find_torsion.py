@@ -6,10 +6,12 @@ def getBond(mol):
     """
     Finds the rotatable bonds in a given RDKit molecule.
 
-    Parameters:
+    Parameters
+    ----------
     mol (rdkit.Chem.Mol): An RDKit molecule object.
 
-    Returns:
+    Returns
+    -------
     tuple: A tuple of tuples, where each inner tuple contains the indices of atoms that form a rotatable bond.
     """
     #rotatable bonds
@@ -21,11 +23,13 @@ def getTorsion(mol,bond):
     """
     Gets the torsion for the torsional scan.
 
-    Parameters:
+    Parameters
+    ----------
     mol (rdkit.Chem.Mol): RDKit molecule object representing the oligomer.
     bond (tuple): Tuple of two integers representing the indices of the rotatable bond.
 
-    Returns:
+    Returns
+    -------
     tuple: A tuple of four integers representing the indices of the atoms involved in the torsion.
             The format is (first_atom, bond_atom1, bond_atom2, last_atom).
             'first_atom' is the neighbor of 'bond_atom1' with the highest priority (N, S, O > C).
@@ -59,10 +63,12 @@ def embed_molecule(mol):
     """
     Generates the 3D rdkit.Chem.Mol object of the given RDKit molecule and adds hydrogen atoms.
 
-    Parameters:
+    Parameters
+    ----------
     mol (rdkit.Chem.Mol): An RDKit molecule object.
 
-    Returns:
+    Returns
+    -------
     rdkit.Chem.Mol: The RDKit molecule object with embedded 3D coordinates and added hydrogen atoms.
     """
 

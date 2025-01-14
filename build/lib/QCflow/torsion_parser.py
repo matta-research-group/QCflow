@@ -16,10 +16,12 @@ def find_min_energy_index(data):
     """
     Finds the index of the minimum energy from the torsional scan data.
 
-    Parameters:
+    Parameters
+    ----------
     data (cclib.parser.data.ccData_optdone_bool): Loaded cclib data from the .log file containing the torsional information.
 
-    Returns:
+    Returns
+    -------
     int: The index corresponding to the minimum energy value in the torsional scan data.
     """
     #finds opt energy of each 10 deg scan
@@ -35,10 +37,12 @@ def min_angle(data):
     """
     Finds the angle of the minimum energy torsion.
 
-    Parameters:
+    Parameters
+    ----------
     data (cclib.parser.data.ccData): Loaded cclib data from the .log file containing the torsional information.
 
-    Returns:
+    Returns
+    -------
     float: The dihedral angle corresponding to the minimum energy torsion.
     """
     data.scanenergies = data.scfenergies[data.optstatus == 4]
@@ -52,11 +56,13 @@ def torsion_parser(mol_name, mol_smi):
     """
     Parses the torsional profile of a molecule and returns the optimized geometry at the lowest energy minimum.
 
-    Parameters:
+    Parameters
+    ----------
     mol_name (str): The name of the molecule (dimer or trimer).
     mol_smi (str): SMILES string of the molecule.
 
-    Returns:
+    Returns
+    -------
     rdkit.Chem.rdchem.Conformer: The optimized geometry at the lowest energy minimum.
 
     The function performs the following steps:
@@ -90,11 +96,13 @@ def setting_dihedral(mol_smile, deg):
     """
     Sets the dihedral angle of the torsion for individual scans.
 
-    Parameters:
+    Parameters
+    ----------
     mol_smile (str): SMILES string of the dimer.
     deg (float): Desired dihedral angle (0 or 180 for planar).
 
-    Returns:
+    Returns
+    -------
     rdkit.Chem.rdchem.Conformer: A conformer of the dimer with the specified dihedral angle.
 
     The function performs the following steps:
@@ -135,11 +143,13 @@ def finding_dihedral_opt(mol_smiles, log_data):
     """
     Calculates the dihedral angle of a molecule given its SMILES string and log data.
 
-    Parameters:
+    Parameters
+    ----------
         mol_smiles (str): The SMILES string of the molecule.
         log_data (object): An object containing log data, including converged geometries.
 
-    Returns:
+    Returns
+    -------
         float: The dihedral angle in degrees.
     """
 
@@ -170,10 +180,12 @@ def find_planarity(angle):
     Calculate the planarity of a given angle.
     This function computes the planarity of an angle by taking the absolute value of the cosine of the angle converted to radians.
     
-    Parameters:
+    Parameters
+    ----------
     angle (float): The angle in degrees for which the planarity is to be calculated.
     
-    Returns:
+    Returns
+    -------
     float: The planarity value.
     """
     
@@ -184,11 +196,13 @@ def getBondLinkers(mol, linker_type):
     """
     From an RDKit molecule, finds the two atoms involved in specified type of rotatable bond.
     
-    Parameters:
+    Parameters
+    ----------
     mol (rdkit.Chem.Mol): RDKit molecule object.
     linker_type (str): Type of linker to search for. Options are 'single', 'double', 'imine', or 'thio'.
     
-    Returns:
+    Returns
+    -------
     tuple: A tuple, where indices of the atoms involved in the matching bonds.
     """
 
@@ -214,11 +228,13 @@ def getTorsion_one(mol, bond):
     """
     Gets the first torsion of a multi torsion molecule. Works for triple, imine and double bonds.
 
-    Parameters:
+    Parameters
+    ----------
     mol (rdkit.Chem.Mol): RDKit molecule object representing the oligomer.
     bond (tuple): Tuple of atom indices representing the rotatable bond.
 
-    Returns:
+    Returns
+    -------
     tuple: A tuple containing the indices of the four atoms defining the torsion angle.
     """
 
@@ -239,11 +255,13 @@ def getTorsion_two(mol, bond):
     """
     Gets the second torsion of a multi torsion molecule. Works for triple, imine and double bonds.
 
-    Parameters:
+    Parameters
+    ----------
     mol (rdkit.Chem.Mol): RDKit molecule object representing the oligomer.
     bond (tuple): Tuple of atom indices representing the rotatable bond.
 
-    Returns:
+    Returns
+    -------
     tuple: A tuple containing the indices of the four atoms defining the torsion angle.
     """
     for atom in mol.GetAtomWithIdx(bond[3]).GetNeighbors():
@@ -262,12 +280,14 @@ def finding_multi_planairty(mol_name, mol_smiles, linker_type):
     """
     Determines the average planarity of a molecule based on its torsion angles.
     
-    Parameters:
+    Parameters
+    ----------
     mol_name (str): The name of the molecule, used to locate the optimization log file.
     mol_smiles (str): The SMILES representation of the molecule.
     linker_type (str): The type of linker in the molecule. Can be 'thio', 'triple', 'double', or 'imine'.
     
-    Returns:
+    Returns
+    -------
     float: The average planarity of the molecule.
     """
     

@@ -10,14 +10,16 @@ def rdkit_predict_conf(mol_smiles, num_of_conformer=100, max_iter=500, min_energ
     """
     Generates conformers for a given molecule using RDKit and returns the lowest energy conformer.
 
-    Parameters:
+    Parameters
+    ----------
     mol_smiles (str): The SMILES representation of the molecule.
     num_of_conformer (int): The number of conformers to be generated (default: 100).
     max_iter (int): The maximum number of iterations for conformer optimization (default: 500).
     min_energy_MMFF (float): The minimum energy threshold for selecting the lowest energy conformer (default: 10000).
     min_energy_index_MMFF (int): The index of the lowest energy conformer (default: 0).
 
-    Returns:
+    Returns
+    -------
     conf (Chem.Conformer): The lowest energy conformer of the molecule.
 
     """
@@ -47,38 +49,84 @@ def rdkit_predict_conf(mol_smiles, num_of_conformer=100, max_iter=500, min_energ
 
 def run_calc(job_name, mol_name, mol_smile, functional='B3LYP', basis_set='6-31G*'):
     """
-    Submits a gaussian calculation to CREATE HPC.
+    Submits a Gaussian calculation to CREATE HPC.
 
-    Parameters:
-    job_name (str): Name of the job to be submitted.
-    mol_name (str): Name of the oligomer.
-    mol_smile (str): SMILE string of the oligomer.
-    functional (str, optional): Quantum chemistry functional to be used (default is 'B3LYP').
-    basis_set (str, optional): Basis set to be used (default is '6-31G*').
+    Parameters
+    ----------
+    job_name (str): The type of job to run. Possible values:
+        - 'sp': Single Point neutral
+        - 'opt': Optimisation neutral
+        - 'tor': Torsional scan neutral                                                                                
+        - 'pop_opt_n': Optimisation neutral + Population analysis                                                                                
+        - 'sp_a': Single point anion                                                                                
+        - 'sp_c': Single point cation
+        - 'opt_a': Optimisation anion
+        - 'opt_c': Optimisation cation
+        - 'n_a_geo': Neutral charge, optimised anion geometry
+        - 'n_c_geo': Neutral charge, optimised cation geometry
+        - 'sp_hirsh': Single Point Hirshfeld 
+    mol_name : str
+        Name of the oligomer.
+    mol_smile : str
+        SMILES string of the oligomer.
+    functional : str, optional
+        Quantum chemistry functional to be used (default is 'B3LYP').
+    basis_set : str, optional
+        Basis set to be used (default is '6-31G*').
 
-    This function performs the following steps:
-    1. Creates a directory for the molecule.
-    2. Changes the current working directory to the newly created directory.
-    3. Converts the SMILES string to an RDKit molecule object.
-    4. Generates 3D coordinates for the molecule.
-    5. Writes a Gaussian input file for the molecule.
-    6. Writes a SLURM script for job submission.
-    7. Submits the SLURM job.
-    8. Returns to the previous directory.
+    
+    Returns
+    -------
+    - For 'sp_a', 'sp_c', 'opt_a', 'opt_c', 'n_a_geo', 'n_c_geo', and 'sp_hirsh':
+        - Writes a Gaussian input file directly.
+    - For 'opt', 'sp', and 'pop_opt_n':
+        - Converts the SMILES string to an RDKit molecule object.
+        - Generates 3D coordinates for the molecule.
+        - Predicts the conformer geometry.
+        - Writes a Gaussian input file with the conformer geometry.
+    - For 'tor':
+        - Converts the SMILES string to an RDKit molecule object.
+        - Identifies the bond for torsional scan.
+        - Determines the torsion angle.
+        - Generates 3D coordinates for the molecule.
+        - Writes a Gaussian input file with the torsion angle.
+    Finally, the function writes a SLURM script, submits the job, and returns to the previous directory.
     """
+    if os.path.exists(f'{mol_name}'):
+        os.chdir(f'{mol_name}') #goes into directory
+    else:
+        os.mkdir(f'{mol_name}') #makes a directory for the molecule
+        os.chdir(f'{mol_name}') #goes into directory
 
-    #makes a directory for the molecule
-    os.mkdir(f'{mol_name}')
-    #goes into directory
-    os.chdir(f'{mol_name}')
-    #turns smiles string into rdkit object
-    mol = Chem.MolFromSmiles(mol_smile)
-    #gets rdkit estimated coordinates of dimer
-    mol3d = embed_molecule(mol)
 
-    conf_geo = rdkit_predict_conf(mol_smile)
-    #writes a guassian input file
-    write_gaussian(job_name, mol_name, mol_smile, functional, basis_set, mol=mol3d, torsion=0, conformer=conf_geo)
+    if (job_name=='sp_a') or (job_name=='sp_c') or (job_name=='opt_c') or (job_name=='opt_a') or (job_name=='n_a_geo') or (job_name=='n_c_geo') or (job_name=='sp_hirsh'):
+
+        write_gaussian(job_name, mol_name, mol_smile, functional, basis_set)
+
+    if (job_name=='opt') or (job_name=='sp') or (job_name=='pop_opt_n'):
+        #turns smiles string into rdkit object
+        mol = Chem.MolFromSmiles(mol_smile)
+        #gets rdkit estimated coordinates of dimer
+        mol3d = embed_molecule(mol)
+
+        conf_geo = rdkit_predict_conf(mol_smile)
+        #writes a guassian input file
+        write_gaussian(job_name, mol_name, mol_smile, functional, basis_set, mol=mol3d, torsion=0, conformer=conf_geo)
+
+    if (job_name=='tor'):
+        #turns smiles string into rdkit object
+        mol = Chem.MolFromSmiles(mol_smile)
+        #finds the bond between the fragment
+        bond = getBond(mol)
+        #torsion of the bond between the fragment
+        torsion = getTorsion(mol, bond[0])
+        #gets rdkit estimated coordinates of dimer
+        mol3d = embed_molecule(mol)
+
+        #writes a guassian input file
+        write_gaussian(job_name, mol_name, mol_smile, functional, basis_set, mol3d, torsion)
+
+    
     #writes the slurm file
     write_slurm(job_name, mol_name)
     #submits the slurm jon
@@ -92,15 +140,28 @@ def staging_opt(job_name, mol_name, mol_smile, mol_dic, functional, basis_set):
     If it has, then appends a dictionary showing this. If the calculations haven't been run
     all the way, then runs them. If the calculation has failed, then appends a dictionary
     
-    Parameters:
-    job_name (str): Type of job run e.g. pop_opt_n
+    Parameters
+    ----------
+    job_name (str): The type of job to run. Possible values:
+        - 'sp': Single Point neutral
+        - 'opt': Optimisation neutral
+        - 'tor': Torsional scan neutral                                                                                
+        - 'pop_opt_n': Optimisation neutral + Population analysis                                                                                
+        - 'sp_a': Single point anion                                                                                
+        - 'sp_c': Single point cation
+        - 'opt_a': Optimisation anion
+        - 'opt_c': Optimisation cation
+        - 'n_a_geo': Neutral charge, optimised anion geometry
+        - 'n_c_geo': Neutral charge, optimised cation geometry
+        - 'sp_hirsh': Single Point Hirshfeld
     mol_name (str): The name of the oligomer as seen in the dictionary i.e. if melanin fragment (b) is combined
     mol_smile (str): SMILE string of oligomer
     mol_dic (dict): Dictionary of oligomers where key is the name of the oligomer and value is the SMILES string
     functional (str): Functional used in calculations (e.g. B3LYP)
     basis_set (str): Basis set used (e.g. 6-31G*)
     
-    Returns:
+    Returns
+    -------
     tuple: A tuple containing three dictionaries:
         fully_complete (dict): Oligomers that have been calculated at the highest basis set
         not_complete (dict): Oligomers that failed and need manual assessment (shows basis set they failed at)
@@ -137,50 +198,3 @@ def staging_opt(job_name, mol_name, mol_smile, mol_dic, functional, basis_set):
 
 
     return fully_complete, not_complete, in_progress
-
-
-def run_torsion(mol_name, mol_smiles, functional='B3LYP', basis_set='6-31G*'):
-    """
-    When provided with a dictionary of molecules, this function creates the SLURM 
-    and Gaussian input files and then submits the torsional scan.
-
-    Parameters:
-    mol_name (str): Name of the oligomer.
-    mol_smile (str): SMILE string of the oligomer.
-    functional (str): The functional to be used in Gaussian calculations. Default is 'B3LYP'.
-    basis_set (str): The basis set to be used in Gaussian calculations. Default is '6-31G*'.
-
-    The function performs the following steps for each molecule:
-    1. Creates a directory named after the molecule.
-    2. Converts the SMILES string to an RDKit molecule object.
-    3. Identifies the bond and torsion of the molecule.
-    4. Generates 3D coordinates for the molecule.
-    5. Writes the Gaussian input file.
-    6. Writes the SLURM job file.
-    7. Submits the SLURM job.
-    8. Returns to the previous directory.
-    """
-
-    
-    #makes directory called after the job name
-    os.mkdir(f'{mol_name}')
-        #goes into that directory
-    os.chdir(f'{mol_name}')
-
-        #turns smiles string into rdkit object
-    mol = Chem.MolFromSmiles(mol_smiles)
-        #finds the bond between the fragment
-    bond = getBond(mol)
-        #torsion of the bond between the fragment
-    torsion = getTorsion(mol, bond[0])
-        #gets rdkit estimated coordinates of dimer
-    mol3d = embed_molecule(mol)
-
-        #writes a guassian input file
-    write_gaussian('tor', mol_name, mol_smiles, functional, basis_set, mol3d, torsion)
-        #writes the slurm file
-    write_slurm('tor', mol_name)
-        #submits the slurm jon
-    submit_slurm_job('tor', mol_name)
-        #goes back to previous directory
-    os.chdir(os.path.dirname(os.getcwd()))
