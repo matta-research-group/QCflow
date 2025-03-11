@@ -23,14 +23,14 @@ def write_psi4(job_name, mol_name, smile, functional='b3lyp', basis_set='6-31g*'
         - 'opt': Optimisation neutral                                                                                                                                        
     mol_name (str): The name of the molecule.
     smile (str): The SMILE string of the molecule.
-    functional (str, optional): The functional to use. Default is 'B3LYP'.
-    basis_set (str, optional): The basis set to use. Default is '6-31G*'.
+    functional (str, optional): The functional to use. Default is 'b3lyp'.
+    basis_set (str, optional): The basis set to use. Default is '6-31g'.
     mol (rdkit.Chem.rdchem.Mol, optional): The RDKit embedded molecule object.
     conformer (rdkit.Chem.rdchem.Conformer, optional): The RDKit conformer of the molecule.
     
     Returns
     -------
-         None: Writes the Gaussian input file to disk.
+         None: Writes the psi4 input file to disk.
 
     """
 
@@ -94,7 +94,31 @@ def write_psi4(job_name, mol_name, smile, functional='b3lyp', basis_set='6-31g*'
         file.write(f"psi4.set_options({{'basis': '{basis_set}', 'scf_type': 'df'}})\n")
         file.write(' \n')
         if (job_name=='sp'):
-            file.write(f'energy({functional})')
+            file.write(f"energy, wfn = psi4.energy('{functional}', return_wfn=True)  \n")
+            file.write(' \n')
+            file.write("sp_geometry_xyz = wfn.molecule().to_string('xyz') \n")
+            file.write(f"with open('{mol_name}_{job_name}.xyz', 'w') as xyz_file:\n")
+            file.write("    xyz_file.write(sp_geometry_xyz) \n")
+            file.write(' \n')
+            file.write(f"psi4.core.set_active_molecule(wfn.molecule()) \n")
+            file.write(' \n')
+            file.write('orbital_energies = wfn.epsilon_a_subset("AO", "ALL").np \n')
+            file.write(' \n')
+            file.write('n_occ_alpha = wfn.nalpha() \n')
+            file.write('homo_energy = orbital_energies[n_occ_alpha - 1] \n')
+            file.write('lumo_energy = orbital_energies[n_occ_alpha] \n')
+            file.write('energy_gap = lumo_energy - homo_energy \n')
+            file.write(' \n')
+            file.write('hartree_to_ev = 27.2114079527 \n')
+            file.write('homo_energy_ev = homo_energy * hartree_to_ev \n')
+            file.write('lumo_energy_ev = lumo_energy * hartree_to_ev \n')
+            file.write('energy_gap_ev = lumo_energy_ev -  homo_energy_ev \n')
+            file.write(' \n')
+            file.write(f"with open('{mol_name}_{job_name}_energy_and_gap.txt', 'w') as file:\n")
+            file.write('    file.write(f"Optimized energy: {energy:.6f} Hatree\\n") \n')
+            file.write('    file.write(f"HOMO: {homo_energy_ev:.6f} eV\\n") \n')
+            file.write('    file.write(f"LUMO: {lumo_energy_ev:.6f} eV\\n") \n')
+            file.write('    file.write(f"Energy gap (HOMO-LUMO): {energy_gap_ev:.6f} eV\\n") \n')
         if (job_name=='opt'):
             file.write(f"energy, wfn = psi4.optimize('{functional}', return_wfn=True)  \n")
             file.write(' \n')
@@ -104,14 +128,21 @@ def write_psi4(job_name, mol_name, smile, functional='b3lyp', basis_set='6-31g*'
             file.write(' \n')
             file.write(f"psi4.core.set_active_molecule(wfn.molecule()) \n")
             file.write(' \n')
-            file.write(f"energy = psi4.energy('{functional}') \n")
-            file.write('homo = wfn.epsilon_a_subset("AO", "ALL").np[-1] \n')
-            file.write('lumo = wfn.epsilon_a_subset("AO", "ALL").np[0] \n')
-            file.write('energy_gap = lumo - homo \n')
+            file.write('orbital_energies = wfn.epsilon_a_subset("AO", "ALL").np \n')
+            file.write(' \n')
+            file.write('n_occ_alpha = wfn.nalpha() \n')
+            file.write('homo_energy = orbital_energies[n_occ_alpha - 1] \n')
+            file.write('lumo_energy = orbital_energies[n_occ_alpha] \n')
+            file.write('energy_gap = lumo_energy - homo_energy \n')
+            file.write(' \n')
+            file.write('hartree_to_ev = 27.2114079527 \n')
+            file.write('homo_energy_ev = homo_energy * hartree_to_ev \n')
+            file.write('lumo_energy_ev = lumo_energy * hartree_to_ev \n')
+            file.write('energy_gap_ev = lumo_energy_ev -  homo_energy_ev \n')
             file.write(' \n')
             file.write(f"with open('{mol_name}_{job_name}_energy_and_gap.txt', 'w') as file:\n")
-            file.write('    file.write(f"Optimized energy: {energy:.6f} Hartree\\n") \n')
-            file.write('    file.write(f"HOMO: {homo:.6f} Hartree\\n") \n')
-            file.write('    file.write(f"LUMO: {lumo:.6f} Hartree\\n") \n')
-            file.write('    file.write(f"Energy gap (HOMO-LUMO): {energy_gap:.6f} Hartree\n") \n')
+            file.write('    file.write(f"Optimized energy: {energy:.6f} Hatree\\n") \n')
+            file.write('    file.write(f"HOMO: {homo_energy_ev:.6f} eV\\n") \n')
+            file.write('    file.write(f"LUMO: {lumo_energy_ev:.6f} eV\\n") \n')
+            file.write('    file.write(f"Energy gap (HOMO-LUMO): {energy_gap_ev:.6f} eV\\n") \n')
         file.write(' \n')

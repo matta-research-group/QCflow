@@ -199,7 +199,7 @@ def getBondLinkers(mol, linker_type):
     Parameters
     ----------
     mol (rdkit.Chem.Mol): RDKit molecule object.
-    linker_type (str): Type of linker to search for. Options are 'single', 'double', 'imine', or 'thio'.
+    linker_type (str): Type of linker to search for. Options are 'single', 'double', 'imine', 'thio' or 'triple'.
     
     Returns
     -------
@@ -218,6 +218,9 @@ def getBondLinkers(mol, linker_type):
 
     if linker_type == 'thio':
         pattern = Chem.MolFromSmarts('[R!$(*#*)&!D1]-!@[R!$(*#*)&!D1]')
+
+    if linker_type == 'triple':
+        pattern = Chem.MolFromSmarts('[*R1!$(*#*)!D1]C#C-!@[*R1!$(*#*)!D1]')
 
 
     bonds = mol.GetSubstructMatches(pattern)

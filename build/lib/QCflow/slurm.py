@@ -68,7 +68,7 @@ def write_slurm(job_name, mol_name, cpus=10):
         file.write(f'#Execution Line \n')
         file.write(f'g16 $INPUTFILE > $OUTPUTFILE \n')
 
-def write_slurm_psi4(job_name, mol_name, cpus=10):
+def write_slurm_psi4(job_name, mol_name, time=24, cpus=10):
     """
     Writes a SLURM batch script for a specified job type and molecule name.
 
@@ -79,6 +79,7 @@ def write_slurm_psi4(job_name, mol_name, cpus=10):
         - 'opt': Optimisation neutral
     mol_name (str): The name of the dimer from the dictionary, e.g., if fragment 0 was attached to fragment 1,
                     then the dimer name is '0_1'.
+    time (int, optional): The time limit for the job in hours. Default is 24. (Max is 48)
     cpus (int, optional): The number of CPUs to allocate for the job. Default is 10.
     
     Notes
@@ -86,20 +87,18 @@ def write_slurm_psi4(job_name, mol_name, cpus=10):
     The function generates a SLURM batch script file named '{mol_name}_{job_name}.sh' with appropriate
     configurations based on the job type and molecule name. The script includes settings for job name,
     output and error files, partition, number of tasks, nodes, CPUs per task, memory per CPU, and time limit.
-    It also sets up the environment and execution line for running Gaussian 16 (g16) with the specified input
+    It also sets up the environment and execution line for running Psi4 job with the specified input
     and output files.
     """
 
     file_name = f'{mol_name}_{job_name}.sh'
     
-    if (job_name == 'sp'):
-        calc_time = '24:00:00'
-    else:
-        calc_time = '48:00:00'
+    calc_time = f'{time}:00:00'
 
     title = f'#!/bin/bash --login'
     with open(file_name, 'w') as file:
         file.write(f'{title}\n')#
+        file.write(f'#SBATCH -o {mol_name}_{job_name}.out \n')
         file.write(f'#SBATCH -e {mol_name}_{job_name}.err \n')#
         file.write(f'#SBATCH --job-name={mol_name}_{job_name} \n')
         file.write(f'#SBATCH -p cpu \n')
@@ -111,10 +110,7 @@ def write_slurm_psi4(job_name, mol_name, cpus=10):
         file.write(' \n')
         file.write(f'module purge \n')
         file.write(f'module load cuda/10.0.130-gcc-13.2.0 \n')
-        file.write(f'source ~/.bashrc \n')
-        file.write(f'conda activate psi4_rdkit \n')
         file.write(f'python3 {mol_name}_{job_name}.py \n')
-        file.write(f'conda deactivate \n')
 
 
 def submit_slurm_job(job_name, mol_name):
