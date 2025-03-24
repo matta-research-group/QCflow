@@ -20,7 +20,7 @@ def extract_data_from_txt(file_path):
         for line in file:
             if "Optimized energy:" in line:
                 data["optimized_energy"] = float(line.split(":")[1].split()[0])  # Extract energy in eV
-            elif "Singl Point energy:" in line:
+            elif "Single Point energy:" in line:
                 data["sp_energy"] = float(line.split(":")[1].split()[0]) #Extract single point energy in eV
             elif "HOMO:" in line:
                 data["homo"] = float(line.split(":")[1].split()[0])  # Extract HOMO in eV
