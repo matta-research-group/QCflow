@@ -83,7 +83,7 @@ def generate_attachment_points(frag_dic, find='[cH;^2]', get_rid='C([I])'):
 
     return attach_dic
 
-def combine_structure(molecule_a, molecule_b):
+def combine_structure(molecule_a, molecule_b, attachment_point="I"):
     """
     Combines two molecules together at a specified attachment point.
 
@@ -91,13 +91,14 @@ def combine_structure(molecule_a, molecule_b):
     ----------
     molecule_a (object): The first molecule to be combined.
     molecule_b (object): The second molecule to be combined.
+    attachment_point (str): The atom label at which the two molecules will be combined. Default is 'I'.
 
     Returns
     -------
     object: The combined molecule.
 
     """
-    new_mol = CombineMols(molecule_a, molecule_b, "I")
+    new_mol = CombineMols(molecule_a, molecule_b, attachment_point)
     # Combining two dimers together at attachment point denoted atom 'I'
 
     new_mol_final = new_mol[0]

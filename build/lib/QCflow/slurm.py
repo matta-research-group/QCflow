@@ -77,6 +77,10 @@ def write_slurm_psi4(job_name, mol_name, time=24, cpus=10):
     job_name (str): The type of job to run. Possible values:
         - 'sp': Single Point neutral
         - 'opt': Optimisation neutral
+        - 'cation': Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo)
+        - 'anion': Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo)
+        - 'sp_c': Single point calculation of neutral geometry at cation charge
+        - 'sp_a': Single point calculation of neutral geometry at anion charge
     mol_name (str): The name of the dimer from the dictionary, e.g., if fragment 0 was attached to fragment 1,
                     then the dimer name is '0_1'.
     time (int, optional): The time limit for the job in hours. Default is 24. (Max is 48)
