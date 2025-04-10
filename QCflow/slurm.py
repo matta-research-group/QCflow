@@ -117,7 +117,37 @@ def write_slurm_psi4(job_name, mol_name, time=24, cpus=10):
         file.write(f'python3 {mol_name}_{job_name}.py \n')
 
 
-def submit_slurm_job(job_name, mol_name):
+def is_job_in_queue(submission_name):
+    """
+    Checks if the job has been successfully submitted into the queue
+
+    Parameters
+    ----------
+    submission_name (str): The name of the job that has been submitted to the HPC
+
+    Returns
+    -------
+    True or False
+    """
+    try:
+        result = subprocess.run(
+            ['squeue', '--me'],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=True
+        )
+        # Search for job_name in the output
+        for line in result.stdout.splitlines():
+            if submission_name in line:
+                return True
+        return False
+    except subprocess.CalledProcessError as e:
+        print(f"Error checking squeue: {e.stderr.strip()}")
+        return False
+
+
+def submit_slurm_job(job_name, mol_name, max_retries=5, wait_seconds=30):
     """
     Submits a SLURM job using the specified job name and molecule name. Works on the KCL CREATE HPC.
 
@@ -139,6 +169,10 @@ def submit_slurm_job(job_name, mol_name):
     mol_name (str): The name of the dimer from the dictionary. For example, if fragment 0 was attached to fragment 1,
                     then the dimer name would be '0_1'.
 
+    max_retries (int): The maximum amount of times a job will attempt to submit. Deafult is 5.
+
+    wait_seconds (int): How long python will go to sleep inbetween attempts to submit
+
     Returns
     -------
     bytes: The standard output from the SLURM job submission command.
@@ -146,7 +180,29 @@ def submit_slurm_job(job_name, mol_name):
 
     string = f'sbatch {mol_name}_{job_name}.sh'
 
-    process = subprocess.run(string,
-                     stdout=subprocess.PIPE,
-                     stderr=subprocess.PIPE, shell=True,check=True)
-    return process.stdout
+    submission_name = f'{mol_name}_{job_name}.sh'
+
+    for attempt in range(1, max_retries + 1):
+        if is_job_in_queue(submission_name):
+            print(f"Job {submission_name} is already in the queue. Skipping submission.")
+            return None
+
+        try:
+            process = subprocess.run(
+                string,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                shell=True,
+                check=True
+            )
+            print(f"Successfully submitted job {mol_name}_{job_name}")
+            return process.stdout
+
+        except subprocess.CalledProcessError as e:
+            print(f"[Attempt {attempt}] Error submitting job {mol_name}_{job_name}: {e.stderr.decode().strip()}")
+            if attempt < max_retries:
+                print(f"Waiting {wait_seconds} seconds before checking and retrying...")
+                time.sleep(wait_seconds)
+            else:
+                print("Max retries reached. Moving on.")
+                return None
