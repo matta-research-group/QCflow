@@ -4,7 +4,7 @@ import numpy as np
 
 def extract_data_from_txt(file_path):
     """
-    Extracts data from a .txt file with energy, HOMO, LUMO, and energy gap information.
+    Extracts data from a .txt file with energy, HOMO, LUMO, and energy gap information for Psi4 caucltions.
 
     Parameters
     ----------
@@ -33,7 +33,7 @@ def extract_data_from_txt(file_path):
 
 def cal_reorg(opt_n,sp_c,opt_c,n_c_geo, calculation_software='Gaussian'):
     """
-    Calculate the reorganization energy.
+    Calculate the reorganization energy. Can calculate it for both Gaussian 16 and Psi4. Gaussian is default.
 
     Parameters
     ----------

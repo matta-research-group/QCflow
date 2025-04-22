@@ -56,6 +56,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.write_gaussian.write_gaussian"><code class="docutils literal notranslate"><span class="pre">write_gaussian()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.write_psi4">QCflow.write_psi4</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#QCflow.write_psi4.write_psi4"><code class="docutils literal notranslate"><span class="pre">write_psi4()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#QCflow.write_psi4.write_psi4_reorg"><code class="docutils literal notranslate"><span class="pre">write_psi4_reorg()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="#module-QCflow.slurm">QCflow.slurm</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.slurm.write_slurm"><code class="docutils literal notranslate"><span class="pre">write_slurm()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.slurm.write_slurm_psi4"><code class="docutils literal notranslate"><span class="pre">write_slurm_psi4()</span></code></a></li>
@@ -67,6 +72,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.run_gaussian.rdkit_predict_conf"><code class="docutils literal notranslate"><span class="pre">rdkit_predict_conf()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.run_gaussian.run_calc"><code class="docutils literal notranslate"><span class="pre">run_calc()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.run_gaussian.staging_opt"><code class="docutils literal notranslate"><span class="pre">staging_opt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.run_psi4">QCflow.run_psi4</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#QCflow.run_psi4.run_psi4"><code class="docutils literal notranslate"><span class="pre">run_psi4()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#module-QCflow.testing_data">QCflow.testing_data</a><ul>
@@ -272,6 +281,68 @@
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Writes the Gaussian input file to disk.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-QCflow.write_psi4">
+<span id="qcflow-write-psi4"></span><h1>QCflow.write_psi4<a class="headerlink" href="#module-QCflow.write_psi4" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.write_psi4.write_psi4">
+<span class="sig-prename descclassname"><span class="pre">QCflow.write_psi4.</span></span><span class="sig-name descname"><span class="pre">write_psi4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'b3lyp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6-31g*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conformer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/write_psi4.html#write_psi4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.write_psi4.write_psi4" title="Link to this definition"></a></dt>
+<dd><p>Generates a psi4 input file based on the provided parameters for single point or geometry optimisation calculations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values:</em>) –</p>
+<ul>
+<li><p>‘sp’: Single Point neutral</p></li>
+<li><p>‘opt’: Optimisation neutral</p></li>
+</ul>
+</li>
+<li><p><strong>mol_name (str)</strong> (<em>The name of the molecule.</em>)</p></li>
+<li><p><strong>smile (str)</strong> (<em>The SMILE string of the molecule.</em>)</p></li>
+<li><p><strong>functional (str, optional)</strong> (<em>The functional to use. Default is ‘b3lyp’.</em>)</p></li>
+<li><p><strong>basis_set (str, optional)</strong> (<em>The basis set to use. Default is ‘6-31g’.</em>)</p></li>
+<li><p><strong>mol (rdkit.Chem.rdchem.Mol, optional)</strong> (<em>The RDKit embedded molecule object.</em>)</p></li>
+<li><p><strong>conformer (rdkit.Chem.rdchem.Conformer, optional)</strong> (<em>The RDKit conformer of the molecule.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>None</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Writes the psi4 input file to disk.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.write_psi4.write_psi4_reorg">
+<span class="sig-prename descclassname"><span class="pre">QCflow.write_psi4.</span></span><span class="sig-name descname"><span class="pre">write_psi4_reorg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'b3lyp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6-31g*'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/write_psi4.html#write_psi4_reorg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.write_psi4.write_psi4_reorg" title="Link to this definition"></a></dt>
+<dd><p>Generates a psi4 input file based on the provided parameters for reorganisation calculations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values:</em>) –</p>
+<ul>
+<li><p>‘cation’: Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo)</p></li>
+<li><p>‘anion’: Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo)</p></li>
+<li><p>‘sp_c’: Single point calculation of neutral geometry at cation charge</p></li>
+<li><p>‘sp_a’: Single point calculation of neutral geometry at anion charge</p></li>
+</ul>
+</li>
+<li><p><strong>mol_name (str)</strong> (<em>The name of the molecule.</em>)</p></li>
+<li><p><strong>functional (str, optional)</strong> (<em>The functional to use. Default is ‘b3lyp’.</em>)</p></li>
+<li><p><strong>basis_set (str, optional)</strong> (<em>The basis set to use. Default is ‘6-31g’.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>None</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Writes the psi4 input file to disk.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -523,6 +594,56 @@ in_progress (dict): Oligomers that are still in progress (shows basis set they a
 </dd></dl>
 
 </section>
+<section id="module-QCflow.run_psi4">
+<span id="qcflow-run-psi4"></span><h1>QCflow.run_psi4<a class="headerlink" href="#module-QCflow.run_psi4" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.run_psi4.run_psi4">
+<span class="sig-prename descclassname"><span class="pre">QCflow.run_psi4.</span></span><span class="sig-name descname"><span class="pre">run_psi4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_smile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'b3lyp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6-31g*'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/run_psi4.html#run_psi4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.run_psi4.run_psi4" title="Link to this definition"></a></dt>
+<dd><p>Submits a psi4 calculation to CREATE HPC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values:</em>) –</p>
+<ul>
+<li><p>‘sp’: Single Point neutral</p></li>
+<li><p>‘opt’: Optimisation neutral</p></li>
+<li><p>‘cation’: Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo)</p></li>
+<li><p>‘anion’: Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo)</p></li>
+<li><p>‘sp_c’: Single point calculation of neutral geometry at cation charge</p></li>
+<li><p>‘sp_a’: Single point calculation of neutral geometry at anion charge</p></li>
+</ul>
+</li>
+<li><p><strong>mol_name</strong> (<em>str</em>) – Name of the oligomer.</p></li>
+<li><p><strong>mol_smile</strong> (<em>str</em>) – SMILES string of the oligomer.</p></li>
+<li><p><strong>time (int, optional)</strong> (<em>The time limit for the job in hours. Default is 24. (Max is 48)</em>)</p></li>
+<li><p><strong>cpus (int, optional)</strong> (<em>The number of CPUs to allocate for the job. Default is 10.</em>)</p></li>
+<li><p><strong>functional</strong> (<em>str, optional</em>) – Quantum chemistry functional to be used (default is ‘B3LYP’).</p></li>
+<li><p><strong>basis_set</strong> (<em>str, optional</em>) – Basis set to be used (default is ‘6-31G*’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>- For ‘opt’ and ‘sp’</em> –</p>
+<ul>
+<li><p>Converts the SMILES string to an RDKit molecule object.</p></li>
+<li><p>Generates 3D coordinates for the molecule.</p></li>
+<li><p>Predicts the conformer geometry.</p></li>
+<li><p>Writes a psi4 input file with the conformer geometry.</p></li>
+</ul>
+</li>
+<li><p><em>- For ‘cation’, ‘anion’, ‘sp_c’, and ‘sp_a’</em> –</p>
+<ul>
+<li><p>Writes a psi4 input file.</p></li>
+</ul>
+</li>
+<li><p><em>Finally, the function writes a SLURM script, submits the job, and returns to the previous directory.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-QCflow.testing_data">
 <span id="qcflow-testing-data"></span><h1>QCflow.testing_data<a class="headerlink" href="#module-QCflow.testing_data" title="Link to this heading"></a></h1>
 <dl class="py function">
@@ -588,7 +709,7 @@ in_progress (dict): Oligomers that are still in progress (shows basis set they a
 <dl class="py function">
 <dt class="sig sig-object py" id="QCflow.energy_calculations.extract_data_from_txt">
 <span class="sig-prename descclassname"><span class="pre">QCflow.energy_calculations.</span></span><span class="sig-name descname"><span class="pre">extract_data_from_txt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/energy_calculations.html#extract_data_from_txt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.energy_calculations.extract_data_from_txt" title="Link to this definition"></a></dt>
-<dd><p>Extracts data from a .txt file with energy, HOMO, LUMO, and energy gap information.</p>
+<dd><p>Extracts data from a .txt file with energy, HOMO, LUMO, and energy gap information for Psi4 caucltions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>file_path (str)</strong> (<em>Path to the .txt file.</em>)</p>
@@ -605,7 +726,7 @@ in_progress (dict): Oligomers that are still in progress (shows basis set they a
 <dl class="py function">
 <dt class="sig sig-object py" id="QCflow.energy_calculations.cal_reorg">
 <span class="sig-prename descclassname"><span class="pre">QCflow.energy_calculations.</span></span><span class="sig-name descname"><span class="pre">cal_reorg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sp_c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_c_geo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculation_software</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Gaussian'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/energy_calculations.html#cal_reorg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.energy_calculations.cal_reorg" title="Link to this definition"></a></dt>
-<dd><p>Calculate the reorganization energy.</p>
+<dd><p>Calculate the reorganization energy. Can calculate it for both Gaussian 16 and Psi4. Gaussian is default.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
