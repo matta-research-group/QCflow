@@ -95,6 +95,7 @@ QCflow can prepare and submit input files for the following Psi4 jobs:
 - Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo) -> `anion`
 - Single point calculation, anion → `sp_a`
 - Single point calculation, cation → `sp_c`
+
 ## Files
 
 ```bash
