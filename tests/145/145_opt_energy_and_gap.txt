@@ -1,0 +1,4 @@
+Optimized energy: -51772.324664 eV
+HOMO: -4.909619 eV
+LUMO: -2.814112 eV
+Energy gap (HOMO-LUMO): 2.095507 eV

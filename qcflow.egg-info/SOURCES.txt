@@ -8,6 +8,7 @@ QCflow/fragments.py
 QCflow/load_gaussian.py
 QCflow/run_gaussian.py
 QCflow/run_psi4.py
+QCflow/sa_score.py
 QCflow/slurm.py
 QCflow/testing_data.py
 QCflow/torsion_parser.py

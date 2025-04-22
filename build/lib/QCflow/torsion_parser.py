@@ -338,57 +338,19 @@ def finding_multi_planairty(mol_name, mol_smiles, linker_type):
 
     return average_planarity
 
-def update_conformer_from_xyz(mol, xyz_file):
-    """
-    Updates the conformer of an RDKit molecule using coordinates from an XYZ file.
-    
-    Args:
-        mol (rdkit.Chem.Mol): The RDKit molecule.
-        xyz_file (str): Path to the XYZ file containing new coordinates.
-    
-    Returns:
-        rdkit.Chem.Mol: The molecule with updated conformer.
-    """
-    # Read the XYZ file
-    with open(xyz_file, 'r') as f:
-        lines = f.readlines()
-    
-    # Parse number of atoms from the first line
-    num_atoms = int(lines[0].strip())
-    
-    # Parse the coordinates
-    coordinates = []
-    atom_symbols = []
-    for line in lines[2:2 + num_atoms]:  # Skip the first two lines
-        parts = line.split()
-        atom_symbols.append(parts[0])  # Atom symbol
-        coordinates.append([float(parts[1]), float(parts[2]), float(parts[3])])  # x, y, z
-    
-    # Ensure atom count matches
-    if len(coordinates) != mol.GetNumAtoms():
-        raise ValueError("Number of atoms in the XYZ file does not match the RDKit molecule.")
-    
-    # Create or update a conformer
-    conf = Chem.Conformer(mol.GetNumAtoms())
-    for i, coord in enumerate(coordinates):
-        conf.SetAtomPosition(i, coord)
-    
-    mol.RemoveAllConformers()
-    mol.AddConformer(conf)
-    
-    return mol
-
 
 def update_conformer_from_xyz(mol, xyz_file):
     """
     Updates the conformer of an RDKit molecule using coordinates from an XYZ file.
     
-    Args:
-        mol (rdkit.Chem.Mol): The RDKit molecule.
-        xyz_file (str): Path to the XYZ file containing new coordinates.
+    Parameters
+    ----------
+    mol (rdkit.Chem.Mol): The RDKit molecule.
+    xyz_file (str): Path to the XYZ file containing new coordinates.
     
-    Returns:
-        rdkit.Chem.Mol: The molecule with updated conformer.
+    Returns
+    -------
+    rdkit.Chem.Mol: The molecule with updated conformer.
     """
     # Read the XYZ file
     with open(xyz_file, 'r') as f:

@@ -1,0 +1,4 @@
+Single Point energy: -51772.159797 eV
+HOMO: -5.054329 eV
+LUMO: -3.107805 eV
+Energy gap (HOMO-LUMO): 1.946524 eV

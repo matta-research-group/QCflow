@@ -416,3 +416,10 @@ def test_write_psi4_reorg_test():
         assert 'psi4.set_options' in content, "Psi4 options not written in the file"
         assert 'psi4.set_memory' in content, "Psi4 memory not written in the file"
         assert 'optimized_geometry_xyz' in content, "Optimized geometry not written in the file"
+
+def test_sa_scorer():
+
+    smile = 'CC(=O)C1=CC=C(C=C1)C(=O)C'
+    score = QCflow.sa_score.sa_scorer(smile)
+
+    assert score == 1.3625742537155308

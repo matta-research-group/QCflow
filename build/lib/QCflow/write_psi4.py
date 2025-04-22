@@ -14,7 +14,7 @@ from typing import List
 
 def write_psi4(job_name, mol_name, smile, functional='b3lyp', basis_set='6-31g*', mol=None, conformer=None):
     """
-    Generates a psi4 input file based on the provided parameters.
+    Generates a psi4 input file based on the provided parameters for single point or geometry optimisation calculations.
     
     Parameters
     ----------
@@ -154,7 +154,7 @@ def write_psi4(job_name, mol_name, smile, functional='b3lyp', basis_set='6-31g*'
 
 def write_psi4_reorg(job_name, mol_name, functional='b3lyp', basis_set='6-31g*'):
     """
-    Generates a psi4 input file based on the provided parameters.
+    Generates a psi4 input file based on the provided parameters for reorganisation calculations.
     
     Parameters
     ----------

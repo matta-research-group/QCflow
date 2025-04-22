@@ -18,10 +18,6 @@ export GOMP_CPU_AFFINITY=$SGE_BINDING
 export KMP_AFFINITY="explicit,proclist=$SGE_BINDING,verbose" 
 #source $g16root/bsd/g16.login 
  
-echo "G16 job \$SLURM_JOBID" 
-echo "INPUT \$INPUTFILE" 
-echo "OUTPUT \$OUTPUTFILE" 
-echo "Running \$SLURM_NTASKS on \$SLURM_JOB_NODELIST" 
- 
+echo "G16 job \$SLURM_JOBID" \necho "INPUT \$INPUTFILE" \necho "OUTPUT \$OUTPUTFILE" \necho "Running \$SLURM_NTASKS on \$SLURM_JOB_NODELIST" \n 
 #Execution Line 
 g16 $INPUTFILE > $OUTPUTFILE 
