@@ -45,8 +45,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">QCflow Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.load_gaussian">QCflow.load_gaussian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.write_gaussian">QCflow.write_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.write_psi4">QCflow.write_psi4</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.slurm">QCflow.slurm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.run_gaussian">QCflow.run_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.run_psi4">QCflow.run_psi4</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.testing_data">QCflow.testing_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.energy_calculations">QCflow.energy_calculations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.find_torsion">QCflow.find_torsion</a></li>
@@ -87,7 +89,7 @@
 <a class="viewcode-back" href="../../api.html#QCflow.energy_calculations.extract_data_from_txt">[docs]</a>
 <span class="k">def</span> <span class="nf">extract_data_from_txt</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Extracts data from a .txt file with energy, HOMO, LUMO, and energy gap information.</span>
+<span class="sd">    Extracts data from a .txt file with energy, HOMO, LUMO, and energy gap information for Psi4 caucltions.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -119,7 +121,7 @@
 <a class="viewcode-back" href="../../api.html#QCflow.energy_calculations.cal_reorg">[docs]</a>
 <span class="k">def</span> <span class="nf">cal_reorg</span><span class="p">(</span><span class="n">opt_n</span><span class="p">,</span><span class="n">sp_c</span><span class="p">,</span><span class="n">opt_c</span><span class="p">,</span><span class="n">n_c_geo</span><span class="p">,</span> <span class="n">calculation_software</span><span class="o">=</span><span class="s1">&#39;Gaussian&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the reorganization energy.</span>
+<span class="sd">    Calculate the reorganization energy. Can calculate it for both Gaussian 16 and Psi4. Gaussian is default.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
