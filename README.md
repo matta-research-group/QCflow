@@ -14,11 +14,25 @@ A typical workflow involves:
 
 1. Generating a series of input molecules as `SMILES` - optionally, by combining different fragments into larger molecules/oligomers  
 
-2. For each molecule:
+2. For each molecule a Gaussian 16 or Psi4 job is carried out:
    
     a. write `.com` Gaussian input files, `.sh` SLURM submission files
+
+    or
+
+    a. write `.py` Psi4 input files, `.sh` SLURM submission files
+
+    Then:
     
     b. submit a job (assuming you are working within a HPC)
+   
+    c. parse output file to submit further calculations or retrieve descriptors
+
+    For each molecule if Psi4 is desired:
+
+     a. write `.py` Psi4 input files, `.sh` SLURM submission files
+
+     b. submit a job (assuming you are working within a HPC)
    
     c. parse output file to submit further calculations or retrieve descriptors
 
@@ -26,11 +40,9 @@ A typical workflow involves:
 
 ## Supported QC codes 
 
-Only [Gaussian](https://gaussian.com/man/) is supported at the moment, but we plan to add support for [Psi4](https://psicode.org/).
+Only [Gaussian](https://gaussian.com/man/) and [Psi4](https://psicode.org/) are currently supported.
 
-Psi4 is in the beta stages of support and can be found on the 'qcflow-psi4' branch.
-
-When installing the branch with psi4 please use the following command onc you have installed QCflow:
+When installing the branch with psi4 please use the following command once you have installed QCflow to check psi4 is up to date:
 
 ```bash
 conda update psi4
@@ -46,6 +58,7 @@ conda env create -f QCflow.yml
 conda activate QCflow
 # install the QCflow package
 pip install .
+conda update psi4
 ```
 
 ## Usage Examples and Advice
@@ -64,9 +77,9 @@ file.write(f'module load your_gaussian_module \n') ### Your HPC
 Once the alteration has been made, just ```pip install .``` again and the package will update for your HPC.
 
 
-## Calculation settings
+## Calculation settings - Gaussian 16
 
-QCflow can prepare and submit input files for the following jobs: 
+QCflow can prepare and submit input files for the following Gaussian 16 jobs: 
 - Single point calculation, neutral -> `sp`
 - Single point calculation, anion → `sp_a`
 - Single point calculation, cation → `sp_c`
@@ -79,6 +92,15 @@ QCflow can prepare and submit input files for the following jobs:
 - Optimisation neutral + Population analysis → `pop_opt_n`
 - Single point Hirshfeld calculation → `sp_hirsh`
 
+## Calculation settings - Psi4
+
+QCflow can prepare and submit input files for the following Psi4 jobs:
+- Single point calculation, neutral -> `sp`
+- Geometry optimisation, neutral -> `opt`
+- Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo) -> `cation`
+- Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo) -> `anion`
+- Single point calculation, anion → `sp_a`
+- Single point calculation, cation → `sp_c`
 ## Files
 
 ```bash
