@@ -18,21 +18,15 @@ A typical workflow involves:
    
     a. write `.com` Gaussian input files, `.sh` SLURM submission files
 
-    or
-
-    a. write `.py` Psi4 input files, `.sh` SLURM submission files
-
-    Then:
-    
     b. submit a job (assuming you are working within a HPC)
    
     c. parse output file to submit further calculations or retrieve descriptors
 
-    For each molecule if Psi4 is desired:
+    or
 
-     a. write `.py` Psi4 input files, `.sh` SLURM submission files
-
-     b. submit a job (assuming you are working within a HPC)
+    a. write `.py` Psi4 input files, `.sh` SLURM submission files
+    
+    b. submit a job (assuming you are working within a HPC)
    
     c. parse output file to submit further calculations or retrieve descriptors
 
