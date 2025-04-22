@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QCflow.torsion_parser &mdash; QCflow 0.2.0 documentation</title>
+  <title>QCflow.torsion_parser &mdash; QCflow 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../../_static/documentation_options.js?v=e259d695"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -300,7 +300,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    mol (rdkit.Chem.Mol): RDKit molecule object.</span>
-<span class="sd">    linker_type (str): Type of linker to search for. Options are &#39;single&#39;, &#39;double&#39;, &#39;imine&#39;, or &#39;thio&#39;.</span>
+<span class="sd">    linker_type (str): Type of linker to search for. Options are &#39;single&#39;, &#39;double&#39;, &#39;imine&#39;, &#39;thio&#39; or &#39;triple&#39;.</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -319,6 +319,9 @@
 
     <span class="k">if</span> <span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;thio&#39;</span><span class="p">:</span>
         <span class="n">pattern</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s1">&#39;[R!$(*#*)&amp;!D1]-!@[R!$(*#*)&amp;!D1]&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;triple&#39;</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmarts</span><span class="p">(</span><span class="s1">&#39;[*R1!$(*#*)!D1]C#C-!@[*R1!$(*#*)!D1]&#39;</span><span class="p">)</span>
 
 
     <span class="n">bonds</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetSubstructMatches</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
@@ -432,8 +435,8 @@
     <span class="k">if</span> <span class="p">(</span><span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;double&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;imine&#39;</span><span class="p">):</span>
         <span class="n">bond</span> <span class="o">=</span> <span class="n">getBondLinkers</span><span class="p">(</span><span class="n">mol_3d</span><span class="p">,</span> <span class="n">linker_type</span><span class="p">)</span>
         
-        <span class="n">torsion_one</span> <span class="o">=</span> <span class="n">getTorsion_one</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">torsion_two</span> <span class="o">=</span> <span class="n">getTorsion_two</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">torsion_one</span> <span class="o">=</span> <span class="n">getTorsion_one</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#removed bond[0][0]</span>
+        <span class="n">torsion_two</span> <span class="o">=</span> <span class="n">getTorsion_two</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#removed bond[0][0]</span>
 
         <span class="n">angle_1</span> <span class="o">=</span> <span class="n">rdMolTransforms</span><span class="o">.</span><span class="n">GetDihedralDeg</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">torsion_one</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">torsion_one</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">torsion_one</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">torsion_one</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
         <span class="n">angle_2</span> <span class="o">=</span> <span class="n">rdMolTransforms</span><span class="o">.</span><span class="n">GetDihedralDeg</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">torsion_two</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">torsion_two</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">torsion_two</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">torsion_two</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
@@ -444,6 +447,165 @@
     <span class="n">average_planarity</span> <span class="o">=</span> <span class="p">(</span><span class="n">planar_1</span> <span class="o">+</span> <span class="n">planar_2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
     <span class="k">return</span> <span class="n">average_planarity</span></div>
+
+
+<span class="k">def</span> <span class="nf">update_conformer_from_xyz</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">xyz_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates the conformer of an RDKit molecule using coordinates from an XYZ file.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        mol (rdkit.Chem.Mol): The RDKit molecule.</span>
+<span class="sd">        xyz_file (str): Path to the XYZ file containing new coordinates.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        rdkit.Chem.Mol: The molecule with updated conformer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Read the XYZ file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">xyz_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    
+    <span class="c1"># Parse number of atoms from the first line</span>
+    <span class="n">num_atoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    
+    <span class="c1"># Parse the coordinates</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">atom_symbols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span> <span class="o">+</span> <span class="n">num_atoms</span><span class="p">]:</span>  <span class="c1"># Skip the first two lines</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">atom_symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># Atom symbol</span>
+        <span class="n">coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">])])</span>  <span class="c1"># x, y, z</span>
+    
+    <span class="c1"># Ensure atom count matches</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span> <span class="o">!=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of atoms in the XYZ file does not match the RDKit molecule.&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Create or update a conformer</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Conformer</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
+        <span class="n">conf</span><span class="o">.</span><span class="n">SetAtomPosition</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">coord</span><span class="p">)</span>
+    
+    <span class="n">mol</span><span class="o">.</span><span class="n">RemoveAllConformers</span><span class="p">()</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">AddConformer</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">mol</span>
+
+
+<div class="viewcode-block" id="update_conformer_from_xyz">
+<a class="viewcode-back" href="../../api.html#QCflow.torsion_parser.update_conformer_from_xyz">[docs]</a>
+<span class="k">def</span> <span class="nf">update_conformer_from_xyz</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">xyz_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates the conformer of an RDKit molecule using coordinates from an XYZ file.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        mol (rdkit.Chem.Mol): The RDKit molecule.</span>
+<span class="sd">        xyz_file (str): Path to the XYZ file containing new coordinates.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        rdkit.Chem.Mol: The molecule with updated conformer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Read the XYZ file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">xyz_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    
+    <span class="c1"># Parse number of atoms from the first line</span>
+    <span class="n">num_atoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    
+    <span class="c1"># Parse the coordinates</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">atom_symbols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span> <span class="o">+</span> <span class="n">num_atoms</span><span class="p">]:</span>  <span class="c1"># Skip the first two lines</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">atom_symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># Atom symbol</span>
+        <span class="n">coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">])])</span>  <span class="c1"># x, y, z</span>
+    
+    <span class="c1"># Ensure atom count matches</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span> <span class="o">!=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of atoms in the XYZ file does not match the RDKit molecule.&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Create or update a conformer</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Conformer</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
+        <span class="n">conf</span><span class="o">.</span><span class="n">SetAtomPosition</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">coord</span><span class="p">)</span>
+    
+    <span class="n">mol</span><span class="o">.</span><span class="n">RemoveAllConformers</span><span class="p">()</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">AddConformer</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">mol</span></div>
+
+
+<div class="viewcode-block" id="finding_planairty_psi4">
+<a class="viewcode-back" href="../../api.html#QCflow.torsion_parser.finding_planairty_psi4">[docs]</a>
+<span class="k">def</span> <span class="nf">finding_planairty_psi4</span><span class="p">(</span><span class="n">mol_name</span><span class="p">,</span> <span class="n">mol_smiles</span><span class="p">,</span> <span class="n">linker_type</span><span class="p">,</span> <span class="n">job_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines the average planarity of a molecule based on its torsion angles.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mol_name (str): The name of the molecule, used to locate the optimization xyz file.</span>
+<span class="sd">    mol_smiles (str): The SMILES representation of the molecule.</span>
+<span class="sd">    linker_type (str): The type of linker in the molecule. Can be &#39;single&#39;, &#39;thio&#39;, &#39;triple&#39;, &#39;double&#39;, or &#39;imine&#39;.</span>
+<span class="sd">    job_name (str): The type of job to run. Possible values:</span>
+<span class="sd">        - &#39;sp&#39;: Single Point neutral</span>
+<span class="sd">        - &#39;opt&#39;: Optimisation neutral</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float: The average planarity of the molecule.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1">#data = cclib.io.ccread(f&#39;{mol_name}/{mol_name}_opt.xyz&#39;)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">.xyz&#39;</span>
+    
+
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">MolFromSmiles</span><span class="p">(</span><span class="n">mol_smiles</span><span class="p">)</span>
+
+    <span class="n">mol_h</span> <span class="o">=</span> <span class="n">AllChem</span><span class="o">.</span><span class="n">AddHs</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="c1">#Embeds the molecule</span>
+    <span class="n">mol_update</span> <span class="o">=</span> <span class="n">update_conformer_from_xyz</span><span class="p">(</span><span class="n">mol_h</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">mol_update</span><span class="o">.</span><span class="n">GetConformer</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;single&#39;</span><span class="p">:</span>
+
+        <span class="n">bond</span> <span class="o">=</span> <span class="n">getBond</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">torsion_atoms</span> <span class="o">=</span> <span class="n">getTorsion</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">rdMolTransforms</span><span class="o">.</span><span class="n">GetDihedralDeg</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">torsion_atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">torsion_atoms</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">torsion_atoms</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">torsion_atoms</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">single_planarity</span> <span class="o">=</span> <span class="n">find_planarity</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+
+
+    <span class="k">if</span> <span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;thio&#39;</span><span class="p">:</span>
+        <span class="n">bond</span> <span class="o">=</span> <span class="n">getBondLinkers</span><span class="p">(</span><span class="n">mol_update</span><span class="p">,</span> <span class="s1">&#39;thio&#39;</span><span class="p">)</span>
+        
+        <span class="n">thio_bond_1</span> <span class="o">=</span> <span class="n">getTorsion</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">thio_bond_2</span> <span class="o">=</span> <span class="n">getTorsion</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="n">angle_1</span> <span class="o">=</span> <span class="n">rdMolTransforms</span><span class="o">.</span><span class="n">GetDihedralDeg</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">thio_bond_1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">thio_bond_1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">thio_bond_1</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">thio_bond_1</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">angle_2</span> <span class="o">=</span> <span class="n">rdMolTransforms</span><span class="o">.</span><span class="n">GetDihedralDeg</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">thio_bond_2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">thio_bond_2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">thio_bond_2</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">thio_bond_2</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;triple&#39;</span><span class="p">:</span>
+        <span class="n">angle_1</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">angle_2</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;double&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;imine&#39;</span><span class="p">):</span>
+        <span class="n">bond</span> <span class="o">=</span> <span class="n">getBondLinkers</span><span class="p">(</span><span class="n">mol_update</span><span class="p">,</span> <span class="n">linker_type</span><span class="p">)</span>
+        
+        <span class="n">torsion_one</span> <span class="o">=</span> <span class="n">getTorsion_one</span><span class="p">(</span><span class="n">mol_update</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">torsion_two</span> <span class="o">=</span> <span class="n">getTorsion_two</span><span class="p">(</span><span class="n">mol_update</span><span class="p">,</span> <span class="n">bond</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">angle_1</span> <span class="o">=</span> <span class="n">rdMolTransforms</span><span class="o">.</span><span class="n">GetDihedralDeg</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">torsion_one</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">torsion_one</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">torsion_one</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">torsion_one</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">angle_2</span> <span class="o">=</span> <span class="n">rdMolTransforms</span><span class="o">.</span><span class="n">GetDihedralDeg</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="n">torsion_two</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">torsion_two</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">torsion_two</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">torsion_two</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;double&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;imine&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;thio&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;triple&#39;</span><span class="p">):</span>
+
+        <span class="n">planar_1</span> <span class="o">=</span> <span class="n">find_planarity</span><span class="p">(</span><span class="n">angle_1</span><span class="p">)</span>
+        <span class="n">planar_2</span> <span class="o">=</span> <span class="n">find_planarity</span><span class="p">(</span><span class="n">angle_2</span><span class="p">)</span>
+
+        <span class="n">planarity</span> <span class="o">=</span> <span class="p">(</span><span class="n">planar_1</span> <span class="o">+</span> <span class="n">planar_2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">linker_type</span> <span class="o">==</span> <span class="s1">&#39;single&#39;</span><span class="p">):</span>
+        <span class="n">planarity</span> <span class="o">=</span> <span class="n">single_planarity</span>
+
+    <span class="k">return</span> <span class="n">planarity</span></div>
 
 </pre></div>
 

@@ -1,23 +1,21 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>QCflow Documentation &mdash; QCflow 0.3.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=e259d695"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e259d695"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -61,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="#module-QCflow.slurm">QCflow.slurm</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.slurm.write_slurm"><code class="docutils literal notranslate"><span class="pre">write_slurm()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.slurm.write_slurm_psi4"><code class="docutils literal notranslate"><span class="pre">write_slurm_psi4()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#QCflow.slurm.is_job_in_queue"><code class="docutils literal notranslate"><span class="pre">is_job_in_queue()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.slurm.submit_slurm_job"><code class="docutils literal notranslate"><span class="pre">submit_slurm_job()</span></code></a></li>
 </ul>
 </li>
@@ -326,6 +325,10 @@ and output files.</p>
 <ul>
 <li><p>‘sp’: Single Point neutral</p></li>
 <li><p>‘opt’: Optimisation neutral</p></li>
+<li><p>‘cation’: Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo)</p></li>
+<li><p>‘anion’: Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo)</p></li>
+<li><p>‘sp_c’: Single point calculation of neutral geometry at cation charge</p></li>
+<li><p>‘sp_a’: Single point calculation of neutral geometry at anion charge</p></li>
 </ul>
 </li>
 <li><p><strong>mol_name (str)</strong> (<em>The name of the dimer from the dictionary, e.g., if fragment 0 was attached to fragment 1,</em>) – then the dimer name is ‘0_1’.</p></li>
@@ -343,8 +346,22 @@ and output files.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="QCflow.slurm.is_job_in_queue">
+<span class="sig-prename descclassname"><span class="pre">QCflow.slurm.</span></span><span class="sig-name descname"><span class="pre">is_job_in_queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">submission_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/slurm.html#is_job_in_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.slurm.is_job_in_queue" title="Link to this definition"></a></dt>
+<dd><p>Checks if the job has been successfully submitted into the queue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>submission_name (str)</strong> (<em>The name of the job that has been submitted to the HPC</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="QCflow.slurm.submit_slurm_job">
-<span class="sig-prename descclassname"><span class="pre">QCflow.slurm.</span></span><span class="sig-name descname"><span class="pre">submit_slurm_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/slurm.html#submit_slurm_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.slurm.submit_slurm_job" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">QCflow.slurm.</span></span><span class="sig-name descname"><span class="pre">submit_slurm_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_retries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_seconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/slurm.html#submit_slurm_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.slurm.submit_slurm_job" title="Link to this definition"></a></dt>
 <dd><p>Submits a SLURM job using the specified job name and molecule name. Works on the KCL CREATE HPC.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -365,6 +382,8 @@ and output files.</p>
 </ul>
 </li>
 <li><p><strong>mol_name (str)</strong> (<em>The name of the dimer from the dictionary. For example, if fragment 0 was attached to fragment 1,</em>) – then the dimer name would be ‘0_1’.</p></li>
+<li><p><strong>max_retries (int)</strong> (<em>The maximum amount of times a job will attempt to submit. Deafult is 5.</em>)</p></li>
+<li><p><strong>wait_seconds (int)</strong> (<em>How long python will go to sleep inbetween attempts to submit</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -585,15 +604,22 @@ in_progress (dict): Oligomers that are still in progress (shows basis set they a
 
 <dl class="py function">
 <dt class="sig sig-object py" id="QCflow.energy_calculations.cal_reorg">
-<span class="sig-prename descclassname"><span class="pre">QCflow.energy_calculations.</span></span><span class="sig-name descname"><span class="pre">cal_reorg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sp_c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_c_geo</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/energy_calculations.html#cal_reorg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.energy_calculations.cal_reorg" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">QCflow.energy_calculations.</span></span><span class="sig-name descname"><span class="pre">cal_reorg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opt_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sp_c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_c_geo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculation_software</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Gaussian'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/energy_calculations.html#cal_reorg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.energy_calculations.cal_reorg" title="Link to this definition"></a></dt>
 <dd><p>Calculate the reorganization energy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>calculation_software (str)</strong> (<em>The computational chemistry software used to perform the calculations. Default is ‘Gaussian’. Can be ‘Gaussian’ or ‘Psi4’.</em>)</p></li>
+<li><p><strong>For Gaussian</strong></p></li>
 <li><p><strong>opt_n (cclib.io.ccread)</strong> (<em>cclib object for the neutral population optimization analysis.</em>)</p></li>
 <li><p><strong>sp_c (cclib.io.ccread)</strong> (<em>cclib object for the vertical anion or cation.</em>)</p></li>
 <li><p><strong>opt_c (cclib.io.ccread)</strong> (<em>cclib object for the optimized anion or cation.</em>)</p></li>
 <li><p><strong>n_c_geo (cclib.io.ccread)</strong> (<em>cclib object for the neutral ion at anion or cation geometry.</em>)</p></li>
+<li><p><strong>For Psi4</strong></p></li>
+<li><p><strong>opt_n (dict)</strong> (<em>Dictionary containing the optimized energy of the neutral population optimization analysis.</em>)</p></li>
+<li><p><strong>sp_c (dict)</strong> (<em>Dictionary containing the single point energy of the vertical anion or cation.</em>)</p></li>
+<li><p><strong>opt_c (dict)</strong> (<em>Dictionary containing the optimized energy of the anion or cation.</em>)</p></li>
+<li><p><strong>n_c_geo (dict)</strong> (<em>Dictionary containing the single point energy of the neutral ion at anion or cation geometry.</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -911,7 +937,7 @@ This function computes the planarity of an angle by taking the absolute value of
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mol (rdkit.Chem.Mol)</strong> (<em>RDKit molecule object.</em>)</p></li>
-<li><p><strong>linker_type (str)</strong> (<em>Type of linker to search for. Options are ‘single’, ‘double’, ‘imine’, or ‘thio’.</em>)</p></li>
+<li><p><strong>linker_type (str)</strong> (<em>Type of linker to search for. Options are ‘single’, ‘double’, ‘imine’, ‘thio’ or ‘triple’.</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1076,13 +1102,14 @@ a rdkit mol object.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="QCflow.fragments.combine_structure">
-<span class="sig-prename descclassname"><span class="pre">QCflow.fragments.</span></span><span class="sig-name descname"><span class="pre">combine_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/fragments.html#combine_structure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.fragments.combine_structure" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">QCflow.fragments.</span></span><span class="sig-name descname"><span class="pre">combine_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attachment_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'I'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/fragments.html#combine_structure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.fragments.combine_structure" title="Link to this definition"></a></dt>
 <dd><p>Combines two molecules together at a specified attachment point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>molecule_a (object)</strong> (<em>The first molecule to be combined.</em>)</p></li>
 <li><p><strong>molecule_b (object)</strong> (<em>The second molecule to be combined.</em>)</p></li>
+<li><p><strong>attachment_point (str)</strong> (<em>The atom label at which the two molecules will be combined. Default is ‘I’.</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
