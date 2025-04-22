@@ -30,6 +30,7 @@ dependencies:
   - freetype-py
   - greenlet
   - icu
+  - ipython
   - idna
   - kiwisolver
   - krb5
