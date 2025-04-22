@@ -1,4 +1,5 @@
 import subprocess
+import time
 
 def write_slurm(job_name, mol_name, cpus=10):
     """
