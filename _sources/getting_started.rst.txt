@@ -15,13 +15,14 @@ To install QCflow, you can use `conda`. Run the following commands in your termi
 
 .. code-block:: bash
 
-    git clone https://github.com/matta-research-group/QCflow/qcflow-0.3.git
+    git clone https://github.com/matta-research-group/QCflow.git
     cd QCflow
     # install requirements into new environment
     conda env create -f QCflow.yml
     conda activate QCflow
     # install the QCflow package
     pip install .
+    conda update psi4
 
 Basic Usage
 -----------
