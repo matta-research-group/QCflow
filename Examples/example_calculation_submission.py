@@ -18,3 +18,14 @@ for k, v in dyads.items():
     run_calc('opt_a', k, v) #optimisation calculation at anioinc charge
     run_calc('sp_a', k, v) #single point calculation at anioinc charge, neutral geometry
     run_calc('sp_c', k, v) #single point calculation at cationic charge, neutral geometry
+
+
+# The same can be achieved for Psi4
+import QCflow 
+from QCflow.run_psi4 import *
+from QCflow.load_gaussian import *
+
+dyads = open_dictionary('low_predicted_energy_gap_dyads.json') #key is the name, value is the SMILES string
+
+for k, v in dyads.items():
+    run_psi4('opt', k, v, time=6, cpus=10)
