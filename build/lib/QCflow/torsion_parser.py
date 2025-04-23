@@ -16,10 +16,12 @@ def find_min_energy_index(data):
     """
     Finds the index of the minimum energy from the torsional scan data.
 
-    Parameters:
+    Parameters
+    ----------
     data (cclib.parser.data.ccData_optdone_bool): Loaded cclib data from the .log file containing the torsional information.
 
-    Returns:
+    Returns
+    -------
     int: The index corresponding to the minimum energy value in the torsional scan data.
     """
     #finds opt energy of each 10 deg scan
@@ -35,10 +37,12 @@ def min_angle(data):
     """
     Finds the angle of the minimum energy torsion.
 
-    Parameters:
+    Parameters
+    ----------
     data (cclib.parser.data.ccData): Loaded cclib data from the .log file containing the torsional information.
 
-    Returns:
+    Returns
+    -------
     float: The dihedral angle corresponding to the minimum energy torsion.
     """
     data.scanenergies = data.scfenergies[data.optstatus == 4]
@@ -52,11 +56,13 @@ def torsion_parser(mol_name, mol_smi):
     """
     Parses the torsional profile of a molecule and returns the optimized geometry at the lowest energy minimum.
 
-    Parameters:
+    Parameters
+    ----------
     mol_name (str): The name of the molecule (dimer or trimer).
     mol_smi (str): SMILES string of the molecule.
 
-    Returns:
+    Returns
+    -------
     rdkit.Chem.rdchem.Conformer: The optimized geometry at the lowest energy minimum.
 
     The function performs the following steps:
@@ -90,11 +96,13 @@ def setting_dihedral(mol_smile, deg):
     """
     Sets the dihedral angle of the torsion for individual scans.
 
-    Parameters:
+    Parameters
+    ----------
     mol_smile (str): SMILES string of the dimer.
     deg (float): Desired dihedral angle (0 or 180 for planar).
 
-    Returns:
+    Returns
+    -------
     rdkit.Chem.rdchem.Conformer: A conformer of the dimer with the specified dihedral angle.
 
     The function performs the following steps:
@@ -135,11 +143,13 @@ def finding_dihedral_opt(mol_smiles, log_data):
     """
     Calculates the dihedral angle of a molecule given its SMILES string and log data.
 
-    Parameters:
+    Parameters
+    ----------
         mol_smiles (str): The SMILES string of the molecule.
         log_data (object): An object containing log data, including converged geometries.
 
-    Returns:
+    Returns
+    -------
         float: The dihedral angle in degrees.
     """
 
@@ -170,10 +180,12 @@ def find_planarity(angle):
     Calculate the planarity of a given angle.
     This function computes the planarity of an angle by taking the absolute value of the cosine of the angle converted to radians.
     
-    Parameters:
+    Parameters
+    ----------
     angle (float): The angle in degrees for which the planarity is to be calculated.
     
-    Returns:
+    Returns
+    -------
     float: The planarity value.
     """
     
@@ -184,11 +196,13 @@ def getBondLinkers(mol, linker_type):
     """
     From an RDKit molecule, finds the two atoms involved in specified type of rotatable bond.
     
-    Parameters:
+    Parameters
+    ----------
     mol (rdkit.Chem.Mol): RDKit molecule object.
-    linker_type (str): Type of linker to search for. Options are 'single', 'double', 'imine', or 'thio'.
+    linker_type (str): Type of linker to search for. Options are 'single', 'double', 'imine', 'thio' or 'triple'.
     
-    Returns:
+    Returns
+    -------
     tuple: A tuple, where indices of the atoms involved in the matching bonds.
     """
 
@@ -205,6 +219,9 @@ def getBondLinkers(mol, linker_type):
     if linker_type == 'thio':
         pattern = Chem.MolFromSmarts('[R!$(*#*)&!D1]-!@[R!$(*#*)&!D1]')
 
+    if linker_type == 'triple':
+        pattern = Chem.MolFromSmarts('[*R1!$(*#*)!D1]C#C-!@[*R1!$(*#*)!D1]')
+
 
     bonds = mol.GetSubstructMatches(pattern)
     
@@ -214,11 +231,13 @@ def getTorsion_one(mol, bond):
     """
     Gets the first torsion of a multi torsion molecule. Works for triple, imine and double bonds.
 
-    Parameters:
+    Parameters
+    ----------
     mol (rdkit.Chem.Mol): RDKit molecule object representing the oligomer.
     bond (tuple): Tuple of atom indices representing the rotatable bond.
 
-    Returns:
+    Returns
+    -------
     tuple: A tuple containing the indices of the four atoms defining the torsion angle.
     """
 
@@ -239,11 +258,13 @@ def getTorsion_two(mol, bond):
     """
     Gets the second torsion of a multi torsion molecule. Works for triple, imine and double bonds.
 
-    Parameters:
+    Parameters
+    ----------
     mol (rdkit.Chem.Mol): RDKit molecule object representing the oligomer.
     bond (tuple): Tuple of atom indices representing the rotatable bond.
 
-    Returns:
+    Returns
+    -------
     tuple: A tuple containing the indices of the four atoms defining the torsion angle.
     """
     for atom in mol.GetAtomWithIdx(bond[3]).GetNeighbors():
@@ -262,12 +283,14 @@ def finding_multi_planairty(mol_name, mol_smiles, linker_type):
     """
     Determines the average planarity of a molecule based on its torsion angles.
     
-    Parameters:
+    Parameters
+    ----------
     mol_name (str): The name of the molecule, used to locate the optimization log file.
     mol_smiles (str): The SMILES representation of the molecule.
     linker_type (str): The type of linker in the molecule. Can be 'thio', 'triple', 'double', or 'imine'.
     
-    Returns:
+    Returns
+    -------
     float: The average planarity of the molecule.
     """
     
@@ -302,8 +325,8 @@ def finding_multi_planairty(mol_name, mol_smiles, linker_type):
     if (linker_type == 'double') or (linker_type == 'imine'):
         bond = getBondLinkers(mol_3d, linker_type)
         
-        torsion_one = getTorsion_one(mol, bond[0][0])
-        torsion_two = getTorsion_two(mol, bond[0][0])
+        torsion_one = getTorsion_one(mol, bond[0]) #removed bond[0][0]
+        torsion_two = getTorsion_two(mol, bond[0]) #removed bond[0][0]
 
         angle_1 = rdMolTransforms.GetDihedralDeg(conf, torsion_one[0], torsion_one[1], torsion_one[2], torsion_one[3])
         angle_2 = rdMolTransforms.GetDihedralDeg(conf, torsion_two[0], torsion_two[1], torsion_two[2], torsion_two[3])
@@ -314,3 +337,118 @@ def finding_multi_planairty(mol_name, mol_smiles, linker_type):
     average_planarity = (planar_1 + planar_2) / 2
 
     return average_planarity
+
+
+def update_conformer_from_xyz(mol, xyz_file):
+    """
+    Updates the conformer of an RDKit molecule using coordinates from an XYZ file.
+    
+    Parameters
+    ----------
+    mol (rdkit.Chem.Mol): The RDKit molecule.
+    xyz_file (str): Path to the XYZ file containing new coordinates.
+    
+    Returns
+    -------
+    rdkit.Chem.Mol: The molecule with updated conformer.
+    """
+    # Read the XYZ file
+    with open(xyz_file, 'r') as f:
+        lines = f.readlines()
+    
+    # Parse number of atoms from the first line
+    num_atoms = int(lines[0].strip())
+    
+    # Parse the coordinates
+    coordinates = []
+    atom_symbols = []
+    for line in lines[2:2 + num_atoms]:  # Skip the first two lines
+        parts = line.split()
+        atom_symbols.append(parts[0])  # Atom symbol
+        coordinates.append([float(parts[1]), float(parts[2]), float(parts[3])])  # x, y, z
+    
+    # Ensure atom count matches
+    if len(coordinates) != mol.GetNumAtoms():
+        raise ValueError("Number of atoms in the XYZ file does not match the RDKit molecule.")
+    
+    # Create or update a conformer
+    conf = Chem.Conformer(mol.GetNumAtoms())
+    for i, coord in enumerate(coordinates):
+        conf.SetAtomPosition(i, coord)
+    
+    mol.RemoveAllConformers()
+    mol.AddConformer(conf)
+    
+    return mol
+
+def finding_planairty_psi4(mol_name, mol_smiles, linker_type, job_name):
+    """
+    Determines the average planarity of a molecule based on its torsion angles.
+    
+    Parameters
+    ----------
+    mol_name (str): The name of the molecule, used to locate the optimization xyz file.
+    mol_smiles (str): The SMILES representation of the molecule.
+    linker_type (str): The type of linker in the molecule. Can be 'single', 'thio', 'triple', 'double', or 'imine'.
+    job_name (str): The type of job to run. Possible values:
+        - 'sp': Single Point neutral
+        - 'opt': Optimisation neutral
+    
+    Returns
+    -------
+    float: The average planarity of the molecule.
+    """
+    
+    #data = cclib.io.ccread(f'{mol_name}/{mol_name}_opt.xyz')
+    data = f'{mol_name}/{mol_name}_{job_name}.xyz'
+    
+
+    mol = Chem.MolFromSmiles(mol_smiles)
+
+    mol_h = AllChem.AddHs(mol)
+    #Embeds the molecule
+    mol_update = update_conformer_from_xyz(mol_h, data)
+    conf = mol_update.GetConformer()
+
+    if linker_type == 'single':
+
+        bond = getBond(mol)
+        torsion_atoms = getTorsion(mol, bond[0])
+
+        angle = rdMolTransforms.GetDihedralDeg(conf, torsion_atoms[0], torsion_atoms[1], torsion_atoms[2], torsion_atoms[3])
+        single_planarity = find_planarity(angle)
+
+
+    if linker_type == 'thio':
+        bond = getBondLinkers(mol_update, 'thio')
+        
+        thio_bond_1 = getTorsion(mol, bond[0])
+        thio_bond_2 = getTorsion(mol, bond[1])
+        
+        angle_1 = rdMolTransforms.GetDihedralDeg(conf, thio_bond_1[0], thio_bond_1[1], thio_bond_1[2], thio_bond_1[3])
+        angle_2 = rdMolTransforms.GetDihedralDeg(conf, thio_bond_2[0], thio_bond_2[1], thio_bond_2[2], thio_bond_2[3])
+
+    if linker_type == 'triple':
+        angle_1 = 0
+        angle_2 = 0
+
+    if (linker_type == 'double') or (linker_type == 'imine'):
+        bond = getBondLinkers(mol_update, linker_type)
+        
+        torsion_one = getTorsion_one(mol_update, bond[0])
+        torsion_two = getTorsion_two(mol_update, bond[0])
+
+        angle_1 = rdMolTransforms.GetDihedralDeg(conf, torsion_one[0], torsion_one[1], torsion_one[2], torsion_one[3])
+        angle_2 = rdMolTransforms.GetDihedralDeg(conf, torsion_two[0], torsion_two[1], torsion_two[2], torsion_two[3])
+
+    if (linker_type == 'double') or (linker_type == 'imine') or (linker_type == 'thio') or (linker_type == 'triple'):
+
+        planar_1 = find_planarity(angle_1)
+        planar_2 = find_planarity(angle_2)
+
+        planarity = (planar_1 + planar_2) / 2
+
+    if (linker_type == 'single'):
+        planarity = single_planarity
+
+    return planarity

@@ -26,6 +26,15 @@ QCflow.write_gaussian
    :show-inheritance:
    :no-imported-members:
 
+QCflow.write_psi4
+=====================
+
+.. automodule:: QCflow.write_psi4
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :no-imported-members:
+
 QCflow.slurm
 ============
 
@@ -39,6 +48,15 @@ QCflow.run_gaussian
 ===================
 
 .. automodule:: QCflow.run_gaussian
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :no-imported-members:
+
+QCflow.run_psi4
+===================
+
+.. automodule:: QCflow.run_psi4
    :members:
    :undoc-members:
    :show-inheritance:
@@ -84,6 +102,15 @@ QCflow.fragments
 ================
 
 .. automodule:: QCflow.fragments
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :no-imported-members:
+
+QCflow.sa_score
+================
+
+.. automodule:: QCflow.sa_score
    :members:
    :undoc-members:
    :show-inheritance:

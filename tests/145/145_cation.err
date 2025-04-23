@@ -1,0 +1,3 @@
+/cephfs/volumes/hpc_data_prj/ch_mime/fef711ab-2a13-4a43-a5d2-4b0d9b4300b6/GA_pratice_runs/run_7/MithrilMolGA/MithrilMolGA/data/145/145_cation.py:11: FutureWarning: Using `psi4.set_module_options(<module>, {<key>: <val>})` instead of `psi4.set_options({<module>__<key>: <val>})` is deprecated, and as soon as 1.5 it will stop working
+
+  psi4.set_module_options('scf', {'maxiter': 100})

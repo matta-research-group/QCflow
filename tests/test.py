@@ -19,6 +19,9 @@ def test_rdkit_imported():
     """Sample test, will always pass so long as import statement worked"""
     assert "rdkit" in sys.modules
 
+def test_psi4_imported():
+    assert "psi4" in sys.modules
+
 def test_load_data():
     test_data = QCflow.load_gaussian.load_data('b_18_v2', 'opt')
 
@@ -44,6 +47,17 @@ def test_data_dic():
     mol_data = QCflow.load_gaussian.data_dic(test_dic, 'opt')
 
     assert mol_data['b_18_v2'].charge == 0
+
+def test_extract_data_from_txt():
+
+    #gt the data from the txt file
+    data = QCflow.energy_calculations.extract_data_from_txt('12/12_opt_energy_and_gap.txt')
+
+    #check if the data is correct
+    assert data['optimized_energy'] == -31659.618449
+    assert data['homo'] == -5.053209
+    assert data['lumo'] == -1.452872
+    assert data['energy_gap'] == 3.600337
 
 def test_cal_HOMO():
     data = QCflow.load_gaussian.load_data('b_18_v2', 'opt')
@@ -98,15 +112,27 @@ def test_cal_EA_adiabatic():
 
     assert IP == 1.1768627430064953
 
-def test_cal_reorg():
+def test_cal_reorg_gaussian():
+    #testing if the reorganisation function works for Gaussian16
     opt_n = QCflow.load_gaussian.load_data('b_18_v2', 'opt')
     ver_c = QCflow.load_gaussian.load_data('b_18_v2', 'sp_c')
     opt_c = QCflow.load_gaussian.load_data('b_18_v2', 'opt_c')
     n_c_geo = QCflow.load_gaussian.load_data('b_18_v2', 'n_c_geo')
 
-    reorg_val = QCflow.energy_calculations.cal_reorg(opt_n, ver_c, opt_c, n_c_geo)
+    reorg_val = QCflow.energy_calculations.cal_reorg(opt_n, ver_c, opt_c, n_c_geo, calculation_software='Gaussian')
 
     assert reorg_val == 0.29475399497459875
+
+def test_cal_reorg_psi4():
+    #testing if the reorganisation function works for psi4
+    opt_n = QCflow.energy_calculations.extract_data_from_txt('12/12_opt_energy_and_gap.txt')
+    ver_c = QCflow.energy_calculations.extract_data_from_txt('12/12_sp_c_energy_and_gap.txt')
+    opt_c = QCflow.energy_calculations.extract_data_from_txt('12/12_opt_c_energy_and_gap.txt')
+    n_c_geo = QCflow.energy_calculations.extract_data_from_txt('12/12_n_c_geo_energy_and_gap.txt')
+
+    reorg_val = QCflow.energy_calculations.cal_reorg(opt_n, ver_c, opt_c, n_c_geo, calculation_software='Psi4')
+
+    assert reorg_val == 0.4535870000036084
 
 def test_adding_attch():
     mol = QCflow.fragments.adding_attach('C1=CC=CS1', find='[cH;x2]', get_rid='C([I])')
@@ -327,8 +353,73 @@ def test_write_slurm():
 
     os.chdir('../')
 
+def test_write_slurm_psi4():
+    os.chdir('1')
+
+    QCflow.slurm.write_slurm_psi4('opt', '1', time=24, cpus=10)
+
+    # Check if the .slurm file exists
+    file_path = '1_opt.sh'
+    assert os.path.exists(file_path), f"{file_path} does not exist."
+
+    # Check if the .slurm file contains the correct information
+    with open(file_path, 'r') as file:
+        content = file.read()
+        assert '#SBATCH --job-name=1_opt' in content, "Job name not found in the file."
+        assert '#SBATCH --ntasks=10' in content, "Number of CPUs  not found in the file."
+        assert '#SBATCH -p cpu ' in content, "cpu partition  not found in the file."
+        assert 'module load cuda/10.0.130-gcc-13.2.0' in content, "cuda module load command not found in the file."
+    
+    os.chdir('../')
+
 def test_rdkit_predict_conf():
     test_smi = 'COc1cc2cc(-c3nccc4nsnc34)n(C)c2cc1OC'
     conf = QCflow.run_gaussian.rdkit_predict_conf(test_smi)
 
     assert isinstance(conf, Chem.rdchem.Conformer)
+
+def test_write_psi4():
+    smi = 'CC(=O)C1=CC=C(C=C1)C(=O)C'
+    mol_name = '1'
+    mol = Chem.MolFromSmiles(smi)
+    #gets rdkit estimated coordinates of dimer
+    mol3d = QCflow.find_torsion.embed_molecule(mol)
+    conf_geo = QCflow.run_gaussian.rdkit_predict_conf(smi)
+    #go into the directory
+    os.chdir('1')
+    #write the input file
+    QCflow.write_psi4.write_psi4('opt', mol_name, smi, functional='b3lyp', basis_set='6-31g*', mol=mol3d, conformer=conf_geo)
+    #go back to the original directory
+    os.chdir('../')
+    file_path = '1/1_opt.py'
+    assert os.path.exists(file_path), 'The file was not created'
+    with open(file_path, 'r') as file:
+        content = file.read()
+        assert 'import psi4' in content, "Psi4 import not written in the file"
+        assert 'psi4.set_options' in content, "Psi4 options not written in the file"
+        assert 'psi4.set_memory' in content, "Psi4 memory not written in the file"
+        assert 'optimized_geometry_xyz' in content, "Optimized geometry not written in the file"
+
+def test_write_psi4_reorg_test():
+    mol_name = '1'
+    #go into the directory
+    os.chdir('1')
+    #write the input file
+    QCflow.write_psi4.write_psi4_reorg('cation', mol_name, functional='b3lyp', basis_set='6-31g*')
+    #go back to the original directory
+    os.chdir('../')
+    file_path = '1/1_cation.py'
+    assert os.path.exists(file_path), 'The file was not created'
+    with open(file_path, 'r') as file:
+        content = file.read()
+        assert 'import psi4' in content, "Psi4 import not written in the file"
+        assert 'psi4.set_options' in content, "Psi4 options not written in the file"
+        assert 'psi4.set_memory' in content, "Psi4 memory not written in the file"
+        assert 'optimized_geometry_xyz' in content, "Optimized geometry not written in the file"
+
+def test_sa_scorer():
+
+    smile = 'CC(=O)C1=CC=C(C=C1)C(=O)C'
+    score = QCflow.sa_score.sa_scorer(smile)
+
+    assert score == 1.3625742537155308

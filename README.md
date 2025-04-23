@@ -2,10 +2,10 @@
 
 # QCflow
 
-[![QCflow stable](https://github.com/matta-research-group/QCflow/actions/workflows/run_test.yml/badge.svg?branch=qcflow-0.2)](https://github.com/matta-research-group/QCflow/actions/workflows/run_test.yml)
+[![QCflow stable](https://github.com/matta-research-group/QCflow/actions/workflows/run_test.yml/badge.svg?branch=qcflow-psi4)](https://github.com/matta-research-group/QCflow/actions/workflows/run_test.yml)
 ![Python](https://img.shields.io/badge/language-Python-blue.svg)
 [![Documentation](https://img.shields.io/badge/Documentation-Online-brightgreen)](https://matta-research-group.github.io/QCflow/)
-[![GitHub Last commit](https://img.shields.io/github/last-commit/matta-research-group/QCflow)](https://github.com/matta-research-group/QCflow/commits/qcflow-0.3)
+[![GitHub Last commit](https://img.shields.io/github/last-commit/matta-research-group/QCflow)](https://github.com/matta-research-group/QCflow/commits/qcflow-psi4)
 [![GitHub stars](https://img.shields.io/github/stars/matta-research-group/QCflow)](https://github.com/matta-research-group/QCflow/stargazers)
 
 A cheminformatics -> quantum chemistry workflow toolkit leveraging [rdkit](https://github.com/rdkit/rdkit) and [cclib](https://github.com/cclib/cclib).
@@ -14,9 +14,17 @@ A typical workflow involves:
 
 1. Generating a series of input molecules as `SMILES` - optionally, by combining different fragments into larger molecules/oligomers  
 
-2. For each molecule:
+2. For each molecule a Gaussian 16 or Psi4 job is carried out:
    
     a. write `.com` Gaussian input files, `.sh` SLURM submission files
+
+    b. submit a job (assuming you are working within a HPC)
+   
+    c. parse output file to submit further calculations or retrieve descriptors
+
+    or
+
+    a. write `.py` Psi4 input files, `.sh` SLURM submission files
     
     b. submit a job (assuming you are working within a HPC)
    
@@ -26,28 +34,36 @@ A typical workflow involves:
 
 ## Supported QC codes 
 
-Only [Gaussian](https://gaussian.com/man/) is supported at the moment, but we plan to add support for [Psi4](https://psicode.org/).
+Only [Gaussian](https://gaussian.com/man/) and [Psi4](https://psicode.org/) are currently supported.
 
+When installing the branch with psi4 please use the following command once you have installed QCflow to check psi4 is up to date:
+
+```bash
+conda update psi4
+```
 
 ## Installation
 
 ```bash
-git clone https://github.com/matta-research-group/QCflow.git
+git clone --single-branch --branch qcflow-psi4 https://github.com/matta-research-group/QCflow.git
 cd QCflow
 # install requirements into new environment
 conda env create -f QCflow.yml
 conda activate QCflow
 # install the QCflow package
 pip install .
+conda update psi4
 ```
 
 ## Usage Examples and Advice
+
+### Gaussian 16
 
 The [run_calc](https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QCflow/run_gaussian.py#L50) function within `run_gaussian.py` is an example workflow that submit gaussian calculations to the [KCL CREATE HPC](https://www.kcl.ac.uk/research/facilities/hpc-digital-platforms). 
 
 Users external to Kings College London will need to alter the slurm.py file to match their HPC submission requirements.
 
-Altering the loaded modules found on line [55](https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QCflow/slurm.py#L55) within `slurm.py` file will allow you to submit jobs to your HPC.
+Altering the loaded modules found on line [59](https://github.com/matta-research-group/QCflow/blob/qcflow-psi4/QCflow/slurm.py#L59) within `slurm.py` file will allow you to submit jobs to your HPC.
 
 ```bash
 file.write(f'module load gaussian_sse4/16-C-gcc-13.2.0 \n') ### KCL CREATE HPC
@@ -56,10 +72,26 @@ file.write(f'module load your_gaussian_module \n') ### Your HPC
 ```
 Once the alteration has been made, just ```pip install .``` again and the package will update for your HPC.
 
+### Psi4
 
-## Calculation settings
+The [run_psi4](https://github.com/matta-research-group/QCflow/blob/qcflow-psi4/QCflow/run_psi4.py#L11) function within `run_psi4.py` is an example workflow that submit psi4 calculations to the [KCL CREATE HPC](https://www.kcl.ac.uk/research/facilities/hpc-digital-platforms).
 
-QCflow can prepare and submit input files for the following jobs: 
+Users external to Kings College London will need to alter the slurm.py file to match their HPC submission requirements.
+
+Altering the loaded modules found on line [117](https://github.com/matta-research-group/QCflow/blob/qcflow-psi4/QCflow/slurm.py#L117)
+
+```bash
+file.write(f'module load cuda/10.0.130-gcc-13.2.0 \n') ### KCL CREATE HPC
+
+file.write(f'module load your_cuda_module \n') ### Your HPC
+```
+
+Once the alteration has been made, just ```pip install .``` again and the package will update for your HPC.
+
+
+## Calculation settings - Gaussian 16
+
+QCflow can prepare and submit input files for the following Gaussian 16 jobs: 
 - Single point calculation, neutral -> `sp`
 - Single point calculation, anion → `sp_a`
 - Single point calculation, cation → `sp_c`
@@ -71,6 +103,16 @@ QCflow can prepare and submit input files for the following jobs:
 - Optimisation cation → `opt_c`
 - Optimisation neutral + Population analysis → `pop_opt_n`
 - Single point Hirshfeld calculation → `sp_hirsh`
+
+## Calculation settings - Psi4
+
+QCflow can prepare and submit input files for the following Psi4 jobs:
+- Single point calculation, neutral -> `sp`
+- Geometry optimisation, neutral -> `opt`
+- Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo) -> `cation`
+- Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo) -> `anion`
+- Single point calculation, anion → `sp_a`
+- Single point calculation, cation → `sp_c`
 
 ## Files
 

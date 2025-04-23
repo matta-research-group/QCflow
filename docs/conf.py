@@ -15,6 +15,7 @@
 # Incase the project was not installed
 import os
 import sys
+import sphinx_rtd_theme
 sys.path.insert(0, os.path.abspath('..'))
 
 import QCflow
@@ -24,7 +25,7 @@ import QCflow
 
 project = 'QCflow'
 author = 'Tristan Stephens-Jones, Micaela Matta'
-release = '0.3.0'
+release = '0.4.0'
 
 # -- General configuration ---------------------------------------------------
 
@@ -71,7 +72,7 @@ source_suffix = '.rst'
 
 # The master toctree document.
 master_doc = 'index'
-language = None
+language = 'en'
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 pygments_style = 'default'
 html_theme = 'sphinx_rtd_theme'

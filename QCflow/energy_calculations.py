@@ -2,16 +2,57 @@ from QCflow.load_gaussian import *
 import cclib
 import numpy as np
 
-def cal_reorg(opt_n,sp_c,opt_c,n_c_geo):
+def extract_data_from_txt(file_path):
     """
-    Calculate the reorganization energy.
+    Extracts data from a .txt file with energy, HOMO, LUMO, and energy gap information for Psi4 caucltions.
 
     Parameters
     ----------
+    file_path (str): Path to the .txt file.
+
+    Returns
+    -------
+    dict: A dictionary with extracted values.
+    """
+    data = {}
+
+    with open(file_path, 'r') as file:
+        for line in file:
+            if "Optimized energy:" in line:
+                data["optimized_energy"] = float(line.split(":")[1].split()[0])  # Extract energy in eV
+            elif "Single Point energy:" in line:
+                data["sp_energy"] = float(line.split(":")[1].split()[0]) #Extract single point energy in eV
+            elif "HOMO:" in line:
+                data["homo"] = float(line.split(":")[1].split()[0])  # Extract HOMO in eV
+            elif "LUMO:" in line:
+                data["lumo"] = float(line.split(":")[1].split()[0])  # Extract LUMO in eV
+            elif "Energy gap" in line:
+                data["energy_gap"] = float(line.split(":")[1].split()[0])  # Extract energy gap in eV
+
+    return data
+
+def cal_reorg(opt_n,sp_c,opt_c,n_c_geo, calculation_software='Gaussian'):
+    """
+    Calculate the reorganization energy. Can calculate it for both Gaussian 16 and Psi4. Gaussian is default.
+
+    Parameters
+    ----------
+
+    calculation_software (str): The computational chemistry software used to perform the calculations. Default is 'Gaussian'. Can be 'Gaussian' or 'Psi4'.
+
+    For Gaussian:
+
     opt_n (cclib.io.ccread): cclib object for the neutral population optimization analysis.
     sp_c (cclib.io.ccread): cclib object for the vertical anion or cation.
     opt_c (cclib.io.ccread): cclib object for the optimized anion or cation.
     n_c_geo (cclib.io.ccread): cclib object for the neutral ion at anion or cation geometry.
+
+    For Psi4:
+
+    opt_n (dict): Dictionary containing the optimized energy of the neutral population optimization analysis.
+    sp_c (dict): Dictionary containing the single point energy of the vertical anion or cation.
+    opt_c (dict): Dictionary containing the optimized energy of the anion or cation.
+    n_c_geo (dict): Dictionary containing the single point energy of the neutral ion at anion or cation geometry.
 
     Returns
     -------
@@ -24,13 +65,22 @@ def cal_reorg(opt_n,sp_c,opt_c,n_c_geo):
         - EcC is the SCF energy of the optimized anion or cation.
         - EnC is the SCF energy of the neutral ion charge at anion or cation geometry.
     """
+    if calculation_software == 'Gaussian':
 
-    EnN = opt_n.scfenergies[opt_n.optstatus==4][0]
-    EcN = sp_c.scfenergies[0]
-    EcC = opt_c.scfenergies[opt_c.optstatus==4][0]
-    EnC = n_c_geo.scfenergies[0]
+        EnN = opt_n.scfenergies[opt_n.optstatus==4][0]
+        EcN = sp_c.scfenergies[0]
+        EcC = opt_c.scfenergies[opt_c.optstatus==4][0]
+        EnC = n_c_geo.scfenergies[0]
 
-    reorg_en = (EcN-EnN)+(EnC-EcC)
+        reorg_en = (EcN-EnN)+(EnC-EcC)
+    
+    if calculation_software == 'Psi4':
+        EnN = opt_n['optimized_energy']
+        EcN = sp_c['sp_energy']
+        EcC = opt_c['optimized_energy']
+        EnC = n_c_geo['sp_energy']
+
+        reorg_en = (EcN-EnN)+(EnC-EcC)
 
     return reorg_en
 

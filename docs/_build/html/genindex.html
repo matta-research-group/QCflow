@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; QCflow 0.3.0 documentation</title>
+  <title>Index &mdash; QCflow 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e259d695"></script>
+      <script src="_static/documentation_options.js?v=6c02275b"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -45,13 +45,16 @@
 <li class="toctree-l1"><a class="reference internal" href="api.html">QCflow Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.load_gaussian">QCflow.load_gaussian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.write_gaussian">QCflow.write_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.write_psi4">QCflow.write_psi4</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.slurm">QCflow.slurm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.run_gaussian">QCflow.run_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.run_psi4">QCflow.run_psi4</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.testing_data">QCflow.testing_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.energy_calculations">QCflow.energy_calculations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.find_torsion">QCflow.find_torsion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.torsion_parser">QCflow.torsion_parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.fragments">QCflow.fragments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.sa_score">QCflow.sa_score</a></li>
 </ul>
 
         </div>
@@ -88,6 +91,7 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#O"><strong>O</strong></a>
@@ -95,6 +99,7 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
  | <a href="#W"><strong>W</strong></a>
  
 </div>
@@ -150,6 +155,10 @@
       <li><a href="api.html#QCflow.find_torsion.embed_molecule">embed_molecule() (in module QCflow.find_torsion)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#QCflow.energy_calculations.extract_data_from_txt">extract_data_from_txt() (in module QCflow.energy_calculations)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="F">F</h2>
@@ -159,11 +168,13 @@
 </li>
       <li><a href="api.html#QCflow.torsion_parser.find_planarity">find_planarity() (in module QCflow.torsion_parser)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#QCflow.torsion_parser.finding_dihedral_opt">finding_dihedral_opt() (in module QCflow.torsion_parser)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#QCflow.torsion_parser.finding_multi_planairty">finding_multi_planairty() (in module QCflow.torsion_parser)</a>
+</li>
+      <li><a href="api.html#QCflow.torsion_parser.finding_planairty_psi4">finding_planairty_psi4() (in module QCflow.torsion_parser)</a>
 </li>
       <li><a href="api.html#QCflow.testing_data.functional_test">functional_test() (in module QCflow.testing_data)</a>
 </li>
@@ -186,6 +197,14 @@
       <li><a href="api.html#QCflow.torsion_parser.getTorsion_one">getTorsion_one() (in module QCflow.torsion_parser)</a>
 </li>
       <li><a href="api.html#QCflow.torsion_parser.getTorsion_two">getTorsion_two() (in module QCflow.torsion_parser)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#QCflow.slurm.is_job_in_queue">is_job_in_queue() (in module QCflow.slurm)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -221,6 +240,10 @@
 </li>
         <li><a href="api.html#module-QCflow.run_gaussian">QCflow.run_gaussian</a>
 </li>
+        <li><a href="api.html#module-QCflow.run_psi4">QCflow.run_psi4</a>
+</li>
+        <li><a href="api.html#module-QCflow.sa_score">QCflow.sa_score</a>
+</li>
         <li><a href="api.html#module-QCflow.slurm">QCflow.slurm</a>
 </li>
         <li><a href="api.html#module-QCflow.testing_data">QCflow.testing_data</a>
@@ -228,6 +251,8 @@
         <li><a href="api.html#module-QCflow.torsion_parser">QCflow.torsion_parser</a>
 </li>
         <li><a href="api.html#module-QCflow.write_gaussian">QCflow.write_gaussian</a>
+</li>
+        <li><a href="api.html#module-QCflow.write_psi4">QCflow.write_psi4</a>
 </li>
       </ul></li>
   </ul></td>
@@ -279,13 +304,27 @@
         <li><a href="api.html#module-QCflow.load_gaussian">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     QCflow.run_gaussian
 
       <ul>
         <li><a href="api.html#module-QCflow.run_gaussian">module</a>
+</li>
+      </ul></li>
+      <li>
+    QCflow.run_psi4
+
+      <ul>
+        <li><a href="api.html#module-QCflow.run_psi4">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    QCflow.sa_score
+
+      <ul>
+        <li><a href="api.html#module-QCflow.sa_score">module</a>
 </li>
       </ul></li>
       <li>
@@ -316,6 +355,13 @@
         <li><a href="api.html#module-QCflow.write_gaussian">module</a>
 </li>
       </ul></li>
+      <li>
+    QCflow.write_psi4
+
+      <ul>
+        <li><a href="api.html#module-QCflow.write_psi4">module</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -328,12 +374,16 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#QCflow.run_gaussian.run_calc">run_calc() (in module QCflow.run_gaussian)</a>
 </li>
+      <li><a href="api.html#QCflow.run_psi4.run_psi4">run_psi4() (in module QCflow.run_psi4)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#QCflow.sa_score.sa_scorer">sa_scorer() (in module QCflow.sa_score)</a>
+</li>
       <li><a href="api.html#QCflow.load_gaussian.save_dictionary">save_dictionary() (in module QCflow.load_gaussian)</a>
 </li>
       <li><a href="api.html#QCflow.torsion_parser.setting_dihedral">setting_dihedral() (in module QCflow.torsion_parser)</a>
@@ -357,14 +407,28 @@
   </ul></td>
 </tr></table>
 
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#QCflow.torsion_parser.update_conformer_from_xyz">update_conformer_from_xyz() (in module QCflow.torsion_parser)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#QCflow.write_gaussian.write_gaussian">write_gaussian() (in module QCflow.write_gaussian)</a>
 </li>
+      <li><a href="api.html#QCflow.write_psi4.write_psi4">write_psi4() (in module QCflow.write_psi4)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#QCflow.write_psi4.write_psi4_reorg">write_psi4_reorg() (in module QCflow.write_psi4)</a>
+</li>
       <li><a href="api.html#QCflow.slurm.write_slurm">write_slurm() (in module QCflow.slurm)</a>
+</li>
+      <li><a href="api.html#QCflow.slurm.write_slurm_psi4">write_slurm_psi4() (in module QCflow.slurm)</a>
 </li>
   </ul></td>
 </tr></table>

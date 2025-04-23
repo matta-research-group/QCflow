@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QCflow.slurm &mdash; QCflow 0.3.0 documentation</title>
+  <title>QCflow.slurm &mdash; QCflow 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=e259d695"></script>
+      <script src="../../_static/documentation_options.js?v=6c02275b"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -45,13 +45,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">QCflow Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.load_gaussian">QCflow.load_gaussian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.write_gaussian">QCflow.write_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.write_psi4">QCflow.write_psi4</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.slurm">QCflow.slurm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.run_gaussian">QCflow.run_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.run_psi4">QCflow.run_psi4</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.testing_data">QCflow.testing_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.energy_calculations">QCflow.energy_calculations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.find_torsion">QCflow.find_torsion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.torsion_parser">QCflow.torsion_parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.fragments">QCflow.fragments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.sa_score">QCflow.sa_score</a></li>
 </ul>
 
         </div>
@@ -80,6 +83,7 @@
              
   <h1>Source code for QCflow.slurm</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
 <div class="viewcode-block" id="write_slurm">
 <a class="viewcode-back" href="../../api.html#QCflow.slurm.write_slurm">[docs]</a>
@@ -143,19 +147,103 @@
         <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;export KMP_AFFINITY=&quot;explicit,proclist=$SGE_BINDING,verbose&quot; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#source $g16root/bsd/g16.login </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;echo &quot;G16 job \$SLURM_JOBID&quot; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;echo &quot;INPUT \$INPUTFILE&quot; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;echo &quot;OUTPUT \$OUTPUTFILE&quot; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;echo &quot;Running \$SLURM_NTASKS on \$SLURM_JOB_NODELIST&quot; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">rf</span><span class="s1">&#39;echo &quot;G16 job \$SLURM_JOBID&quot; \n&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">rf</span><span class="s1">&#39;echo &quot;INPUT \$INPUTFILE&quot; \n&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">rf</span><span class="s1">&#39;echo &quot;OUTPUT \$OUTPUTFILE&quot; \n&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">rf</span><span class="s1">&#39;echo &quot;Running \$SLURM_NTASKS on \$SLURM_JOB_NODELIST&quot; \n&#39;</span><span class="p">)</span>
         <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#Execution Line </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;g16 $INPUTFILE &gt; $OUTPUTFILE </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="write_slurm_psi4">
+<a class="viewcode-back" href="../../api.html#QCflow.slurm.write_slurm_psi4">[docs]</a>
+<span class="k">def</span> <span class="nf">write_slurm_psi4</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">cpus</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Writes a SLURM batch script for a specified job type and molecule name.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    job_name (str): The type of job to run. Possible values:</span>
+<span class="sd">        - &#39;sp&#39;: Single Point neutral</span>
+<span class="sd">        - &#39;opt&#39;: Optimisation neutral</span>
+<span class="sd">        - &#39;cation&#39;: Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo)</span>
+<span class="sd">        - &#39;anion&#39;: Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo)</span>
+<span class="sd">        - &#39;sp_c&#39;: Single point calculation of neutral geometry at cation charge</span>
+<span class="sd">        - &#39;sp_a&#39;: Single point calculation of neutral geometry at anion charge</span>
+<span class="sd">    mol_name (str): The name of the dimer from the dictionary, e.g., if fragment 0 was attached to fragment 1,</span>
+<span class="sd">                    then the dimer name is &#39;0_1&#39;.</span>
+<span class="sd">    time (int, optional): The time limit for the job in hours. Default is 24. (Max is 48)</span>
+<span class="sd">    cpus (int, optional): The number of CPUs to allocate for the job. Default is 10.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The function generates a SLURM batch script file named &#39;{mol_name}_{job_name}.sh&#39; with appropriate</span>
+<span class="sd">    configurations based on the job type and molecule name. The script includes settings for job name,</span>
+<span class="sd">    output and error files, partition, number of tasks, nodes, CPUs per task, memory per CPU, and time limit.</span>
+<span class="sd">    It also sets up the environment and execution line for running Psi4 job with the specified input</span>
+<span class="sd">    and output files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">file_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">.sh&#39;</span>
+    
+    <span class="n">calc_time</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s1">:00:00&#39;</span>
+
+    <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;#!/bin/bash --login&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="c1">#</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#SBATCH -o </span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">.out </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#SBATCH -e </span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">.err </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="c1">#</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#SBATCH --job-name=</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#SBATCH -p cpu </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#SBATCH --ntasks=</span><span class="si">{</span><span class="n">cpus</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#SBATCH --nodes=1 </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#SBATCH --cpus-per-task=1 </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#SBATCH --mem-per-cpu=4000 </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;#SBATCH --time=</span><span class="si">{</span><span class="n">calc_time</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">#reduced to speed up queue time</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;module purge </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;module load cuda/10.0.130-gcc-13.2.0 </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;python3 </span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">.py </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="is_job_in_queue">
+<a class="viewcode-back" href="../../api.html#QCflow.slurm.is_job_in_queue">[docs]</a>
+<span class="k">def</span> <span class="nf">is_job_in_queue</span><span class="p">(</span><span class="n">submission_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if the job has been successfully submitted into the queue</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    submission_name (str): The name of the job that has been submitted to the HPC</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    True or False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">[</span><span class="s1">&#39;squeue&#39;</span><span class="p">,</span> <span class="s1">&#39;--me&#39;</span><span class="p">],</span>
+            <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+            <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">check</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="c1"># Search for job_name in the output</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">submission_name</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error checking squeue: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
 
 <div class="viewcode-block" id="submit_slurm_job">
 <a class="viewcode-back" href="../../api.html#QCflow.slurm.submit_slurm_job">[docs]</a>
-<span class="k">def</span> <span class="nf">submit_slurm_job</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">submit_slurm_job</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">wait_seconds</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Submits a SLURM job using the specified job name and molecule name. Works on the KCL CREATE HPC.</span>
 
@@ -177,6 +265,10 @@
 <span class="sd">    mol_name (str): The name of the dimer from the dictionary. For example, if fragment 0 was attached to fragment 1,</span>
 <span class="sd">                    then the dimer name would be &#39;0_1&#39;.</span>
 
+<span class="sd">    max_retries (int): The maximum amount of times a job will attempt to submit. Deafult is 5.</span>
+
+<span class="sd">    wait_seconds (int): How long python will go to sleep inbetween attempts to submit</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    bytes: The standard output from the SLURM job submission command.</span>
@@ -184,10 +276,32 @@
 
     <span class="n">string</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;sbatch </span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">.sh&#39;</span>
 
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">string</span><span class="p">,</span>
-                     <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
-                     <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">process</span><span class="o">.</span><span class="n">stdout</span></div>
+    <span class="n">submission_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">.sh&#39;</span>
+
+    <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_job_in_queue</span><span class="p">(</span><span class="n">submission_name</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Job </span><span class="si">{</span><span class="n">submission_name</span><span class="si">}</span><span class="s2"> is already in the queue. Skipping submission.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="n">string</span><span class="p">,</span>
+                <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">check</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully submitted job </span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">process</span><span class="o">.</span><span class="n">stdout</span>
+
+        <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">] Error submitting job </span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">attempt</span> <span class="o">&lt;</span> <span class="n">max_retries</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Waiting </span><span class="si">{</span><span class="n">wait_seconds</span><span class="si">}</span><span class="s2"> seconds before checking and retrying...&quot;</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait_seconds</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Max retries reached. Moving on.&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span></div>
 
 </pre></div>
 

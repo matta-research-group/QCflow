@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to QCflows documentation! &mdash; QCflow 0.3.0 documentation</title>
+  <title>Welcome to QCflows documentation! &mdash; QCflow 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e259d695"></script>
+      <script src="_static/documentation_options.js?v=6c02275b"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -47,13 +47,16 @@
 <li class="toctree-l1"><a class="reference internal" href="api.html">QCflow Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.load_gaussian">QCflow.load_gaussian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.write_gaussian">QCflow.write_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.write_psi4">QCflow.write_psi4</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.slurm">QCflow.slurm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.run_gaussian">QCflow.run_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.run_psi4">QCflow.run_psi4</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.testing_data">QCflow.testing_data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.energy_calculations">QCflow.energy_calculations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.find_torsion">QCflow.find_torsion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.torsion_parser">QCflow.torsion_parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.fragments">QCflow.fragments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.sa_score">QCflow.sa_score</a></li>
 </ul>
 
         </div>
@@ -108,8 +111,15 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.write_gaussian.write_gaussian"><code class="docutils literal notranslate"><span class="pre">write_gaussian()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.write_psi4">QCflow.write_psi4</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.write_psi4.write_psi4"><code class="docutils literal notranslate"><span class="pre">write_psi4()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.write_psi4.write_psi4_reorg"><code class="docutils literal notranslate"><span class="pre">write_psi4_reorg()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.slurm">QCflow.slurm</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.slurm.write_slurm"><code class="docutils literal notranslate"><span class="pre">write_slurm()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.slurm.write_slurm_psi4"><code class="docutils literal notranslate"><span class="pre">write_slurm_psi4()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.slurm.is_job_in_queue"><code class="docutils literal notranslate"><span class="pre">is_job_in_queue()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.slurm.submit_slurm_job"><code class="docutils literal notranslate"><span class="pre">submit_slurm_job()</span></code></a></li>
 </ul>
 </li>
@@ -119,6 +129,10 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.run_gaussian.staging_opt"><code class="docutils literal notranslate"><span class="pre">staging_opt()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.run_psi4">QCflow.run_psi4</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.run_psi4.run_psi4"><code class="docutils literal notranslate"><span class="pre">run_psi4()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.testing_data">QCflow.testing_data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.testing_data.success_test"><code class="docutils literal notranslate"><span class="pre">success_test()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.testing_data.functional_test"><code class="docutils literal notranslate"><span class="pre">functional_test()</span></code></a></li>
@@ -126,6 +140,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.energy_calculations">QCflow.energy_calculations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.energy_calculations.extract_data_from_txt"><code class="docutils literal notranslate"><span class="pre">extract_data_from_txt()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.energy_calculations.cal_reorg"><code class="docutils literal notranslate"><span class="pre">cal_reorg()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.energy_calculations.cal_HOMO"><code class="docutils literal notranslate"><span class="pre">cal_HOMO()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.energy_calculations.cal_LUMO"><code class="docutils literal notranslate"><span class="pre">cal_LUMO()</span></code></a></li>
@@ -151,6 +166,8 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.torsion_parser.getTorsion_one"><code class="docutils literal notranslate"><span class="pre">getTorsion_one()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.torsion_parser.getTorsion_two"><code class="docutils literal notranslate"><span class="pre">getTorsion_two()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.torsion_parser.finding_multi_planairty"><code class="docutils literal notranslate"><span class="pre">finding_multi_planairty()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.torsion_parser.update_conformer_from_xyz"><code class="docutils literal notranslate"><span class="pre">update_conformer_from_xyz()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.torsion_parser.finding_planairty_psi4"><code class="docutils literal notranslate"><span class="pre">finding_planairty_psi4()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.fragments">QCflow.fragments</a><ul>
@@ -158,6 +175,10 @@
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.fragments.generate_attachment_points"><code class="docutils literal notranslate"><span class="pre">generate_attachment_points()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.fragments.combine_structure"><code class="docutils literal notranslate"><span class="pre">combine_structure()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.fragments.make_molecule_dic_from_2_dic"><code class="docutils literal notranslate"><span class="pre">make_molecule_dic_from_2_dic()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html#module-QCflow.sa_score">QCflow.sa_score</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#QCflow.sa_score.sa_scorer"><code class="docutils literal notranslate"><span class="pre">sa_scorer()</span></code></a></li>
 </ul>
 </li>
 </ul>

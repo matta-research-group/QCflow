@@ -30,6 +30,7 @@ dependencies:
   - freetype-py
   - greenlet
   - icu
+  - ipython
   - idna
   - kiwisolver
   - krb5
@@ -80,6 +81,7 @@ dependencies:
   - pillow
   - pip
   - pixman
+  - psi4
   - pthread-stubs
   - pycairo
   - pyparsing

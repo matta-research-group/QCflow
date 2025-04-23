@@ -51,7 +51,8 @@ jobs:
         source ~/.bashrc
         conda env create -f QCflow.yml
         conda activate QCflow
-        conda install sphinx sphinx_rtd_theme
+        conda install sphinx=8.2.3
+        pip install sphinx_rtd_theme>=2.0.0
         pip install standard-imghdr
         pip install .
 
@@ -67,5 +68,5 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         publish_branch: docs
-        github_token: ${{ secrets.QCflow}}
+        github_token: ${{ secrets.qcflow2}}
         publish_dir: ./docs/_build/html

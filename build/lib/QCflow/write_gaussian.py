@@ -17,7 +17,8 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
     """
     Generates a Gaussian input file based on the provided parameters.
     
-    Parameters:
+    Parameters
+    ----------
     job_name (str): The type of job to run. Possible values:
         - 'sp': Single Point neutral
         - 'opt': Optimisation neutral
@@ -40,7 +41,8 @@ def write_gaussian(job_name, mol_name, smile, functional='B3LYP', basis_set='6-3
     old_chk (str, optional): The previous checkpoint file used to guess geometry/MOs. 
         Example: 'mol_name_opt_321G.chk'
     
-    Returns:
+    Returns
+    -------
          None: Writes the Gaussian input file to disk.
 
     """
