@@ -5,7 +5,7 @@
 [![QCflow stable](https://github.com/matta-research-group/QCflow/actions/workflows/run_test.yml/badge.svg?branch=qcflow-psi4)](https://github.com/matta-research-group/QCflow/actions/workflows/run_test.yml)
 ![Python](https://img.shields.io/badge/language-Python-blue.svg)
 [![Documentation](https://img.shields.io/badge/Documentation-Online-brightgreen)](https://matta-research-group.github.io/QCflow/)
-[![GitHub Last commit](https://img.shields.io/github/last-commit/matta-research-group/QCflow)](https://github.com/matta-research-group/QCflow/commits/qcflow-psi4)
+[![GitHub Last commit](https://img.shields.io/github/last-commit/matta-research-group/QCflow)](https://github.com/matta-research-group/QCflow/commits/qcflow-0.3/)
 [![GitHub stars](https://img.shields.io/github/stars/matta-research-group/QCflow)](https://github.com/matta-research-group/QCflow/stargazers)
 
 A cheminformatics -> quantum chemistry workflow toolkit leveraging [rdkit](https://github.com/rdkit/rdkit) and [cclib](https://github.com/cclib/cclib).
@@ -45,7 +45,7 @@ conda update psi4
 ## Installation
 
 ```bash
-git clone --single-branch --branch qcflow-psi4 https://github.com/matta-research-group/QCflow.git
+git clone https://github.com/matta-research-group/QCflow.git
 cd QCflow
 # install requirements into new environment
 conda env create -f QCflow.yml
@@ -63,7 +63,7 @@ The [run_calc](https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QC
 
 Users external to Kings College London will need to alter the slurm.py file to match their HPC submission requirements.
 
-Altering the loaded modules found on line [59](https://github.com/matta-research-group/QCflow/blob/qcflow-psi4/QCflow/slurm.py#L59) within `slurm.py` file will allow you to submit jobs to your HPC.
+Altering the loaded modules found on line [59](https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QCflow/slurm.py#L59) within `slurm.py` file will allow you to submit jobs to your HPC.
 
 ```bash
 file.write(f'module load gaussian_sse4/16-C-gcc-13.2.0 \n') ### KCL CREATE HPC
@@ -74,11 +74,11 @@ Once the alteration has been made, just ```pip install .``` again and the packag
 
 ### Psi4
 
-The [run_psi4](https://github.com/matta-research-group/QCflow/blob/qcflow-psi4/QCflow/run_psi4.py#L11) function within `run_psi4.py` is an example workflow that submit psi4 calculations to the [KCL CREATE HPC](https://www.kcl.ac.uk/research/facilities/hpc-digital-platforms).
+The [run_psi4](https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QCflow/run_psi4.py#L11) function within `run_psi4.py` is an example workflow that submit psi4 calculations to the [KCL CREATE HPC](https://www.kcl.ac.uk/research/facilities/hpc-digital-platforms).
 
 Users external to Kings College London will need to alter the slurm.py file to match their HPC submission requirements.
 
-Altering the loaded modules found on line [117](https://github.com/matta-research-group/QCflow/blob/qcflow-psi4/QCflow/slurm.py#L117)
+Altering the loaded modules found on line [117](https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QCflow/slurm.py#L117)
 
 ```bash
 file.write(f'module load cuda/10.0.130-gcc-13.2.0 \n') ### KCL CREATE HPC
@@ -117,85 +117,307 @@ QCflow can prepare and submit input files for the following Psi4 jobs:
 ## Files
 
 ```bash
-├── build
-│   ├── bdist.macosx-10.13-x86_64
-│   └── lib
-│       └── QCflow
-│           ├── energy_calculations.py
-│           ├── find_torsion.py
-│           ├── fragments.py
-│           ├── __init__.py
-│           ├── load_gaussian.py
-│           ├── run_gaussian.py
-│           ├── slurm.py
-│           ├── testing_data.py
-│           ├── torsion_parser.py
-│           └── write_gaussian.py
+.
+├── Examples
+│   ├── example_calculation_submission.py
+│   ├── example_data_extraction.ipynb
+│   ├── example_data_extraction_bulk.py
+│   ├── example_molecule_building.ipynb
+│   └── example_molecule_logs
+│       ├── 18
+│       │   └── 18_opt.log
+│       ├── b
+│       │   └── b_opt.log
+│       └── b_18_single_v2
+│           ├── b_18_single_v2_n_a_geo.log
+│           ├── b_18_single_v2_n_c_geo.log
+│           ├── b_18_single_v2_opt.log
+│           ├── b_18_single_v2_opt_a.log
+│           ├── b_18_single_v2_opt_c.log
+│           ├── b_18_single_v2_sp_a.log
+│           └── b_18_single_v2_sp_c.log
 ├── LICENSE
 ├── QCflow
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-311.pyc
+│   │   ├── __init__.cpython-313.pyc
+│   │   ├── __init__.cpython-38.pyc
+│   │   ├── __init__.cpython-39.pyc
+│   │   ├── energy_calculations.cpython-313.pyc
+│   │   ├── find_torsion.cpython-311.pyc
+│   │   ├── find_torsion.cpython-313.pyc
+│   │   ├── find_torsion.cpython-39.pyc
+│   │   ├── fragments.cpython-311.pyc
+│   │   ├── fragments.cpython-313.pyc
+│   │   ├── fragments.cpython-38.pyc
+│   │   ├── fragments.cpython-39.pyc
+│   │   ├── load_gaussian.cpython-311.pyc
+│   │   ├── load_gaussian.cpython-313.pyc
+│   │   ├── load_gaussian.cpython-39.pyc
+│   │   ├── run_gaussian.cpython-313.pyc
+│   │   ├── run_opt_neutral.cpython-311.pyc
+│   │   ├── run_opt_neutral.cpython-39.pyc
+│   │   ├── run_opt_set_dihedral.cpython-311.pyc
+│   │   ├── run_psi4.cpython-313.pyc
+│   │   ├── sa_score.cpython-313.pyc
+│   │   ├── slurm.cpython-311.pyc
+│   │   ├── slurm.cpython-313.pyc
+│   │   ├── slurm.cpython-39.pyc
+│   │   ├── testing_data.cpython-313.pyc
+│   │   ├── torsion_parser.cpython-311.pyc
+│   │   ├── torsion_parser.cpython-313.pyc
+│   │   ├── torsion_parser.cpython-39.pyc
+│   │   ├── torsion_run.cpython-311.pyc
+│   │   ├── torsion_run.cpython-39.pyc
+│   │   ├── write_gaussian.cpython-311.pyc
+│   │   ├── write_gaussian.cpython-313.pyc
+│   │   ├── write_gaussian.cpython-39.pyc
+│   │   └── write_psi4.cpython-313.pyc
 │   ├── energy_calculations.py
 │   ├── find_torsion.py
 │   ├── fragments.py
 │   ├── future_functions
 │   │   └── orbital_parse.py
-│   ├── __init__.py
 │   ├── load_gaussian.py
-│   ├── __pycache__
-│   │   ├── find_torsion.cpython-311.pyc
-│   │   ├── find_torsion.cpython-39.pyc
-│   │   ├── fragments.cpython-311.pyc
-│   │   ├── fragments.cpython-38.pyc
-│   │   ├── fragments.cpython-39.pyc
-│   │   ├── __init__.cpython-311.pyc
-│   │   ├── __init__.cpython-38.pyc
-│   │   ├── __init__.cpython-39.pyc
-│   │   ├── load_gaussian.cpython-311.pyc
-│   │   ├── load_gaussian.cpython-39.pyc
-│   │   ├── run_opt_neutral.cpython-311.pyc
-│   │   ├── run_opt_neutral.cpython-39.pyc
-│   │   ├── run_opt_set_dihedral.cpython-311.pyc
-│   │   ├── slurm.cpython-311.pyc
-│   │   ├── slurm.cpython-39.pyc
-│   │   ├── torsion_parser.cpython-311.pyc
-│   │   ├── torsion_parser.cpython-39.pyc
-│   │   ├── torsion_run.cpython-311.pyc
-│   │   ├── torsion_run.cpython-39.pyc
-│   │   ├── write_gaussian.cpython-311.pyc
-│   │   └── write_gaussian.cpython-39.pyc
 │   ├── run_gaussian.py
+│   ├── run_psi4.py
+│   ├── sa_score.py
 │   ├── slurm.py
 │   ├── testing_data.py
 │   ├── torsion_parser.py
-│   └── write_gaussian.py
+│   ├── write_gaussian.py
+│   └── write_psi4.py
+├── QCflow.yml
+├── QCflow_logo_narrow.jpg
+├── README.md
+├── build
+│   └── lib
+│       └── QCflow
+│           ├── __init__.py
+│           ├── energy_calculations.py
+│           ├── find_torsion.py
+│           ├── fragments.py
+│           ├── load_gaussian.py
+│           ├── run_gaussian.py
+│           ├── run_psi4.py
+│           ├── sa_score.py
+│           ├── slurm.py
+│           ├── testing_data.py
+│           ├── torsion_parser.py
+│           ├── write_gaussian.py
+│           └── write_psi4.py
+├── docs
+│   ├── Makefile
+│   ├── README.md
+│   ├── _build
+│   │   ├── doctrees
+│   │   │   ├── api.doctree
+│   │   │   ├── environment.pickle
+│   │   │   ├── getting_started.doctree
+│   │   │   └── index.doctree
+│   │   └── html
+│   │       ├── _modules
+│   │       │   ├── QCflow
+│   │       │   │   ├── energy_calculations.html
+│   │       │   │   ├── find_torsion.html
+│   │       │   │   ├── fragments.html
+│   │       │   │   ├── load_gaussian.html
+│   │       │   │   ├── run_gaussian.html
+│   │       │   │   ├── run_psi4.html
+│   │       │   │   ├── sa_score.html
+│   │       │   │   ├── slurm.html
+│   │       │   │   ├── testing_data.html
+│   │       │   │   ├── torsion_parser.html
+│   │       │   │   ├── write_gaussian.html
+│   │       │   │   └── write_psi4.html
+│   │       │   └── index.html
+│   │       ├── _sources
+│   │       │   ├── api.rst.txt
+│   │       │   ├── getting_started.rst.txt
+│   │       │   └── index.rst.txt
+│   │       ├── _static
+│   │       │   ├── README.md
+│   │       │   ├── _sphinx_javascript_frameworks_compat.js
+│   │       │   ├── basic.css
+│   │       │   ├── css
+│   │       │   │   ├── badge_only.css
+│   │       │   │   ├── fonts
+│   │       │   │   │   ├── Roboto-Slab-Bold.woff
+│   │       │   │   │   ├── Roboto-Slab-Bold.woff2
+│   │       │   │   │   ├── Roboto-Slab-Regular.woff
+│   │       │   │   │   ├── Roboto-Slab-Regular.woff2
+│   │       │   │   │   ├── fontawesome-webfont.eot
+│   │       │   │   │   ├── fontawesome-webfont.svg
+│   │       │   │   │   ├── fontawesome-webfont.ttf
+│   │       │   │   │   ├── fontawesome-webfont.woff
+│   │       │   │   │   ├── fontawesome-webfont.woff2
+│   │       │   │   │   ├── lato-bold-italic.woff
+│   │       │   │   │   ├── lato-bold-italic.woff2
+│   │       │   │   │   ├── lato-bold.woff
+│   │       │   │   │   ├── lato-bold.woff2
+│   │       │   │   │   ├── lato-normal-italic.woff
+│   │       │   │   │   ├── lato-normal-italic.woff2
+│   │       │   │   │   ├── lato-normal.woff
+│   │       │   │   │   └── lato-normal.woff2
+│   │       │   │   └── theme.css
+│   │       │   ├── doctools.js
+│   │       │   ├── documentation_options.js
+│   │       │   ├── file.png
+│   │       │   ├── fonts
+│   │       │   │   ├── Lato
+│   │       │   │   │   ├── lato-bold.eot
+│   │       │   │   │   ├── lato-bold.ttf
+│   │       │   │   │   ├── lato-bold.woff
+│   │       │   │   │   ├── lato-bold.woff2
+│   │       │   │   │   ├── lato-bolditalic.eot
+│   │       │   │   │   ├── lato-bolditalic.ttf
+│   │       │   │   │   ├── lato-bolditalic.woff
+│   │       │   │   │   ├── lato-bolditalic.woff2
+│   │       │   │   │   ├── lato-italic.eot
+│   │       │   │   │   ├── lato-italic.ttf
+│   │       │   │   │   ├── lato-italic.woff
+│   │       │   │   │   ├── lato-italic.woff2
+│   │       │   │   │   ├── lato-regular.eot
+│   │       │   │   │   ├── lato-regular.ttf
+│   │       │   │   │   ├── lato-regular.woff
+│   │       │   │   │   └── lato-regular.woff2
+│   │       │   │   └── RobotoSlab
+│   │       │   │       ├── roboto-slab-v7-bold.eot
+│   │       │   │       ├── roboto-slab-v7-bold.ttf
+│   │       │   │       ├── roboto-slab-v7-bold.woff
+│   │       │   │       ├── roboto-slab-v7-bold.woff2
+│   │       │   │       ├── roboto-slab-v7-regular.eot
+│   │       │   │       ├── roboto-slab-v7-regular.ttf
+│   │       │   │       ├── roboto-slab-v7-regular.woff
+│   │       │   │       └── roboto-slab-v7-regular.woff2
+│   │       │   ├── jquery.js
+│   │       │   ├── js
+│   │       │   │   ├── badge_only.js
+│   │       │   │   ├── theme.js
+│   │       │   │   └── versions.js
+│   │       │   ├── language_data.js
+│   │       │   ├── minus.png
+│   │       │   ├── plus.png
+│   │       │   ├── pygments.css
+│   │       │   ├── searchtools.js
+│   │       │   └── sphinx_highlight.js
+│   │       ├── api.html
+│   │       ├── genindex.html
+│   │       ├── getting_started.html
+│   │       ├── index.html
+│   │       ├── objects.inv
+│   │       ├── py-modindex.html
+│   │       ├── search.html
+│   │       └── searchindex.js
+│   ├── _static
+│   │   └── README.md
+│   ├── _templates
+│   │   └── README.md
+│   ├── api.rst
+│   ├── conf.py
+│   ├── getting_started.rst
+│   ├── index.rst
+│   ├── make.bat
+│   ├── requirements.yaml
+│   └── timer.dat
 ├── qcflow.egg-info
-│   ├── dependency_links.txt
 │   ├── PKG-INFO
 │   ├── SOURCES.txt
+│   ├── dependency_links.txt
 │   └── top_level.txt
-├── QCflow_logo_narrow.jpg
-├── QCflow.yml
-├── README.md
 ├── setup.py
 └── tests
+    ├── 1
+    │   ├── 1_cation.py
+    │   ├── 1_opt.py
+    │   └── 1_opt.sh
+    ├── 12
+    │   ├── 12_anion.err
+    │   ├── 12_anion.out
+    │   ├── 12_anion.py
+    │   ├── 12_anion.sh
+    │   ├── 12_cation.err
+    │   ├── 12_cation.out
+    │   ├── 12_cation.py
+    │   ├── 12_cation.sh
+    │   ├── 12_n_a_geo_energy_and_gap.txt
+    │   ├── 12_n_c_geo_energy_and_gap.txt
+    │   ├── 12_opt.err
+    │   ├── 12_opt.out
+    │   ├── 12_opt.py
+    │   ├── 12_opt.sh
+    │   ├── 12_opt.xyz
+    │   ├── 12_opt_a.xyz
+    │   ├── 12_opt_a_energy_and_gap.txt
+    │   ├── 12_opt_c.xyz
+    │   ├── 12_opt_c_energy_and_gap.txt
+    │   ├── 12_opt_energy_and_gap.txt
+    │   ├── 12_sp_a.err
+    │   ├── 12_sp_a.out
+    │   ├── 12_sp_a.py
+    │   ├── 12_sp_a.sh
+    │   ├── 12_sp_a_energy_and_gap.txt
+    │   ├── 12_sp_c.err
+    │   ├── 12_sp_c.out
+    │   ├── 12_sp_c.py
+    │   ├── 12_sp_c.sh
+    │   ├── 12_sp_c_energy_and_gap.txt
+    │   └── timer.dat
+    ├── 145
+    │   ├── 145_anion.err
+    │   ├── 145_anion.out
+    │   ├── 145_anion.py
+    │   ├── 145_anion.sh
+    │   ├── 145_cation.err
+    │   ├── 145_cation.out
+    │   ├── 145_cation.py
+    │   ├── 145_cation.sh
+    │   ├── 145_n_a_geo_energy_and_gap.txt
+    │   ├── 145_n_c_geo_energy_and_gap.txt
+    │   ├── 145_opt.err
+    │   ├── 145_opt.out
+    │   ├── 145_opt.py
+    │   ├── 145_opt.sh
+    │   ├── 145_opt.xyz
+    │   ├── 145_opt_a.xyz
+    │   ├── 145_opt_a_energy_and_gap.txt
+    │   ├── 145_opt_c.xyz
+    │   ├── 145_opt_c_energy_and_gap.txt
+    │   ├── 145_opt_energy_and_gap.txt
+    │   ├── 145_sp_a.err
+    │   ├── 145_sp_a.out
+    │   ├── 145_sp_a.py
+    │   ├── 145_sp_a.sh
+    │   ├── 145_sp_a_energy_and_gap.txt
+    │   ├── 145_sp_c.err
+    │   ├── 145_sp_c.out
+    │   ├── 145_sp_c.py
+    │   ├── 145_sp_c.sh
+    │   ├── 145_sp_c_energy_and_gap.txt
+    │   └── timer.dat
+    ├── __pycache__
+    │   ├── test.cpython-313-pytest-7.4.4.pyc
+    │   ├── test.cpython-313-pytest-8.3.3.pyc
+    │   ├── tests.cpython-312-pytest-7.4.4.pyc
+    │   └── tests.cpython-312.pyc
     ├── b_18_v2
     │   ├── b_18_v2_n_a_geo.log
     │   ├── b_18_v2_n_c_geo.log
-    │   ├── b_18_v2_opt_a.log
-    │   ├── b_18_v2_opt_c.log
     │   ├── b_18_v2_opt.com
     │   ├── b_18_v2_opt.log
     │   ├── b_18_v2_opt.sh
+    │   ├── b_18_v2_opt_a.log
+    │   ├── b_18_v2_opt_c.log
     │   ├── b_18_v2_sp_a.log
     │   ├── b_18_v2_sp_c.log
     │   ├── b_18_v2_sp_hirsh.log
     │   └── b_18_v2_tor.log
     ├── example_dic.json
     ├── fake_dict.json
-    ├── __pycache__
-    │   ├── tests.cpython-312.pyc
-    │   └── tests.cpython-312-pytest-7.4.4.pyc
-    ├── test_dict.json
     ├── test.py
+    ├── test_dict.json
+    ├── timer.dat
     └── torsion_1
         └── torsion_1_tor.log
 ```
