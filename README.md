@@ -32,16 +32,6 @@ A typical workflow involves:
 
 3. Combine descriptors and results in a [pandas](https://pandas.pydata.org/) dataframe format or similar for plotting / further analysis
 
-## Supported QC codes 
-
-Only [Gaussian](https://gaussian.com/man/) and [Psi4](https://psicode.org/) are currently supported.
-
-When installing the branch with psi4 please use the following command once you have installed QCflow to check psi4 is up to date:
-
-```bash
-conda update psi4
-```
-
 ## Installation
 
 ```bash
@@ -55,13 +45,23 @@ pip install .
 conda update psi4
 ```
 
+## Supported QC codes 
+
+Only [Gaussian](https://gaussian.com/man/) and [Psi4](https://psicode.org/) are currently supported.
+
+When installing QCflow check psi4 please by use the following command once you have installed QCflow to check psi4 is up to date:
+
+```bash
+conda update psi4
+```
+
 ## Usage Examples and Advice
 
-### Gaussian 16
+### Gaussian 16 Module
 
 The [run_calc](https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QCflow/run_gaussian.py#L50) function within `run_gaussian.py` is an example workflow that submit gaussian calculations to the [KCL CREATE HPC](https://www.kcl.ac.uk/research/facilities/hpc-digital-platforms). 
 
-Users external to Kings College London will need to alter the slurm.py file to match their HPC submission requirements.
+Users external to King's College London will need to alter the slurm.py file to match their HPC submission requirements.
 
 Altering the loaded modules found on line [59](https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QCflow/slurm.py#L59) within `slurm.py` file will allow you to submit jobs to your HPC.
 
@@ -72,11 +72,11 @@ file.write(f'module load your_gaussian_module \n') ### Your HPC
 ```
 Once the alteration has been made, just ```pip install .``` again and the package will update for your HPC.
 
-### Psi4
+### Psi4 Module
 
 The [run_psi4](https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QCflow/run_psi4.py#L11) function within `run_psi4.py` is an example workflow that submit psi4 calculations to the [KCL CREATE HPC](https://www.kcl.ac.uk/research/facilities/hpc-digital-platforms).
 
-Users external to Kings College London will need to alter the slurm.py file to match their HPC submission requirements.
+Users external to King's College London will need to alter the slurm.py file to match their HPC submission requirements.
 
 Altering the loaded modules found on line [117](https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QCflow/slurm.py#L117)
 
@@ -88,16 +88,27 @@ file.write(f'module load your_cuda_module \n') ### Your HPC
 
 Once the alteration has been made, just ```pip install .``` again and the package will update for your HPC.
 
+### SLURM Queue
+
+The main queue within CREATE is `cpu` and this is denoted with the SLURM script `slurm.py` file. For external users to CREATE or users who wish to use a different queue, please change the `slurm.py` file to match your HPC submission requirements. The lines that need change are [48](https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QCflow/slurm.py#L48) and [109](https://github.com/matta-research-group/QCflow/blob/qcflow-0.3/QCflow/slurm.py#L109C9-L109C41) for Gaussian and Psi4 respectively.
+
+```bash
+file.write(f'#SBATCH -p cpu \n') #KCL CREATE HPC QUEUE
+
+file.write(f'#SBATCH -p queue \n') #Your QUEUE
+```
+
+Once the alteration has been made, just ```pip install .``` again and the package will update for your HPC.
 
 ## Calculation settings - Gaussian 16
 
 QCflow can prepare and submit input files for the following Gaussian 16 jobs: 
-- Single point calculation, neutral -> `sp`
+- Single point calculation, neutral → `sp`
 - Single point calculation, anion → `sp_a`
 - Single point calculation, cation → `sp_c`
 - Single point calculation neutral charge, cationic geometry → `n_c_geo`
 - Single point calculation neutral charge, anioinc geometry → `n_a_geo`
-- Geometry optimisation, neutral -> `opt`
+- Geometry optimisation, neutral → `opt`
 - Torsional scan, neutral → `tor`
 - Optimisation anion → `opt_a`
 - Optimisation cation → `opt_c`
@@ -107,12 +118,18 @@ QCflow can prepare and submit input files for the following Gaussian 16 jobs:
 ## Calculation settings - Psi4
 
 QCflow can prepare and submit input files for the following Psi4 jobs:
-- Single point calculation, neutral -> `sp`
-- Geometry optimisation, neutral -> `opt`
-- Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo) -> `cation`
-- Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo) -> `anion`
+- Single point calculation, neutral → `sp`
+- Geometry optimisation, neutral → `opt`
+- Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo) → `cation`
+- Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo) → `anion`
 - Single point calculation, anion → `sp_a`
 - Single point calculation, cation → `sp_c`
+
+## Issues and Development
+
+QCflow is under active development and we welcome any issues or suggestions. Please open an issue on the [GitHub repository](https://github.com/matta-research-group/QCflow/issues).
+
+Additionally, we welcome any developments and improvements user may have and if you would like to contribute please open a pull request on the [GitHub repository](https://github.com/matta-research-group/QCflow/pulls).
 
 ## Files
 
