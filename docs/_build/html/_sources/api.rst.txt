@@ -106,3 +106,12 @@ QCflow.fragments
    :undoc-members:
    :show-inheritance:
    :no-imported-members:
+
+QCflow.sa_score
+================
+
+.. automodule:: QCflow.sa_score
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :no-imported-members:

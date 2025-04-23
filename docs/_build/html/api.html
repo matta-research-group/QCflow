@@ -122,6 +122,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.fragments.make_molecule_dic_from_2_dic"><code class="docutils literal notranslate"><span class="pre">make_molecule_dic_from_2_dic()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.sa_score">QCflow.sa_score</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#QCflow.sa_score.sa_scorer"><code class="docutils literal notranslate"><span class="pre">sa_scorer()</span></code></a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -1265,6 +1269,27 @@ a rdkit mol object.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A dictionary of dimers, where the key is the name of the molecule and the value is the SMILES string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-QCflow.sa_score">
+<span id="qcflow-sa-score"></span><h1>QCflow.sa_score<a class="headerlink" href="#module-QCflow.sa_score" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.sa_score.sa_scorer">
+<span class="sig-prename descclassname"><span class="pre">QCflow.sa_score.</span></span><span class="sig-name descname"><span class="pre">sa_scorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/sa_score.html#sa_scorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.sa_score.sa_scorer" title="Link to this definition"></a></dt>
+<dd><p>Carries out a synthetic accessibility score on a molecule (SA score)
+The literature for this paper can be found here: <a class="reference external" href="https://doi.org/10.1186/1758-2946-1-8">https://doi.org/10.1186/1758-2946-1-8</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>smile (str)</strong> (<em>The SMILES string of the molecule to be scored</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>sa_score_val (float)</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The SA score of the molecule</p>
 </dd>
 </dl>
 </dd></dl>
