@@ -61,6 +61,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.write_psi4.write_psi4_reorg"><code class="docutils literal notranslate"><span class="pre">write_psi4_reorg()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.write_xTB">QCflow.write_xTB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#QCflow.write_xTB.run_xtb_optimisation"><code class="docutils literal notranslate"><span class="pre">run_xtb_optimisation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#QCflow.write_xTB.load_xyz_from_file"><code class="docutils literal notranslate"><span class="pre">load_xyz_from_file()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#QCflow.write_xTB.write_xTB_psi4"><code class="docutils literal notranslate"><span class="pre">write_xTB_psi4()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#QCflow.write_xTB.write_xTB_psi4_reorg"><code class="docutils literal notranslate"><span class="pre">write_xTB_psi4_reorg()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="#module-QCflow.slurm">QCflow.slurm</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.slurm.write_slurm"><code class="docutils literal notranslate"><span class="pre">write_slurm()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.slurm.write_slurm_psi4"><code class="docutils literal notranslate"><span class="pre">write_slurm_psi4()</span></code></a></li>
@@ -76,6 +83,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#module-QCflow.run_psi4">QCflow.run_psi4</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#QCflow.run_psi4.run_psi4"><code class="docutils literal notranslate"><span class="pre">run_psi4()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#module-QCflow.run_xTB">QCflow.run_xTB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#QCflow.run_xTB.run_xTB"><code class="docutils literal notranslate"><span class="pre">run_xTB()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#module-QCflow.testing_data">QCflow.testing_data</a><ul>
@@ -327,6 +338,54 @@
 <dt class="sig sig-object py" id="QCflow.write_psi4.write_psi4_reorg">
 <span class="sig-prename descclassname"><span class="pre">QCflow.write_psi4.</span></span><span class="sig-name descname"><span class="pre">write_psi4_reorg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'b3lyp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6-31g*'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/write_psi4.html#write_psi4_reorg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.write_psi4.write_psi4_reorg" title="Link to this definition"></a></dt>
 <dd><p>Generates a psi4 input file based on the provided parameters for reorganisation calculations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values:</em>) –</p>
+<ul>
+<li><p>‘cation’: Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo)</p></li>
+<li><p>‘anion’: Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo)</p></li>
+<li><p>‘sp_c’: Single point calculation of neutral geometry at cation charge</p></li>
+<li><p>‘sp_a’: Single point calculation of neutral geometry at anion charge</p></li>
+</ul>
+</li>
+<li><p><strong>mol_name (str)</strong> (<em>The name of the molecule.</em>)</p></li>
+<li><p><strong>functional (str, optional)</strong> (<em>The functional to use. Default is ‘b3lyp’.</em>)</p></li>
+<li><p><strong>basis_set (str, optional)</strong> (<em>The basis set to use. Default is ‘6-31g’.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>None</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Writes the psi4 input file to disk.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-QCflow.write_xTB">
+<span id="qcflow-write-xtb"></span><h1>QCflow.write_xTB<a class="headerlink" href="#module-QCflow.write_xTB" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.write_xTB.run_xtb_optimisation">
+<span class="sig-prename descclassname"><span class="pre">QCflow.write_xTB.</span></span><span class="sig-name descname"><span class="pre">run_xtb_optimisation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uhf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gfn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/write_xTB.html#run_xtb_optimisation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.write_xTB.run_xtb_optimisation" title="Link to this definition"></a></dt>
+<dd><p>Run xTB geometry optimisation using GFN2-xTB and save to output_file.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.write_xTB.load_xyz_from_file">
+<span class="sig-prename descclassname"><span class="pre">QCflow.write_xTB.</span></span><span class="sig-name descname"><span class="pre">load_xyz_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/write_xTB.html#load_xyz_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.write_xTB.load_xyz_from_file" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.write_xTB.write_xTB_psi4">
+<span class="sig-prename descclassname"><span class="pre">QCflow.write_xTB.</span></span><span class="sig-name descname"><span class="pre">write_xTB_psi4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'b3lyp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6-31g*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conformer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/write_xTB.html#write_xTB_psi4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.write_xTB.write_xTB_psi4" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.write_xTB.write_xTB_psi4_reorg">
+<span class="sig-prename descclassname"><span class="pre">QCflow.write_xTB.</span></span><span class="sig-name descname"><span class="pre">write_xTB_psi4_reorg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'b3lyp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6-31g*'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/write_xTB.html#write_xTB_psi4_reorg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.write_xTB.write_xTB_psi4_reorg" title="Link to this definition"></a></dt>
+<dd><p>Generates a xTB and psi4 input file based on the provided parameters for reorganisation calculations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -640,6 +699,52 @@ in_progress (dict): Oligomers that are still in progress (shows basis set they a
 <li><p><em>- For ‘cation’, ‘anion’, ‘sp_c’, and ‘sp_a’</em> –</p>
 <ul>
 <li><p>Writes a psi4 input file.</p></li>
+</ul>
+</li>
+<li><p><em>Finally, the function writes a SLURM script, submits the job, and returns to the previous directory.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-QCflow.run_xTB">
+<span id="qcflow-run-xtb"></span><h1>QCflow.run_xTB<a class="headerlink" href="#module-QCflow.run_xTB" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="QCflow.run_xTB.run_xTB">
+<span class="sig-prename descclassname"><span class="pre">QCflow.run_xTB.</span></span><span class="sig-name descname"><span class="pre">run_xTB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_smile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'b3lyp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6-31g*'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/run_xTB.html#run_xTB"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.run_xTB.run_xTB" title="Link to this definition"></a></dt>
+<dd><p>Submits a xTB calculation to CREATE HPC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values:</em>) –</p>
+<ul>
+<li><p>‘opt’: Optimisation neutral</p></li>
+<li><p>‘cation’: Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo)</p></li>
+<li><p>‘anion’: Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo)</p></li>
+<li><p>‘sp_c’: Single point calculation of neutral geometry at cation charge</p></li>
+<li><p>‘sp_a’: Single point calculation of neutral geometry at anion charge</p></li>
+</ul>
+</li>
+<li><p><strong>mol_name</strong> (<em>str</em>) – Name of the oligomer.</p></li>
+<li><p><strong>mol_smile</strong> (<em>str</em>) – SMILES string of the oligomer.</p></li>
+<li><p><strong>time (int, optional)</strong> (<em>The time limit for the job in hours. Default is 24. (Max is 48)</em>)</p></li>
+<li><p><strong>cpus (int, optional)</strong> (<em>The number of CPUs to allocate for the job. Default is 10.</em>)</p></li>
+<li><p><strong>functional</strong> (<em>str, optional</em>) – Quantum chemistry functional to be used (default is ‘B3LYP’).</p></li>
+<li><p><strong>basis_set</strong> (<em>str, optional</em>) – Basis set to be used (default is ‘6-31G*’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>- For ‘opt’</em> –</p>
+<ul>
+<li><p>Converts the SMILES string to an RDKit molecule object.</p></li>
+<li><p>Generates 3D coordinates for the molecule.</p></li>
+<li><p>Predicts the conformer geometry.</p></li>
+<li><p>Runs xTB optimisation using the generated coordinates.</p></li>
+<li><p>Writes a psi4 input file with the optimised geometry.</p></li>
+<li><p>Runs a single point calculation.</p></li>
 </ul>
 </li>
 <li><p><em>Finally, the function writes a SLURM script, submits the job, and returns to the previous directory.</em></p></li>

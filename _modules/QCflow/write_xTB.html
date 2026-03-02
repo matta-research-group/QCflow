@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QCflow.write_xTB &mdash; QCflow 0.5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            QCflow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started with QCflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">QCflow Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.load_gaussian">QCflow.load_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.write_gaussian">QCflow.write_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.write_psi4">QCflow.write_psi4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.write_xTB">QCflow.write_xTB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.slurm">QCflow.slurm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.run_gaussian">QCflow.run_gaussian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.run_psi4">QCflow.run_psi4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.run_xTB">QCflow.run_xTB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.testing_data">QCflow.testing_data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.energy_calculations">QCflow.energy_calculations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.find_torsion">QCflow.find_torsion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.torsion_parser">QCflow.torsion_parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.fragments">QCflow.fragments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#module-QCflow.sa_score">QCflow.sa_score</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QCflow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">QCflow.write_xTB</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for QCflow.write_xTB</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">QCflow.fragments</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCflow.find_torsion</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCflow.write_gaussian</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCflow.slurm</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCflow.torsion_parser</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCflow.run_gaussian</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">QCflow.write_psi4</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+
+<div class="viewcode-block" id="run_xtb_optimisation">
+<a class="viewcode-back" href="../../api.html#QCflow.write_xTB.run_xtb_optimisation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_xtb_optimisation</span><span class="p">(</span><span class="n">xyz</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">uhf</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">gfn</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run xTB geometry optimisation using GFN2-xTB and save to output_file.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
+        <span class="n">xyz_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="s2">&quot;input.xyz&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">xyz_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;xtb&quot;</span><span class="p">,</span> <span class="n">xyz_path</span><span class="p">,</span>
+            <span class="s2">&quot;--opt&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--chrg&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">charge</span><span class="p">),</span>
+            <span class="s2">&quot;--uhf&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">uhf</span><span class="p">),</span>
+            <span class="s2">&quot;--gfn&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">gfn</span><span class="p">)</span>
+        <span class="p">]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">tmpdir</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;xTB failed: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">opt_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="s2">&quot;xtbopt.xyz&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">opt_path</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Optimised structure (xtbopt.xyz) not found.&quot;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">opt_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">optimised_xyz</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">optimised_xyz</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimised structure saved to: </span><span class="si">{</span><span class="n">output_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="load_xyz_from_file">
+<a class="viewcode-back" href="../../api.html#QCflow.write_xTB.load_xyz_from_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_xyz_from_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+    <span class="c1"># Remove the first two lines (atom count and comment/energy)</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+
+    <span class="c1"># Recalculate number of atoms just in case</span>
+    <span class="n">num_atoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+
+    <span class="c1"># Build the xyz string</span>
+    <span class="n">xyz_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num_atoms</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">xyz_string</span></div>
+
+
+
+<div class="viewcode-block" id="write_xTB_psi4">
+<a class="viewcode-back" href="../../api.html#QCflow.write_xTB.write_xTB_psi4">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_xTB_psi4</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">,</span> <span class="n">smile</span><span class="p">,</span> <span class="n">functional</span><span class="o">=</span><span class="s1">&#39;b3lyp&#39;</span><span class="p">,</span> <span class="n">basis_set</span><span class="o">=</span><span class="s1">&#39;6-31g*&#39;</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">conformer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;opt&#39;</span><span class="p">):</span>
+
+        <span class="n">old_chk</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span>
+        <span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">GetSymbol</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">()]</span>
+        <span class="c1"># get x y z coords</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">conformer</span>
+        <span class="n">calculation</span> <span class="o">=</span> <span class="s1">&#39;opt&#39;</span>
+        <span class="n">torsion_data</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="k">if</span> <span class="n">Descriptors</span><span class="o">.</span><span class="n">NumRadicalElectrons</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">mult_chg</span> <span class="o">=</span> <span class="s1">&#39;0 1&#39;</span>
+        <span class="k">if</span> <span class="n">Descriptors</span><span class="o">.</span><span class="n">NumRadicalElectrons</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">mult_chg</span> <span class="o">=</span> <span class="s1">&#39;0 2&#39;</span>
+        <span class="k">if</span> <span class="n">Descriptors</span><span class="o">.</span><span class="n">NumRadicalElectrons</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">mult_chg</span> <span class="o">=</span> <span class="s1">&#39;0 3&#39;</span> 
+                                                                                          
+    <span class="n">file_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">_xTB.py&#39;</span>
+    <span class="c1">#Includes information about basis set to allow for ramping</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1"> Smile String: </span><span class="si">{</span><span class="n">smile</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">number_proc</span> <span class="o">=</span> <span class="s1">&#39;set_num_threads(4)&#39;</span>
+    <span class="n">memory_num</span> <span class="o">=</span> <span class="s1">&#39;4000 mb&#39;</span>
+    <span class="n">number_of_atoms</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;import subprocess</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;import tempfile</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;import os</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;import psi4</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;from QCflow.write_xTB import *</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="c1">#</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;xyz_string = &quot;&quot;&quot;</span><span class="si">{</span><span class="n">number_of_atoms</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">old_chk</span><span class="o">==</span><span class="s1">&#39; &#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">atom</span><span class="p">,</span><span class="n">symbol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">symbols</span><span class="p">):</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">GetAtomPosition</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
+                <span class="c1"># atom  x y z</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="si">:</span><span class="s1">.5f</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">y</span><span class="si">:</span><span class="s1">.5f</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">z</span><span class="si">:</span><span class="s1">.5f</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&quot;&quot;&quot; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;run_xtb_optimisation(xyz_string, &quot;optimised_structure.xyz&quot;, gfn=2)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mol_sp = psi4.geometry(open(&#39;optimised_structure.xyz&#39;).read())</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="c1">#use geometry from opt</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;psi4.core.set_active_molecule(mol_sp)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="c1">#set as active molecule</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mol_sp.set_molecular_charge(0) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="c1"># set charge</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mol_sp.set_multiplicity(1) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="c1"># set multiplicity</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;psi4.set_options(</span><span class="se">{{</span><span class="s2">&#39;basis&#39;: &#39;</span><span class="si">{</span><span class="n">basis_set</span><span class="si">}</span><span class="s2">&#39;, &#39;scf_type&#39;: &#39;df&#39;</span><span class="se">}}</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;energy, wfn = psi4.energy(&#39;</span><span class="si">{</span><span class="n">functional</span><span class="si">}</span><span class="s2">&#39;, return_wfn=True)  </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;psi4.core.set_active_molecule(wfn.molecule()) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;orbital_energies = wfn.epsilon_a_subset(&quot;AO&quot;, &quot;ALL&quot;).np </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;n_occ_alpha = wfn.nalpha() </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;homo_energy = orbital_energies[n_occ_alpha - 1] </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;lumo_energy = orbital_energies[n_occ_alpha] </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;energy_gap = lumo_energy - homo_energy </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;hartree_to_ev = 27.2114079527</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;energy_ev =  energy * hartree_to_ev</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;homo_energy_ev = homo_energy * hartree_to_ev </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;lumo_energy_ev = lumo_energy * hartree_to_ev </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;energy_gap_ev = lumo_energy_ev -  homo_energy_ev </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;with open(&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s2">_xTB_energy_and_gap.txt&#39;, &#39;w&#39;) as file:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;Single Point energy: </span><span class="si">{energy_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;HOMO: </span><span class="si">{homo_energy_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;LUMO: </span><span class="si">{lumo_energy_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;Energy gap (HOMO-LUMO): </span><span class="si">{energy_gap_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="write_xTB_psi4_reorg">
+<a class="viewcode-back" href="../../api.html#QCflow.write_xTB.write_xTB_psi4_reorg">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_xTB_psi4_reorg</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">mol_name</span><span class="p">,</span> <span class="n">functional</span><span class="o">=</span><span class="s1">&#39;b3lyp&#39;</span><span class="p">,</span> <span class="n">basis_set</span><span class="o">=</span><span class="s1">&#39;6-31g*&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a xTB and psi4 input file based on the provided parameters for reorganisation calculations.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    job_name (str): The type of job to run. Possible values:</span>
+<span class="sd">        - &#39;cation&#39;: Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo)</span>
+<span class="sd">        - &#39;anion&#39;: Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo)</span>
+<span class="sd">        - &#39;sp_c&#39;: Single point calculation of neutral geometry at cation charge</span>
+<span class="sd">        - &#39;sp_a&#39;: Single point calculation of neutral geometry at anion charge                                                                                                                                     </span>
+<span class="sd">    mol_name (str): The name of the molecule.</span>
+<span class="sd">    functional (str, optional): The functional to use. Default is &#39;b3lyp&#39;.</span>
+<span class="sd">    basis_set (str, optional): The basis set to use. Default is &#39;6-31g&#39;.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">         None: Writes the psi4 input file to disk.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;cation&#39;</span><span class="p">):</span>
+
+        <span class="n">charge</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">mult</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="n">job_type</span> <span class="o">=</span> <span class="s1">&#39;opt_c&#39;</span>
+
+        <span class="n">job_sp</span> <span class="o">=</span> <span class="s1">&#39;n_c_geo&#39;</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;optimised_structure.xyz&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">number_of_atoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">coordinate_lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span> <span class="o">+</span> <span class="n">number_of_atoms</span><span class="p">]]</span>
+
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;anion&#39;</span><span class="p">):</span>
+
+        <span class="n">charge</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">mult</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="n">job_type</span> <span class="o">=</span> <span class="s1">&#39;opt_a&#39;</span>
+
+        <span class="n">job_sp</span> <span class="o">=</span> <span class="s1">&#39;n_a_geo&#39;</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;optimised_structure.xyz&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">number_of_atoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">coordinate_lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span> <span class="o">+</span> <span class="n">number_of_atoms</span><span class="p">]]</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;sp_c&#39;</span><span class="p">):</span>
+
+        <span class="n">charge</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">mult</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;optimised_structure.xyz&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">number_of_atoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">coordinate_lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span> <span class="o">+</span> <span class="n">number_of_atoms</span><span class="p">]]</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;sp_a&#39;</span><span class="p">):</span>
+
+        <span class="n">charge</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">mult</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;optimised_structure.xyz&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">number_of_atoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">coordinate_lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">2</span> <span class="o">+</span> <span class="n">number_of_atoms</span><span class="p">]]</span>
+
+                                                                                          
+    <span class="n">file_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s1">.py&#39;</span>
+    <span class="c1">#Includes information about basis set to allow for ramping</span>
+    <span class="n">memory_num</span> <span class="o">=</span> <span class="s1">&#39;4000 mb&#39;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;anion&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;cation&#39;</span><span class="p">):</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;import subprocess</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;import tempfile</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;import os</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;import psi4</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;from QCflow.write_xTB import *</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="c1">#</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;xyz_string = &quot;&quot;&quot;</span><span class="si">{</span><span class="n">number_of_atoms</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="c1"># Now insert the parsed coordinate lines</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">coordinate_lines</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&quot;&quot;&quot; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run_xtb_optimisation(xyz_string, &#39;</span><span class="si">{</span><span class="n">job_type</span><span class="si">}</span><span class="s2">_optimised_structure.xyz&#39;, charge=</span><span class="si">{</span><span class="n">charge</span><span class="si">}</span><span class="s2">, uhf=</span><span class="si">{</span><span class="n">mult</span><span class="si">}</span><span class="s2">, gfn=2)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mol = psi4.geometry(open(&#39;</span><span class="si">{</span><span class="n">job_type</span><span class="si">}</span><span class="s2">_optimised_structure.xyz&#39;).read())</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="c1">#use geometry from opt</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;psi4.core.set_active_molecule(mol)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="c1">#set as active molecule</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mol.set_molecular_charge(</span><span class="si">{</span><span class="n">charge</span><span class="si">}</span><span class="s2">) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="c1"># set charge</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mol.set_multiplicity(</span><span class="si">{</span><span class="n">mult</span><span class="si">}</span><span class="s2">) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="c1"># set multiplicity</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;psi4.set_module_options(&#39;scf&#39;, {&#39;maxiter&#39;: 100}) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;psi4.set_options(</span><span class="se">{{</span><span class="s2">&#39;basis&#39;: &#39;</span><span class="si">{</span><span class="n">basis_set</span><span class="si">}</span><span class="s2">&#39;, &#39;scf_type&#39;: &#39;df&#39;, &#39;reference&#39;: &#39;uhf&#39;</span><span class="se">}}</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;energy, wfn = psi4.optimize(&#39;</span><span class="si">{</span><span class="n">functional</span><span class="si">}</span><span class="s2">&#39;, engine=&#39;geometric&#39;, return_wfn=True)  </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;optimized_geometry_xyz = wfn.molecule().to_string(&#39;xyz&#39;) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;with open(&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">job_type</span><span class="si">}</span><span class="s2">.xyz&#39;, &#39;w&#39;) as xyz_file:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;    xyz_file.write(optimized_geometry_xyz) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;psi4.core.set_active_molecule(wfn.molecule()) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;orbital_energies = wfn.epsilon_a_subset(&quot;AO&quot;, &quot;ALL&quot;).np </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;n_occ_alpha = wfn.nalpha() </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;homo_energy = orbital_energies[n_occ_alpha - 1] </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;lumo_energy = orbital_energies[n_occ_alpha] </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;energy_gap = lumo_energy - homo_energy </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;hartree_to_ev = 27.2114079527 </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;energy_ev =  energy * hartree_to_ev</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;homo_energy_ev = homo_energy * hartree_to_ev </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;lumo_energy_ev = lumo_energy * hartree_to_ev </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;energy_gap_ev = lumo_energy_ev -  homo_energy_ev </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;with open(&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">job_type</span><span class="si">}</span><span class="s2">_energy_and_gap.txt&#39;, &#39;w&#39;) as file:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;Optimized energy: </span><span class="si">{energy_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;HOMO: </span><span class="si">{homo_energy_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;LUMO: </span><span class="si">{lumo_energy_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;Energy gap (HOMO-LUMO): </span><span class="si">{energy_gap_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="c1"># Now do the n_c_geo or n_a_geo part</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mol_sp = psi4.geometry(open(&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">job_type</span><span class="si">}</span><span class="s2">.xyz&#39;).read())</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="c1">#use geometry from opt</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;psi4.core.set_active_molecule(mol_sp)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="c1">#set as active molecule</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mol_sp.set_molecular_charge(0) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="c1"># set charge</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mol_sp.set_multiplicity(1) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="c1"># set multiplicity</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;psi4.set_options(</span><span class="se">{{</span><span class="s2">&#39;basis&#39;: &#39;</span><span class="si">{</span><span class="n">basis_set</span><span class="si">}</span><span class="s2">&#39;, &#39;scf_type&#39;: &#39;df&#39;</span><span class="se">}}</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;energy, wfn = psi4.energy(&#39;</span><span class="si">{</span><span class="n">functional</span><span class="si">}</span><span class="s2">&#39;, return_wfn=True)  </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;psi4.core.set_active_molecule(wfn.molecule()) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;orbital_energies = wfn.epsilon_a_subset(&quot;AO&quot;, &quot;ALL&quot;).np </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;n_occ_alpha = wfn.nalpha() </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;homo_energy = orbital_energies[n_occ_alpha - 1] </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;lumo_energy = orbital_energies[n_occ_alpha] </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;energy_gap = lumo_energy - homo_energy </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;energy_ev =  energy * hartree_to_ev</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;homo_energy_ev = homo_energy * hartree_to_ev </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;lumo_energy_ev = lumo_energy * hartree_to_ev </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;energy_gap_ev = lumo_energy_ev -  homo_energy_ev </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;with open(&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">job_sp</span><span class="si">}</span><span class="s2">_energy_and_gap.txt&#39;, &#39;w&#39;) as file:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;Single Point energy: </span><span class="si">{energy_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;HOMO: </span><span class="si">{homo_energy_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;LUMO: </span><span class="si">{lumo_energy_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;Energy gap (HOMO-LUMO): </span><span class="si">{energy_gap_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;sp_c&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">job_name</span><span class="o">==</span><span class="s1">&#39;sp_a&#39;</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;import psi4</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="c1">#</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;psi4.set_memory(&#39;</span><span class="si">{</span><span class="n">memory_num</span><span class="si">}</span><span class="s2">&#39;)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;psi4.set_num_threads(4)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="c1">#</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mol = psi4.geometry(open(&#39;optimised_structure.xyz&#39;).read())</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="c1">#use geometry from opt</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;psi4.core.set_active_molecule(mol)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="c1">#set as active molecule</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mol.set_molecular_charge(</span><span class="si">{</span><span class="n">charge</span><span class="si">}</span><span class="s2">) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="c1"># set charge</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mol.set_multiplicity(</span><span class="si">{</span><span class="n">mult</span><span class="si">}</span><span class="s2">) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="c1"># set multiplicity</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;psi4.set_module_options(&#39;scf&#39;, {&#39;maxiter&#39;: 50}) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;psi4.set_options(</span><span class="se">{{</span><span class="s2">&#39;basis&#39;: &#39;</span><span class="si">{</span><span class="n">basis_set</span><span class="si">}</span><span class="s2">&#39;, &#39;scf_type&#39;: &#39;df&#39;, &#39;reference&#39;: &#39;uhf&#39;</span><span class="se">}}</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;energy, wfn = psi4.energy(&#39;</span><span class="si">{</span><span class="n">functional</span><span class="si">}</span><span class="s2">&#39;, return_wfn=True)  </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;psi4.core.set_active_molecule(wfn.molecule()) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;orbital_energies = wfn.epsilon_a_subset(&quot;AO&quot;, &quot;ALL&quot;).np </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;n_occ_alpha = wfn.nalpha() </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;homo_energy = orbital_energies[n_occ_alpha - 1] </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;lumo_energy = orbital_energies[n_occ_alpha] </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;energy_gap = lumo_energy - homo_energy </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;hartree_to_ev = 27.2114079527 </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;energy_ev =  energy * hartree_to_ev</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;homo_energy_ev = homo_energy * hartree_to_ev </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;lumo_energy_ev = lumo_energy * hartree_to_ev </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;energy_gap_ev = lumo_energy_ev -  homo_energy_ev </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;with open(&#39;</span><span class="si">{</span><span class="n">mol_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s2">_energy_and_gap.txt&#39;, &#39;w&#39;) as file:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;Single Point energy: </span><span class="si">{energy_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;HOMO: </span><span class="si">{homo_energy_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;LUMO: </span><span class="si">{lumo_energy_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    file.write(f&quot;Energy gap (HOMO-LUMO): </span><span class="si">{energy_gap_ev:.6f}</span><span class="s1"> eV</span><span class="se">\\</span><span class="s1">n&quot;) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
