@@ -369,18 +369,71 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="QCflow.write_xTB.run_xtb_optimisation">
 <span class="sig-prename descclassname"><span class="pre">QCflow.write_xTB.</span></span><span class="sig-name descname"><span class="pre">run_xtb_optimisation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uhf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gfn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/write_xTB.html#run_xtb_optimisation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.write_xTB.run_xtb_optimisation" title="Link to this definition"></a></dt>
-<dd><p>Run xTB geometry optimisation using GFN2-xTB and save to output_file.</p>
+<dd><p>Runs a xTB geometry optimisation using GFN2-xTB and saves the result to output_file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xyz (str)</strong> (<em>The input geometry in XYZ format as a string.</em>)</p></li>
+<li><p><strong>output_file (str)</strong> (<em>The path to the file where the optimised geometry will be saved</em>)</p></li>
+<li><p><strong>charge (int, optional)</strong> (<em>The total charge of the system. Default is 0.</em>)</p></li>
+<li><p><strong>uhf (int, optional)</strong> (<em>The number of unpaired electrons (spin multiplicity - 1). Default is 0 (singlet).</em>)</p></li>
+<li><p><strong>gfn (int, optional)</strong> (<em>The GFN-xTB method to use (1, 2, or 3). Default is 2 (GFN2-xTB).</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>None</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Writes the optimised geometry to output_file.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="QCflow.write_xTB.load_xyz_from_file">
 <span class="sig-prename descclassname"><span class="pre">QCflow.write_xTB.</span></span><span class="sig-name descname"><span class="pre">load_xyz_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/write_xTB.html#load_xyz_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.write_xTB.load_xyz_from_file" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Loads an XYZ file and returns the content as a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filepath (str)</strong> (<em>The path to the XYZ file to be loaded.</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>str</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The content of the XYZ file as a string.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="QCflow.write_xTB.write_xTB_psi4">
 <span class="sig-prename descclassname"><span class="pre">QCflow.write_xTB.</span></span><span class="sig-name descname"><span class="pre">write_xTB_psi4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">job_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'b3lyp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'6-31g*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conformer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/QCflow/write_xTB.html#write_xTB_psi4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#QCflow.write_xTB.write_xTB_psi4" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Runs a xTB geometry optimisation and caulcates electronic proeprities using Psi4, based on the provided parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>job_name (str)</strong> (<em>The type of job to run. Possible values:</em>) –</p>
+<ul>
+<li><p>‘opt’: Optimisation neutral</p></li>
+</ul>
+</li>
+<li><p><strong>mol_name (str)</strong> (<em>The name of the molecule.</em>)</p></li>
+<li><p><strong>smile (str)</strong> (<em>The SMILE string of the molecule.</em>)</p></li>
+<li><p><strong>functional (str, optional)</strong> (<em>The functional to use. Default is ‘b3lyp’.</em>)</p></li>
+<li><p><strong>basis_set (str, optional)</strong> (<em>The basis set to use. Default is ‘6-31g’.</em>)</p></li>
+<li><p><strong>mol (rdkit.Chem.rdchem.Mol, optional)</strong> (<em>The RDKit embedded molecule object.</em>)</p></li>
+<li><p><strong>conformer (rdkit.Chem.rdchem.Conformer, optional)</strong> (<em>The RDKit conformer of the molecule.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>None</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Writes the psi4 input file to disk.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="QCflow.write_xTB.write_xTB_psi4_reorg">
