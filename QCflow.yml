@@ -1,7 +1,7 @@
 name: QCflow
 channels:
   - conda-forge
-  - lich
+  # - lich causing issues in instal
 dependencies:
   - brotli
   - brotli-bin
