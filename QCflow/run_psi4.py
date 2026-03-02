@@ -17,6 +17,7 @@ def run_psi4(job_name, mol_name, mol_smile, time=24, cpus=10, functional='b3lyp'
     job_name (str): The type of job to run. Possible values:
         - 'sp': Single Point neutral
         - 'opt': Optimisation neutral
+        - 'opt_pre_geom': Optimisation neutral where a txt file called '{mol_name}_opt.xyz' is present in the molecule directory. This file should contain the geometry to be used for the optimisation in XYZ format. If this file is not present, the function will default to 'opt'.
         - 'cation': Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo)
         - 'anion': Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo)
         - 'sp_c': Single point calculation of neutral geometry at cation charge
@@ -50,7 +51,14 @@ def run_psi4(job_name, mol_name, mol_smile, time=24, cpus=10, functional='b3lyp'
         os.mkdir(f'{mol_name}') #makes a directory for the molecule
         os.chdir(f'{mol_name}') #goes into directory
 
-    if (job_name=='opt') or (job_name=='sp'):
+    if (job_name=='opt') or (job_name=='sp') or (job_name=='opt_pre_geom'):
+        
+        if (job_name=='opt_pre_geom'):
+            if os.path.exists(f'{mol_name}_opt.xyz'):
+                print(f"Found {mol_name}_opt.xyz, using this geometry for optimisation.")
+            else:
+                print(f"{mol_name}_opt.xyz not found, defaulting to 'opt' job type.")
+                job_name = 'opt'
         #turns smiles string into rdkit object
         mol = Chem.MolFromSmiles(mol_smile)
         #gets rdkit estimated coordinates of dimer
@@ -64,6 +72,9 @@ def run_psi4(job_name, mol_name, mol_smile, time=24, cpus=10, functional='b3lyp'
     if (job_name=='cation') or (job_name=='anion') or (job_name=='sp_c') or (job_name=='sp_a'):
 
         write_psi4_reorg(job_name, mol_name, functional, basis_set)
+    
+    else:
+        print(f"Invalid job_name: {job_name}, please use 'opt', 'sp', 'opt_pre_geom', 'cation', 'anion', 'sp_c' or 'sp_a'. See documentation for more details.")
 
     
     #writes the slurm file
