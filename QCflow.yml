@@ -101,7 +101,6 @@ dependencies:
   - seaborn-base
   - six
   - statsmodels
-  - syba
   - tk
   - tornado
   - typing-extensions
