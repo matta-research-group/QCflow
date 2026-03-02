@@ -136,80 +136,9 @@ Additionally, we welcome any developments and improvements user may have and if 
 
 ```bash
 .
-├── Examples
-│   ├── example_calculation_submission.py
-│   ├── example_data_extraction.ipynb
-│   ├── example_data_extraction_bulk.py
-│   ├── example_molecule_building.ipynb
-│   └── example_molecule_logs
-│       ├── 18
-│       │   └── 18_opt.log
-│       ├── b
-│       │   └── b_opt.log
-│       └── b_18_single_v2
-│           ├── b_18_single_v2_n_a_geo.log
-│           ├── b_18_single_v2_n_c_geo.log
-│           ├── b_18_single_v2_opt.log
-│           ├── b_18_single_v2_opt_a.log
-│           ├── b_18_single_v2_opt_c.log
-│           ├── b_18_single_v2_sp_a.log
-│           └── b_18_single_v2_sp_c.log
-├── LICENSE
-├── QCflow
-│   ├── __init__.py
-│   ├── __pycache__
-│   │   ├── __init__.cpython-311.pyc
-│   │   ├── __init__.cpython-313.pyc
-│   │   ├── __init__.cpython-38.pyc
-│   │   ├── __init__.cpython-39.pyc
-│   │   ├── energy_calculations.cpython-313.pyc
-│   │   ├── find_torsion.cpython-311.pyc
-│   │   ├── find_torsion.cpython-313.pyc
-│   │   ├── find_torsion.cpython-39.pyc
-│   │   ├── fragments.cpython-311.pyc
-│   │   ├── fragments.cpython-313.pyc
-│   │   ├── fragments.cpython-38.pyc
-│   │   ├── fragments.cpython-39.pyc
-│   │   ├── load_gaussian.cpython-311.pyc
-│   │   ├── load_gaussian.cpython-313.pyc
-│   │   ├── load_gaussian.cpython-39.pyc
-│   │   ├── run_gaussian.cpython-313.pyc
-│   │   ├── run_opt_neutral.cpython-311.pyc
-│   │   ├── run_opt_neutral.cpython-39.pyc
-│   │   ├── run_opt_set_dihedral.cpython-311.pyc
-│   │   ├── run_psi4.cpython-313.pyc
-│   │   ├── sa_score.cpython-313.pyc
-│   │   ├── slurm.cpython-311.pyc
-│   │   ├── slurm.cpython-313.pyc
-│   │   ├── slurm.cpython-39.pyc
-│   │   ├── testing_data.cpython-313.pyc
-│   │   ├── torsion_parser.cpython-311.pyc
-│   │   ├── torsion_parser.cpython-313.pyc
-│   │   ├── torsion_parser.cpython-39.pyc
-│   │   ├── torsion_run.cpython-311.pyc
-│   │   ├── torsion_run.cpython-39.pyc
-│   │   ├── write_gaussian.cpython-311.pyc
-│   │   ├── write_gaussian.cpython-313.pyc
-│   │   ├── write_gaussian.cpython-39.pyc
-│   │   └── write_psi4.cpython-313.pyc
-│   ├── energy_calculations.py
-│   ├── find_torsion.py
-│   ├── fragments.py
-│   ├── future_functions
-│   │   └── orbital_parse.py
-│   ├── load_gaussian.py
-│   ├── run_gaussian.py
-│   ├── run_psi4.py
-│   ├── sa_score.py
-│   ├── slurm.py
-│   ├── testing_data.py
-│   ├── torsion_parser.py
-│   ├── write_gaussian.py
-│   └── write_psi4.py
-├── QCflow.yml
-├── QCflow_logo_narrow.jpg
-├── README.md
 ├── build
+│   ├── bdist.linux-x86_64
+│   ├── bdist.macosx-11.0-arm64
 │   └── lib
 │       └── QCflow
 │           ├── __init__.py
@@ -219,15 +148,15 @@ Additionally, we welcome any developments and improvements user may have and if 
 │           ├── load_gaussian.py
 │           ├── run_gaussian.py
 │           ├── run_psi4.py
+│           ├── run_xTB.py
 │           ├── sa_score.py
 │           ├── slurm.py
 │           ├── testing_data.py
 │           ├── torsion_parser.py
 │           ├── write_gaussian.py
-│           └── write_psi4.py
+│           ├── write_psi4.py
+│           └── write_xTB.py
 ├── docs
-│   ├── Makefile
-│   ├── README.md
 │   ├── _build
 │   │   ├── doctrees
 │   │   │   ├── api.doctree
@@ -236,35 +165,30 @@ Additionally, we welcome any developments and improvements user may have and if 
 │   │   │   └── index.doctree
 │   │   └── html
 │   │       ├── _modules
-│   │       │   ├── QCflow
-│   │       │   │   ├── energy_calculations.html
-│   │       │   │   ├── find_torsion.html
-│   │       │   │   ├── fragments.html
-│   │       │   │   ├── load_gaussian.html
-│   │       │   │   ├── run_gaussian.html
-│   │       │   │   ├── run_psi4.html
-│   │       │   │   ├── sa_score.html
-│   │       │   │   ├── slurm.html
-│   │       │   │   ├── testing_data.html
-│   │       │   │   ├── torsion_parser.html
-│   │       │   │   ├── write_gaussian.html
-│   │       │   │   └── write_psi4.html
-│   │       │   └── index.html
+│   │       │   ├── index.html
+│   │       │   └── QCflow
+│   │       │       ├── energy_calculations.html
+│   │       │       ├── find_torsion.html
+│   │       │       ├── fragments.html
+│   │       │       ├── load_gaussian.html
+│   │       │       ├── run_gaussian.html
+│   │       │       ├── run_psi4.html
+│   │       │       ├── sa_score.html
+│   │       │       ├── slurm.html
+│   │       │       ├── testing_data.html
+│   │       │       ├── torsion_parser.html
+│   │       │       ├── write_gaussian.html
+│   │       │       └── write_psi4.html
 │   │       ├── _sources
 │   │       │   ├── api.rst.txt
 │   │       │   ├── getting_started.rst.txt
 │   │       │   └── index.rst.txt
 │   │       ├── _static
-│   │       │   ├── README.md
 │   │       │   ├── _sphinx_javascript_frameworks_compat.js
 │   │       │   ├── basic.css
 │   │       │   ├── css
 │   │       │   │   ├── badge_only.css
 │   │       │   │   ├── fonts
-│   │       │   │   │   ├── Roboto-Slab-Bold.woff
-│   │       │   │   │   ├── Roboto-Slab-Bold.woff2
-│   │       │   │   │   ├── Roboto-Slab-Regular.woff
-│   │       │   │   │   ├── Roboto-Slab-Regular.woff2
 │   │       │   │   │   ├── fontawesome-webfont.eot
 │   │       │   │   │   ├── fontawesome-webfont.svg
 │   │       │   │   │   ├── fontawesome-webfont.ttf
@@ -277,7 +201,11 @@ Additionally, we welcome any developments and improvements user may have and if 
 │   │       │   │   │   ├── lato-normal-italic.woff
 │   │       │   │   │   ├── lato-normal-italic.woff2
 │   │       │   │   │   ├── lato-normal.woff
-│   │       │   │   │   └── lato-normal.woff2
+│   │       │   │   │   ├── lato-normal.woff2
+│   │       │   │   │   ├── Roboto-Slab-Bold.woff
+│   │       │   │   │   ├── Roboto-Slab-Bold.woff2
+│   │       │   │   │   ├── Roboto-Slab-Regular.woff
+│   │       │   │   │   └── Roboto-Slab-Regular.woff2
 │   │       │   │   └── theme.css
 │   │       │   ├── doctools.js
 │   │       │   ├── documentation_options.js
@@ -318,6 +246,7 @@ Additionally, we welcome any developments and improvements user may have and if 
 │   │       │   ├── minus.png
 │   │       │   ├── plus.png
 │   │       │   ├── pygments.css
+│   │       │   ├── README.md
 │   │       │   ├── searchtools.js
 │   │       │   └── sphinx_highlight.js
 │   │       ├── api.html
@@ -337,15 +266,102 @@ Additionally, we welcome any developments and improvements user may have and if 
 │   ├── getting_started.rst
 │   ├── index.rst
 │   ├── make.bat
+│   ├── Makefile
+│   ├── README.md
 │   ├── requirements.yaml
 │   └── timer.dat
+├── Examples
+│   ├── example_data_extraction_bulk.py
+│   ├── example_data_extraction.ipynb
+│   ├── example_g16_calculation_submission.py
+│   ├── example_molecule_building.ipynb
+│   ├── example_molecule_logs
+│   │   ├── 18
+│   │   │   └── 18_opt.log
+│   │   ├── b
+│   │   │   └── b_opt.log
+│   │   └── b_18_single_v2
+│   │       ├── b_18_single_v2_n_a_geo.log
+│   │       ├── b_18_single_v2_n_c_geo.log
+│   │       ├── b_18_single_v2_opt_a.log
+│   │       ├── b_18_single_v2_opt_c.log
+│   │       ├── b_18_single_v2_opt.log
+│   │       ├── b_18_single_v2_sp_a.log
+│   │       └── b_18_single_v2_sp_c.log
+│   ├── example_psi4_opt_submission.py
+│   ├── example_torsional_scan_script.py
+│   └── FilteredSmilesFragments_props.csv
+├── LICENSE
+├── QCflow
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-311.pyc
+│   │   ├── __init__.cpython-313.pyc
+│   │   ├── __init__.cpython-38.pyc
+│   │   ├── __init__.cpython-39.pyc
+│   │   ├── energy_calculations.cpython-313.pyc
+│   │   ├── find_torsion.cpython-311.pyc
+│   │   ├── find_torsion.cpython-313.pyc
+│   │   ├── find_torsion.cpython-39.pyc
+│   │   ├── fragments.cpython-311.pyc
+│   │   ├── fragments.cpython-313.pyc
+│   │   ├── fragments.cpython-38.pyc
+│   │   ├── fragments.cpython-39.pyc
+│   │   ├── load_gaussian.cpython-311.pyc
+│   │   ├── load_gaussian.cpython-313.pyc
+│   │   ├── load_gaussian.cpython-39.pyc
+│   │   ├── run_gaussian.cpython-313.pyc
+│   │   ├── run_opt_neutral.cpython-311.pyc
+│   │   ├── run_opt_neutral.cpython-39.pyc
+│   │   ├── run_opt_set_dihedral.cpython-311.pyc
+│   │   ├── run_psi4.cpython-313.pyc
+│   │   ├── run_xTB.cpython-313.pyc
+│   │   ├── sa_score.cpython-313.pyc
+│   │   ├── slurm.cpython-311.pyc
+│   │   ├── slurm.cpython-313.pyc
+│   │   ├── slurm.cpython-39.pyc
+│   │   ├── testing_data.cpython-313.pyc
+│   │   ├── torsion_parser.cpython-311.pyc
+│   │   ├── torsion_parser.cpython-313.pyc
+│   │   ├── torsion_parser.cpython-39.pyc
+│   │   ├── torsion_run.cpython-311.pyc
+│   │   ├── torsion_run.cpython-39.pyc
+│   │   ├── write_gaussian.cpython-311.pyc
+│   │   ├── write_gaussian.cpython-313.pyc
+│   │   ├── write_gaussian.cpython-39.pyc
+│   │   ├── write_psi4.cpython-313.pyc
+│   │   └── write_xTB.cpython-313.pyc
+│   ├── energy_calculations.py
+│   ├── find_torsion.py
+│   ├── fragments.py
+│   ├── future_functions
+│   │   └── orbital_parse.py
+│   ├── load_gaussian.py
+│   ├── run_gaussian.py
+│   ├── run_psi4.py
+│   ├── run_xTB.py
+│   ├── sa_score.py
+│   ├── slurm.py
+│   ├── testing_data.py
+│   ├── torsion_parser.py
+│   ├── write_gaussian.py
+│   ├── write_psi4.py
+│   └── write_xTB.py
+├── QCflow_logo_narrow.jpg
 ├── qcflow.egg-info
+│   ├── dependency_links.txt
 │   ├── PKG-INFO
 │   ├── SOURCES.txt
-│   ├── dependency_links.txt
 │   └── top_level.txt
+├── QCflow.yml
+├── README.md
 ├── setup.py
 └── tests
+    ├── __pycache__
+    │   ├── test.cpython-313-pytest-7.4.4.pyc
+    │   ├── test.cpython-313-pytest-8.3.3.pyc
+    │   ├── tests.cpython-312-pytest-7.4.4.pyc
+    │   └── tests.cpython-312.pyc
     ├── 1
     │   ├── 1_cation.py
     │   ├── 1_opt.py
@@ -361,26 +377,26 @@ Additionally, we welcome any developments and improvements user may have and if 
     │   ├── 12_cation.sh
     │   ├── 12_n_a_geo_energy_and_gap.txt
     │   ├── 12_n_c_geo_energy_and_gap.txt
+    │   ├── 12_opt_a_energy_and_gap.txt
+    │   ├── 12_opt_a.xyz
+    │   ├── 12_opt_c_energy_and_gap.txt
+    │   ├── 12_opt_c.xyz
+    │   ├── 12_opt_energy_and_gap.txt
     │   ├── 12_opt.err
     │   ├── 12_opt.out
     │   ├── 12_opt.py
     │   ├── 12_opt.sh
     │   ├── 12_opt.xyz
-    │   ├── 12_opt_a.xyz
-    │   ├── 12_opt_a_energy_and_gap.txt
-    │   ├── 12_opt_c.xyz
-    │   ├── 12_opt_c_energy_and_gap.txt
-    │   ├── 12_opt_energy_and_gap.txt
+    │   ├── 12_sp_a_energy_and_gap.txt
     │   ├── 12_sp_a.err
     │   ├── 12_sp_a.out
     │   ├── 12_sp_a.py
     │   ├── 12_sp_a.sh
-    │   ├── 12_sp_a_energy_and_gap.txt
+    │   ├── 12_sp_c_energy_and_gap.txt
     │   ├── 12_sp_c.err
     │   ├── 12_sp_c.out
     │   ├── 12_sp_c.py
     │   ├── 12_sp_c.sh
-    │   ├── 12_sp_c_energy_and_gap.txt
     │   └── timer.dat
     ├── 145
     │   ├── 145_anion.err
@@ -393,48 +409,43 @@ Additionally, we welcome any developments and improvements user may have and if 
     │   ├── 145_cation.sh
     │   ├── 145_n_a_geo_energy_and_gap.txt
     │   ├── 145_n_c_geo_energy_and_gap.txt
+    │   ├── 145_opt_a_energy_and_gap.txt
+    │   ├── 145_opt_a.xyz
+    │   ├── 145_opt_c_energy_and_gap.txt
+    │   ├── 145_opt_c.xyz
+    │   ├── 145_opt_energy_and_gap.txt
     │   ├── 145_opt.err
     │   ├── 145_opt.out
     │   ├── 145_opt.py
     │   ├── 145_opt.sh
     │   ├── 145_opt.xyz
-    │   ├── 145_opt_a.xyz
-    │   ├── 145_opt_a_energy_and_gap.txt
-    │   ├── 145_opt_c.xyz
-    │   ├── 145_opt_c_energy_and_gap.txt
-    │   ├── 145_opt_energy_and_gap.txt
+    │   ├── 145_sp_a_energy_and_gap.txt
     │   ├── 145_sp_a.err
     │   ├── 145_sp_a.out
     │   ├── 145_sp_a.py
     │   ├── 145_sp_a.sh
-    │   ├── 145_sp_a_energy_and_gap.txt
+    │   ├── 145_sp_c_energy_and_gap.txt
     │   ├── 145_sp_c.err
     │   ├── 145_sp_c.out
     │   ├── 145_sp_c.py
     │   ├── 145_sp_c.sh
-    │   ├── 145_sp_c_energy_and_gap.txt
     │   └── timer.dat
-    ├── __pycache__
-    │   ├── test.cpython-313-pytest-7.4.4.pyc
-    │   ├── test.cpython-313-pytest-8.3.3.pyc
-    │   ├── tests.cpython-312-pytest-7.4.4.pyc
-    │   └── tests.cpython-312.pyc
     ├── b_18_v2
     │   ├── b_18_v2_n_a_geo.log
     │   ├── b_18_v2_n_c_geo.log
+    │   ├── b_18_v2_opt_a.log
+    │   ├── b_18_v2_opt_c.log
     │   ├── b_18_v2_opt.com
     │   ├── b_18_v2_opt.log
     │   ├── b_18_v2_opt.sh
-    │   ├── b_18_v2_opt_a.log
-    │   ├── b_18_v2_opt_c.log
     │   ├── b_18_v2_sp_a.log
     │   ├── b_18_v2_sp_c.log
     │   ├── b_18_v2_sp_hirsh.log
     │   └── b_18_v2_tor.log
     ├── example_dic.json
     ├── fake_dict.json
-    ├── test.py
     ├── test_dict.json
+    ├── test.py
     ├── timer.dat
     └── torsion_1
         └── torsion_1_tor.log
