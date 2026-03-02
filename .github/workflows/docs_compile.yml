@@ -38,7 +38,7 @@ jobs:
         cache-environment: true
 
     - name: Install dependencies 
-      shell: micromamba-shell {0}
+      shell: bash -l {0}
       run: |
         micromamba install sphinx=8.2.3
         pip install sphinx_rtd_theme>=2.0.0
@@ -46,7 +46,7 @@ jobs:
         pip install .
 
     - name: Run build
-      shell: micromamba-shell {0}
+      shell: bash -l {0}
       run: |
         cd docs/
         make html
