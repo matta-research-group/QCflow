@@ -2,8 +2,6 @@ name: QCflow
 channels:
   - conda-forge
   - lich
-  - defaults
-  - anaconda
 dependencies:
   - brotli
   - brotli-bin

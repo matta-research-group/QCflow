@@ -1,0 +1,7 @@
+warning  libmamba 'repo.anaconda.com', a commercial channel hosted by Anaconda.com, is used.
+    
+warning  libmamba Please make sure you understand Anaconda Terms of Services.
+    
+warning  libmamba See: https://legal.anaconda.com/policies/en/
+micromamba: /home/conda/feedstock_root/build_artifacts/bld/rattler-build_libsolv-static_1754325691/work/src/rules.c:261: solver_addrule: Assertion `!p2 && d > 0' failed.
+/var/lib/slurm/slurmd/job31669382/slurm_script: line 19: 2297279 Aborted                 (core dumped) $MICROMAMBA env create -f QCflow.yml -y

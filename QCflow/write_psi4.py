@@ -93,7 +93,7 @@ def write_psi4(job_name, mol_name, smile, functional='b3lyp', basis_set='6-31g*'
                 file.write(line)
         file.write('""") \n')
         file.write(' \n')
-        file.write("psi4.set_module_options('scf', {'maxiter': 75}) \n")
+        file.write("psi4.set_options({'SCF__MAXITER': 100, 'GEOM_MAXITER': 200}) \n")
         file.write(f"psi4.set_options({{'basis': '{basis_set}', 'scf_type': 'df'}})\n")
         file.write(' \n')
         if (job_name=='sp'):
@@ -123,7 +123,7 @@ def write_psi4(job_name, mol_name, smile, functional='b3lyp', basis_set='6-31g*'
             file.write('    file.write(f"LUMO: {lumo_energy_ev:.6f} eV\\n") \n')
             file.write('    file.write(f"Energy gap (HOMO-LUMO): {energy_gap_ev:.6f} eV\\n") \n')
         if (job_name=='opt'):
-            file.write(f"energy, wfn = psi4.optimize('{functional}', return_wfn=True)  \n")
+            file.write(f"energy, wfn = psi4.optimize('{functional}', engine='geometric', return_wfn=True)  \n")
             file.write(' \n')
             file.write("optimized_geometry_xyz = wfn.molecule().to_string('xyz') \n")
             file.write(f"with open('{mol_name}_{job_name}.xyz', 'w') as xyz_file:\n")
@@ -227,10 +227,10 @@ def write_psi4_reorg(job_name, mol_name, functional='b3lyp', basis_set='6-31g*')
         file.write(f"mol.set_multiplicity({mult}) \n")# set multiplicity
         file.write(' \n')
         if (job_name=='cation') or (job_name=='anion'):
-            file.write("psi4.set_module_options('scf', {'maxiter': 100}) \n")
+            file.write("psi4.set_options({'SCF__MAXITER': 100, 'GEOM_MAXITER': 200}) \n")
             file.write(f"psi4.set_options({{'basis': '{basis_set}', 'scf_type': 'df', 'reference': 'uhf'}})\n")
             file.write(' \n')
-            file.write(f"energy, wfn = psi4.optimize('{functional}', return_wfn=True)  \n")
+            file.write(f"energy, wfn = psi4.optimize('{functional}', engine='geometric', return_wfn=True)  \n")
             file.write(' \n')
             file.write("optimized_geometry_xyz = wfn.molecule().to_string('xyz') \n")
             file.write(f"with open('{mol_name}_{job_type}.xyz', 'w') as xyz_file:\n")

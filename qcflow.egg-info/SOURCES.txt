@@ -8,12 +8,14 @@ QCflow/fragments.py
 QCflow/load_gaussian.py
 QCflow/run_gaussian.py
 QCflow/run_psi4.py
+QCflow/run_xTB.py
 QCflow/sa_score.py
 QCflow/slurm.py
 QCflow/testing_data.py
 QCflow/torsion_parser.py
 QCflow/write_gaussian.py
 QCflow/write_psi4.py
+QCflow/write_xTB.py
 qcflow.egg-info/PKG-INFO
 qcflow.egg-info/SOURCES.txt
 qcflow.egg-info/dependency_links.txt
