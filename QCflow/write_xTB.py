@@ -11,7 +11,22 @@ import subprocess
 import tempfile
 
 def run_xtb_optimisation(xyz: str, output_file: str, charge=0, uhf=0, gfn=2):
-    """Run xTB geometry optimisation using GFN2-xTB and save to output_file."""
+    """
+    Runs a xTB geometry optimisation using GFN2-xTB and saves the result to output_file.
+    
+    Parameters
+    ----------
+    xyz (str): The input geometry in XYZ format as a string.
+    output_file (str): The path to the file where the optimised geometry will be saved
+    charge (int, optional): The total charge of the system. Default is 0.
+    uhf (int, optional): The number of unpaired electrons (spin multiplicity - 1). Default is 0 (singlet).
+    gfn (int, optional): The GFN-xTB method to use (1, 2, or 3). Default is 2 (GFN2-xTB).
+    
+    Returns
+    -------
+         None: Writes the optimised geometry to output_file.
+
+    """
     with tempfile.TemporaryDirectory() as tmpdir:
         xyz_path = os.path.join(tmpdir, "input.xyz")
         with open(xyz_path, 'w') as f:
@@ -43,6 +58,17 @@ def run_xtb_optimisation(xyz: str, output_file: str, charge=0, uhf=0, gfn=2):
         print(f"Optimised structure saved to: {output_file}")
 
 def load_xyz_from_file(filepath):
+    """
+    Loads an XYZ file and returns the content as a string.
+    
+    Parameters
+    ----------
+    filepath (str): The path to the XYZ file to be loaded.
+    
+    Returns
+    -------
+         str: The content of the XYZ file as a string.
+    """
     with open(filepath, 'r') as f:
         lines = f.readlines()
 
@@ -59,6 +85,23 @@ def load_xyz_from_file(filepath):
 
 def write_xTB_psi4(job_name, mol_name, smile, functional='b3lyp', basis_set='6-31g*', mol=None, conformer=None):
     """
+    Runs a xTB geometry optimisation and caulcates electronic proeprities using Psi4, based on the provided parameters.
+    
+    Parameters
+    ----------
+    job_name (str): The type of job to run. Possible values:
+        - 'opt': Optimisation neutral                                                                                                                               
+    mol_name (str): The name of the molecule.
+    smile (str): The SMILE string of the molecule.
+    functional (str, optional): The functional to use. Default is 'b3lyp'.
+    basis_set (str, optional): The basis set to use. Default is '6-31g'.
+    mol (rdkit.Chem.rdchem.Mol, optional): The RDKit embedded molecule object.
+    conformer (rdkit.Chem.rdchem.Conformer, optional): The RDKit conformer of the molecule.
+    
+    Returns
+    -------
+        None: Writes the psi4 input file to disk.
+
     """
     if (job_name=='opt'):
 
