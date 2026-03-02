@@ -11,29 +11,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Conda
-        uses: conda-incubator/setup-miniconda@v2
+      - name: Setup micromamba
+        uses: mamba-org/setup-micromamba@v1
         with:
-          auto-activate-base: false
-      - name: Create and activate environment
+          environment-file: QCflow.yml
+          environment-name: QCflow
+          cache-environment: true
+      - name: Install dependencies
+        shell: micromamba-shell {0}
         run: |
-          conda config --add channels defaults
-          conda config --add channels conda-forge
-          conda config --add channels anaconda
-          conda env create -f QCflow.yml
-          conda init bash
-          source ~/.bashrc
-          conda activate QCflow
           python -m pip install --upgrade pip
-          python -m pip install pytest  # Ensure pytest is installed
+          python -m pip install pytest
       - name: Debug Environment
+        shell: micromamba-shell {0}
         run: |
-            source ~/.bashrc
-            conda activate QCflow
             python --version
             python -m pip show pytest
       - name: Run Tests
+        shell: micromamba-shell {0}
         run: |
-          source ~/.bashrc
-          conda activate QCflow
           python -m pytest -v ./tests/test.py
