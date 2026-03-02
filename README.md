@@ -120,6 +120,7 @@ QCflow can prepare and submit input files for the following Gaussian 16 jobs:
 QCflow can prepare and submit input files for the following Psi4 jobs:
 - Single point calculation, neutral → `sp`
 - Geometry optimisation, neutral → `opt`
+- Geometry optimisation, neutral from txt file geometry → `opt_pre_geom`
 - Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo) → `cation`
 - Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo) → `anion`
 - Single point calculation, anion → `sp_a`
