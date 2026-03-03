@@ -25,7 +25,7 @@ import QCflow
 
 project = 'QCflow'
 author = 'Tristan Stephens-Jones, Micaela Matta'
-release = '0.4.0'
+release = '0.5.0'
 
 # -- General configuration ---------------------------------------------------
 

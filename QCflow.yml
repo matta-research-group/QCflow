@@ -1,9 +1,7 @@
 name: QCflow
 channels:
   - conda-forge
-  - lich
-  - defaults
-  - anaconda
+  # - lich causing issues in instal
 dependencies:
   - brotli
   - brotli-bin
@@ -103,7 +101,6 @@ dependencies:
   - seaborn-base
   - six
   - statsmodels
-  - syba
   - tk
   - tornado
   - typing-extensions

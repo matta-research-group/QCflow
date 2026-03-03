@@ -5,19 +5,20 @@ from QCflow.slurm import *
 from QCflow.torsion_parser import *
 from QCflow.run_gaussian import *
 from QCflow.write_psi4 import *
+from QCflow.write_xTB import *
 import os
 import json
+import subprocess
+import tempfile
 
-def run_psi4(job_name, mol_name, mol_smile, time=24, cpus=10, functional='b3lyp', basis_set='6-31g*'):
+def run_xTB(job_name, mol_name, mol_smile, time=2, cpus=10, functional='b3lyp', basis_set='6-31g*'):
     """
-    Submits a psi4 calculation to CREATE HPC.
+    Submits a xTB calculation to CREATE HPC.
 
     Parameters
     ----------
     job_name (str): The type of job to run. Possible values:
-        - 'sp': Single Point neutral
         - 'opt': Optimisation neutral
-        - 'opt_pre_geom': Optimisation neutral where a txt file called '{mol_name}_opt.xyz' is present in the molecule directory. This file should contain the geometry to be used for the optimisation in XYZ format. If this file is not present, the function will default to 'opt'.
         - 'cation': Geometry optimisation cation (opt_c) and single of neutral charge, cation geometry (n_c_geo)
         - 'anion': Geometry optimisation anion (opt_a) and single of neutral charge, anion geometry (n_a_geo)
         - 'sp_c': Single point calculation of neutral geometry at cation charge
@@ -36,13 +37,13 @@ def run_psi4(job_name, mol_name, mol_smile, time=24, cpus=10, functional='b3lyp'
     
     Returns
     -------
-    - For 'opt' and 'sp':
+    - For 'opt':
         - Converts the SMILES string to an RDKit molecule object.
         - Generates 3D coordinates for the molecule.
         - Predicts the conformer geometry.
-        - Writes a psi4 input file with the conformer geometry.
-    - For 'cation', 'anion', 'sp_c', and 'sp_a':
-        - Writes a psi4 input file.
+        - Runs xTB optimisation using the generated coordinates.
+        - Writes a psi4 input file with the optimised geometry.
+        - Runs a single point calculation.
     Finally, the function writes a SLURM script, submits the job, and returns to the previous directory.
     """
     if os.path.exists(f'{mol_name}'):
@@ -51,14 +52,7 @@ def run_psi4(job_name, mol_name, mol_smile, time=24, cpus=10, functional='b3lyp'
         os.mkdir(f'{mol_name}') #makes a directory for the molecule
         os.chdir(f'{mol_name}') #goes into directory
 
-    if (job_name=='opt') or (job_name=='sp') or (job_name=='opt_pre_geom'):
-        
-        if (job_name=='opt_pre_geom'):
-            if os.path.exists(f'{mol_name}_opt.xyz'):
-                print(f"Found {mol_name}_opt.xyz, using this geometry for optimisation.")
-            else:
-                print(f"{mol_name}_opt.xyz not found, defaulting to 'opt' job type.")
-                job_name = 'opt'
+    if (job_name=='opt'):
         #turns smiles string into rdkit object
         mol = Chem.MolFromSmiles(mol_smile)
         #gets rdkit estimated coordinates of dimer
@@ -66,15 +60,12 @@ def run_psi4(job_name, mol_name, mol_smile, time=24, cpus=10, functional='b3lyp'
 
         conf_geo = rdkit_predict_conf(mol_smile)
         #writes a guassian input file
-        write_psi4(job_name, mol_name, mol_smile, functional, basis_set, mol=mol3d, conformer=conf_geo)
-
+        write_xTB_psi4(job_name, mol_name, mol_smile, functional, basis_set, mol=mol3d, conformer=conf_geo)
+    
     #for reorganisation calcultions
     if (job_name=='cation') or (job_name=='anion') or (job_name=='sp_c') or (job_name=='sp_a'):
 
-        write_psi4_reorg(job_name, mol_name, functional, basis_set)
-    
-    else:
-        print(f"Invalid job_name: {job_name}, please use 'opt', 'sp', 'opt_pre_geom', 'cation', 'anion', 'sp_c' or 'sp_a'. See documentation for more details.")
+        write_xTB_psi4_reorg(job_name, mol_name, functional, basis_set)
 
     
     #writes the slurm file

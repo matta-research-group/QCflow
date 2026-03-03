@@ -20,7 +20,8 @@ def write_psi4(job_name, mol_name, smile, functional='b3lyp', basis_set='6-31g*'
     ----------
     job_name (str): The type of job to run. Possible values:
         - 'sp': Single Point neutral
-        - 'opt': Optimisation neutral                                                                                                                                        
+        - 'opt': Optimisation neutral
+        - 'opt_pre_geom' : Optimisation neutral, from stated geometry, where a txt file called '{mol_name}_opt.xyz' is present and in psi4 format                                                                                                                                         
     mol_name (str): The name of the molecule.
     smile (str): The SMILE string of the molecule.
     functional (str, optional): The functional to use. Default is 'b3lyp'.
@@ -66,7 +67,29 @@ def write_psi4(job_name, mol_name, smile, functional='b3lyp', basis_set='6-31g*'
         if Descriptors.NumRadicalElectrons(mol) == 1:
             mult_chg = '0 2'
         if Descriptors.NumRadicalElectrons(mol) == 2:
-            mult_chg = '0 3' 
+            mult_chg = '0 3'
+
+    if (job_name=='opt_pre_geom'):
+
+        old_chk = ' '
+
+        geometry_file = f'{mol_name}_opt.xyz'
+        calculation = 'opt'
+        torsion_data = f' \n'
+
+        if Descriptors.NumRadicalElectrons(mol) == 0:
+            charge = '0'
+            mult = '1'
+            mult_chg = f'{charge} {mult}'
+        if Descriptors.NumRadicalElectrons(mol) == 1:
+            charge = '0'
+            mult = '2'
+            mult_chg = f'{charge} {mult}'
+        if Descriptors.NumRadicalElectrons(mol) == 2:
+            charge = '0'
+            mult = '3'
+            mult_chg = f'{charge} {mult}'
+
                                                                                           
     file_name = f'{mol_name}_{job_name}.py'
     #Includes information about basis set to allow for ramping
@@ -74,56 +97,98 @@ def write_psi4(job_name, mol_name, smile, functional='b3lyp', basis_set='6-31g*'
     number_proc = 'set_num_threads(4)'
     memory_num = '4000 mb'
 
+    if (job_name== 'sp') or (job_name=='opt'):
+        with open(file_name, 'w') as file:
+            file.write('import psi4\n')
+            file.write(' \n')#
+            file.write(f"psi4.set_memory('{memory_num}')\n")
+            file.write('psi4.set_num_threads(4)\n')
+            file.write(' \n')#
+            file.write('mol_name = psi4.geometry("""\n')#
+            #file.write(' symmetry c1 \n')
+            file.write(f' {mult_chg} \n')#
+            # if no previous checkpoint file, get geometry
+            if old_chk==' ':
+                for atom,symbol in enumerate(symbols):
+                    p = geometry.GetAtomPosition(atom)
+                    # atom  x y z
+                    line = f' {symbol} {p.x:.5f} {p.y:.5f} {p.z:.5f} \n'
+                    file.write(line)
+            file.write('""") \n')
+            file.write(' \n')
+            file.write("psi4.set_options({'SCF__MAXITER': 100, 'GEOM_MAXITER': 200}) \n")
+            file.write(f"psi4.set_options({{'basis': '{basis_set}', 'scf_type': 'df'}})\n")
+            file.write(' \n')
+            if (job_name=='sp'):
+                file.write(f"energy, wfn = psi4.energy('{functional}', return_wfn=True)  \n")
+                file.write(' \n')
+                file.write("sp_geometry_xyz = wfn.molecule().to_string('xyz') \n")
+                file.write(f"with open('{mol_name}_{job_name}.xyz', 'w') as xyz_file:\n")
+                file.write("    xyz_file.write(sp_geometry_xyz) \n")
+                file.write(' \n')
+                file.write(f"psi4.core.set_active_molecule(wfn.molecule()) \n")
+                file.write(' \n')
+                file.write('orbital_energies = wfn.epsilon_a_subset("AO", "ALL").np \n')
+                file.write(' \n')
+                file.write('n_occ_alpha = wfn.nalpha() \n')
+                file.write('homo_energy = orbital_energies[n_occ_alpha - 1] \n')
+                file.write('lumo_energy = orbital_energies[n_occ_alpha] \n')
+                file.write('energy_gap = lumo_energy - homo_energy \n')
+                file.write(' \n')
+                file.write('hartree_to_ev = 27.2114079527 \n')
+                file.write('homo_energy_ev = homo_energy * hartree_to_ev \n')
+                file.write('lumo_energy_ev = lumo_energy * hartree_to_ev \n')
+                file.write('energy_gap_ev = lumo_energy_ev -  homo_energy_ev \n')
+                file.write(' \n')
+                file.write(f"with open('{mol_name}_{job_name}_energy_and_gap.txt', 'w') as file:\n")
+                file.write('    file.write(f"Optimized energy: {energy:.6f} Hatree\\n") \n')
+                file.write('    file.write(f"HOMO: {homo_energy_ev:.6f} eV\\n") \n')
+                file.write('    file.write(f"LUMO: {lumo_energy_ev:.6f} eV\\n") \n')
+                file.write('    file.write(f"Energy gap (HOMO-LUMO): {energy_gap_ev:.6f} eV\\n") \n')
+            if (job_name=='opt'):
+                file.write(f"energy, wfn = psi4.optimize('{functional}', engine='geometric', return_wfn=True)  \n")
+                file.write(' \n')
+                file.write("optimized_geometry_xyz = wfn.molecule().to_string('xyz') \n")
+                file.write(f"with open('{mol_name}_{job_name}.xyz', 'w') as xyz_file:\n")
+                file.write("    xyz_file.write(optimized_geometry_xyz) \n")
+                file.write(' \n')
+                file.write(f"psi4.core.set_active_molecule(wfn.molecule()) \n")
+                file.write(' \n')
+                file.write('orbital_energies = wfn.epsilon_a_subset("AO", "ALL").np \n')
+                file.write(' \n')
+                file.write('n_occ_alpha = wfn.nalpha() \n')
+                file.write('homo_energy = orbital_energies[n_occ_alpha - 1] \n')
+                file.write('lumo_energy = orbital_energies[n_occ_alpha] \n')
+                file.write('energy_gap = lumo_energy - homo_energy \n')
+                file.write(' \n')
+                file.write('hartree_to_ev = 27.2114079527 \n')
+                file.write('energy_ev = energy * hartree_to_ev \n')
+                file.write('homo_energy_ev = homo_energy * hartree_to_ev \n')
+                file.write('lumo_energy_ev = lumo_energy * hartree_to_ev \n')
+                file.write('energy_gap_ev = lumo_energy_ev -  homo_energy_ev \n')
+                file.write(' \n')
+                file.write(f"with open('{mol_name}_{job_name}_energy_and_gap.txt', 'w') as file:\n")
+                file.write('    file.write(f"Optimized energy: {energy_ev:.6f} eV\\n") \n')
+                file.write('    file.write(f"HOMO: {homo_energy_ev:.6f} eV\\n") \n')
+                file.write('    file.write(f"LUMO: {lumo_energy_ev:.6f} eV\\n") \n')
+                file.write('    file.write(f"Energy gap (HOMO-LUMO): {energy_gap_ev:.6f} eV\\n") \n')
+            file.write(' \n')
 
-    with open(file_name, 'w') as file:
-        file.write('import psi4\n')
-        file.write(' \n')#
-        file.write(f"psi4.set_memory('{memory_num}')\n")
-        file.write('psi4.set_num_threads(4)\n')
-        file.write(' \n')#
-        file.write('mol_name = psi4.geometry("""\n')#
-        #file.write(' symmetry c1 \n')
-        file.write(f' {mult_chg} \n')#
-        # if no previous checkpoint file, get geometry
-        if old_chk==' ':
-            for atom,symbol in enumerate(symbols):
-                p = geometry.GetAtomPosition(atom)
-                # atom  x y z
-                line = f' {symbol} {p.x:.5f} {p.y:.5f} {p.z:.5f} \n'
-                file.write(line)
-        file.write('""") \n')
-        file.write(' \n')
-        file.write("psi4.set_module_options('scf', {'maxiter': 75}) \n")
-        file.write(f"psi4.set_options({{'basis': '{basis_set}', 'scf_type': 'df'}})\n")
-        file.write(' \n')
-        if (job_name=='sp'):
-            file.write(f"energy, wfn = psi4.energy('{functional}', return_wfn=True)  \n")
+    if (job_name == 'opt_pre_geom'):
+        with open(file_name, 'w') as file:
+            file.write('import psi4\n')
+            file.write(' \n')#
+            file.write(f"psi4.set_memory('{memory_num}')\n")
+            file.write('psi4.set_num_threads(4)\n')
+            file.write(' \n')#
+            file.write(f"mol = psi4.geometry(open('{geometry_file}').read())\n")#use geometry from opt
+            file.write('psi4.core.set_active_molecule(mol)\n')#set as active molecule
+            file.write(f"mol.set_molecular_charge({charge}) \n")# set charge
+            file.write(f"mol.set_multiplicity({mult}) \n")# set multiplicity
+            file.write("psi4.set_options({'SCF__MAXITER': 100, 'GEOM_MAXITER': 200}) \n")
+            file.write(f"psi4.set_options({{'basis': '{basis_set}', 'scf_type': 'df'}})\n")
             file.write(' \n')
-            file.write("sp_geometry_xyz = wfn.molecule().to_string('xyz') \n")
-            file.write(f"with open('{mol_name}_{job_name}.xyz', 'w') as xyz_file:\n")
-            file.write("    xyz_file.write(sp_geometry_xyz) \n")
-            file.write(' \n')
-            file.write(f"psi4.core.set_active_molecule(wfn.molecule()) \n")
-            file.write(' \n')
-            file.write('orbital_energies = wfn.epsilon_a_subset("AO", "ALL").np \n')
-            file.write(' \n')
-            file.write('n_occ_alpha = wfn.nalpha() \n')
-            file.write('homo_energy = orbital_energies[n_occ_alpha - 1] \n')
-            file.write('lumo_energy = orbital_energies[n_occ_alpha] \n')
-            file.write('energy_gap = lumo_energy - homo_energy \n')
-            file.write(' \n')
-            file.write('hartree_to_ev = 27.2114079527 \n')
-            file.write('homo_energy_ev = homo_energy * hartree_to_ev \n')
-            file.write('lumo_energy_ev = lumo_energy * hartree_to_ev \n')
-            file.write('energy_gap_ev = lumo_energy_ev -  homo_energy_ev \n')
-            file.write(' \n')
-            file.write(f"with open('{mol_name}_{job_name}_energy_and_gap.txt', 'w') as file:\n")
-            file.write('    file.write(f"Optimized energy: {energy:.6f} Hatree\\n") \n')
-            file.write('    file.write(f"HOMO: {homo_energy_ev:.6f} eV\\n") \n')
-            file.write('    file.write(f"LUMO: {lumo_energy_ev:.6f} eV\\n") \n')
-            file.write('    file.write(f"Energy gap (HOMO-LUMO): {energy_gap_ev:.6f} eV\\n") \n')
-        if (job_name=='opt'):
-            file.write(f"energy, wfn = psi4.optimize('{functional}', return_wfn=True)  \n")
+            file.write(f"energy, wfn = psi4.optimize('{functional}', engine='geometric', return_wfn=True)  \n")
             file.write(' \n')
             file.write("optimized_geometry_xyz = wfn.molecule().to_string('xyz') \n")
             file.write(f"with open('{mol_name}_{job_name}.xyz', 'w') as xyz_file:\n")
@@ -149,7 +214,10 @@ def write_psi4(job_name, mol_name, smile, functional='b3lyp', basis_set='6-31g*'
             file.write('    file.write(f"HOMO: {homo_energy_ev:.6f} eV\\n") \n')
             file.write('    file.write(f"LUMO: {lumo_energy_ev:.6f} eV\\n") \n')
             file.write('    file.write(f"Energy gap (HOMO-LUMO): {energy_gap_ev:.6f} eV\\n") \n')
-        file.write(' \n')
+            file.write(' \n')
+
+    else:
+        print(f"Invalid job_name: {job_name}, please use 'opt', 'sp' or 'opt_pre_geom'. See documentation for more details.")
 
 
 def write_psi4_reorg(job_name, mol_name, functional='b3lyp', basis_set='6-31g*'):
@@ -227,10 +295,10 @@ def write_psi4_reorg(job_name, mol_name, functional='b3lyp', basis_set='6-31g*')
         file.write(f"mol.set_multiplicity({mult}) \n")# set multiplicity
         file.write(' \n')
         if (job_name=='cation') or (job_name=='anion'):
-            file.write("psi4.set_module_options('scf', {'maxiter': 100}) \n")
+            file.write("psi4.set_options({'SCF__MAXITER': 100, 'GEOM_MAXITER': 200}) \n")
             file.write(f"psi4.set_options({{'basis': '{basis_set}', 'scf_type': 'df', 'reference': 'uhf'}})\n")
             file.write(' \n')
-            file.write(f"energy, wfn = psi4.optimize('{functional}', return_wfn=True)  \n")
+            file.write(f"energy, wfn = psi4.optimize('{functional}', engine='geometric', return_wfn=True)  \n")
             file.write(' \n')
             file.write("optimized_geometry_xyz = wfn.molecule().to_string('xyz') \n")
             file.write(f"with open('{mol_name}_{job_type}.xyz', 'w') as xyz_file:\n")
@@ -316,5 +384,7 @@ def write_psi4_reorg(job_name, mol_name, functional='b3lyp', basis_set='6-31g*')
             file.write('    file.write(f"LUMO: {lumo_energy_ev:.6f} eV\\n") \n')
             file.write('    file.write(f"Energy gap (HOMO-LUMO): {energy_gap_ev:.6f} eV\\n") \n')
             file.write(' \n')
+        else:
+            print(f"Invalid job_name: {job_name}, please use 'cation', 'anion', 'sp_a' or 'sp_c'. See documentation for more details.")
 
             

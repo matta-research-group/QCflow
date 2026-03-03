@@ -35,6 +35,15 @@ QCflow.write_psi4
    :show-inheritance:
    :no-imported-members:
 
+QCflow.write_xTB
+=====================
+
+.. automodule:: QCflow.write_xTB
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :no-imported-members:
+
 QCflow.slurm
 ============
 
@@ -57,6 +66,15 @@ QCflow.run_psi4
 ===================
 
 .. automodule:: QCflow.run_psi4
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :no-imported-members:
+
+QCflow.run_xTB
+===================
+
+.. automodule:: QCflow.run_xTB
    :members:
    :undoc-members:
    :show-inheritance:
