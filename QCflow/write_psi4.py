@@ -214,7 +214,7 @@ def write_psi4(job_name, mol_name, smile, functional='b3lyp', basis_set='6-31g*'
             file.write('    file.write(f"HOMO: {homo_energy_ev:.6f} eV\\n") \n')
             file.write('    file.write(f"LUMO: {lumo_energy_ev:.6f} eV\\n") \n')
             file.write('    file.write(f"Energy gap (HOMO-LUMO): {energy_gap_ev:.6f} eV\\n") \n')
-        file.write(' \n')
+            file.write(' \n')
 
     else:
         print(f"Invalid job_name: {job_name}, please use 'opt', 'sp' or 'opt_pre_geom'. See documentation for more details.")
